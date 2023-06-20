@@ -1,0 +1,11 @@
+http://localhost:8989/user?search=te
+
+###
+
+POST http://localhost:8989/user
+content-type: application/json
+
+{
+  "caption" : "SACRED",
+  "description" : "TEST" 
+}
