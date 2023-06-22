@@ -28,7 +28,7 @@ const defOptions = { paranoid: true };
 
 let findFile = [];
 
-function capitalizeFirstLetter(string) {
+function capitalizeFirstLetterWithoutIndex(string) {
   if (string === "index") {
     return "";
   }
@@ -61,9 +61,9 @@ findFile.forEach((item) => {
           .dirname(item.replace(__dirname + path.sep, ""))
           .split(path.sep)
           .map((item, index) =>
-            index === 0 ? item : capitalizeFirstLetter(item)
+            index === 0 ? item : capitalizeFirstLetterWithoutIndex(item)
           )
-          .join("") + capitalizeFirstLetter(file)
+          .join("") + capitalizeFirstLetterWithoutIndex(file)
       : file;
 
   const model = require(item);
@@ -96,4 +96,4 @@ if (typeof console.logUserDone === "function") {
   console.log("SYSTEM", `DB-models:\n ${loaderFile.join(", ")}`);
 }
 
-module.exports = db;
+module.exports = { ...db };

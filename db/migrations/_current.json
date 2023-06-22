@@ -1,5 +1,40 @@
 {
     "tables": {
+        "users": {
+            "tableName": "users",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "caption": {
+                    "field": "caption",
+                    "seqType": "Sequelize.TEXT"
+                },
+                "description": {
+                    "field": "description",
+                    "seqType": "Sequelize.TEXT"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "deletedAt": {
+                    "field": "deletedAt",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
         "goods": {
             "tableName": "goods",
             "schema": {
@@ -35,8 +70,8 @@
             },
             "indexes": []
         },
-        "users": {
-            "tableName": "users",
+        "stores": {
+            "tableName": "stores",
             "schema": {
                 "id": {
                     "allowNull": false,
@@ -69,10 +104,56 @@
                 }
             },
             "indexes": []
+        },
+        "storeSettings": {
+            "tableName": "storeSettings",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "caption": {
+                    "field": "caption",
+                    "seqType": "Sequelize.TEXT"
+                },
+                "description": {
+                    "field": "description",
+                    "seqType": "Sequelize.TEXT"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "deletedAt": {
+                    "field": "deletedAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "storeId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "stores",
+                        "key": "id"
+                    },
+                    "onDelete": "CASCADE",
+                    "onUpdate": "NO ACTION",
+                    "field": "storeId",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
         }
     },
     "path": "D:\\work\\react\\test_module_Name\\test2\\db\\migrations\\_current.json",
     "backupPath": "D:\\work\\react\\test_module_Name\\test2\\db\\migrations\\_current_bak.json",
     "exists": true,
-    "revision": 3
+    "revision": 4
 }

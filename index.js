@@ -1,5 +1,5 @@
-const { Op } = require("sequelize");
-const models = require("./db/models");
+const { Op, HasMany } = require("sequelize");
+const { store, storeSetting } = require("./db/models");
 const express = require("express");
 
 const app = express();
@@ -48,3 +48,28 @@ app.use("/user", router);
 app.listen(8989, () => {
   console.log("server listen on port: 8989");
 });
+
+store
+  .findAll({
+    logging: console.log,
+    include: [
+      {
+        association: new HasMany(store, storeSetting, {
+          sourceKey: "id",
+          foreignKey: "storeId",
+        }),
+      },
+    ],
+  })
+  .then((rows) => console.log(rows));
+
+// models.storeSetting
+//   .findAll({
+//     logging: console.log,
+//     include: [
+//       {
+//         model: models.store,
+//       },
+//     ],
+//   })
+//   .then((rows) => console.log(rows));

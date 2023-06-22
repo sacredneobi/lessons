@@ -53,10 +53,6 @@
                     "field": "description",
                     "seqType": "Sequelize.TEXT"
                 },
-                "password": {
-                    "field": "password",
-                    "seqType": "Sequelize.TEXT"
-                },
                 "createdAt": {
                     "allowNull": false,
                     "field": "createdAt",
@@ -78,5 +74,5 @@
     "path": "D:\\work\\react\\test_module_Name\\test2\\db\\migrations\\_current.json",
     "backupPath": "D:\\work\\react\\test_module_Name\\test2\\db\\migrations\\_current_bak.json",
     "exists": true,
-    "revision": 2
+    "revision": 3
 }
