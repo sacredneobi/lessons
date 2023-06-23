@@ -1,11 +1,10 @@
-http://localhost:8989/user?search=te
+http://localhost:8989/user?search=3
 
 ###
-
 POST http://localhost:8989/user
 content-type: application/json
 
 {
   "caption" : "SACRED",
-  "description" : "TEST" 
+  "description" : "TEST"
 }
