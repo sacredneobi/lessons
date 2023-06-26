@@ -1,8 +1,10 @@
 const path = require("path");
 const Sequelize = require("sequelize");
 const config = require("../../config/config.json");
-const db = {};
 const file = require("file");
+const { ErrorLoaderModule } = require("../../class");
+
+const db = {};
 
 const basename = path.basename(__filename);
 
@@ -25,6 +27,10 @@ if (config.use_env_variable) {
 }
 
 const defOptions = { paranoid: true };
+const defField = {
+  caption: Sequelize.DataTypes.TEXT,
+  description: Sequelize.DataTypes.TEXT,
+};
 
 let findFile = [];
 
@@ -69,14 +75,18 @@ findFile.forEach((item) => {
   const model = require(item);
 
   if (typeof model === "function") {
-    const loadModel = model(sequelize, defOptions, modelName);
+    const loadModel = model(sequelize, defOptions, modelName, defField);
 
     if (loadModel) {
-      loaderFile.push(
+      const name =
         modelName === loadModel.name
           ? modelName
-          : `${modelName} (${loadModel.name})`
-      );
+          : `${modelName} (${loadModel.name})`;
+
+      if (loaderFile.includes(name)) {
+        throw new ErrorLoaderModule(`Error, module exist! ${name}`);
+      }
+      loaderFile.push(name);
       db[loadModel.name] = loadModel;
     }
   }

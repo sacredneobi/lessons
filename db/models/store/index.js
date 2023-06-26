@@ -1,11 +1,10 @@
 const { DataTypes } = require("sequelize");
 
-module.exports = (db, defOptions, modelName) => {
+module.exports = (db, defOptions, modelName, defField) => {
   const model = db.define(
     modelName,
     {
-      caption: DataTypes.TEXT,
-      description: DataTypes.TEXT,
+      ...defField,
     },
     defOptions
   );

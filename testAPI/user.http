@@ -1,10 +1,11 @@
 http://localhost:8989/user?search=3
 
 ###
-POST http://localhost:8989/user
+PUT http://localhost:8989/user
 content-type: application/json
 
 {
+  "id" : 1,
   "caption" : "SACRED",
   "description" : "TEST"
 }
