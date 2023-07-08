@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
-const config = require("../../config/config.json");
+const config = require("@config/config.json");
+const models = require("@models");
 
 const password = config?.jwt ?? "123";
 
@@ -14,7 +15,7 @@ const jwtVal = (token) => {
   }
 };
 
-const jwtMiddleware = (req, res, next) => {
+const jwtMiddleware = async (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization || !jwtVal(authorization)) {
@@ -22,7 +23,9 @@ const jwtMiddleware = (req, res, next) => {
     return;
   }
 
-  req.userData = jwtVal(authorization);
+  req.userData = await models.user.findOne({
+    where: { id: jwtVal(authorization)?.id },
+  });
 
   next();
 };

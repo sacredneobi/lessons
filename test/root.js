@@ -1,4 +1,4 @@
-const { checkVal } = require("../utils");
+const { checkVal } = require("@utils");
 
 const sum = (a, b) => a + b;
 

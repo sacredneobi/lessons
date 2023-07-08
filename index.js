@@ -1,6 +1,26 @@
+require("module-alias/register");
 require("./config");
+require("./events");
 const express = require("express");
 const controllers = require("./controller");
+
+const timer = () => {
+  return new Promise((res) => {
+    setTimeout(() => {
+      res();
+    }, 5000);
+  });
+};
+
+process.myEvents?.on("new order", async (_, getHeaders, answer) => {
+  await timer();
+  if (typeof getHeaders === "function") {
+    const headers = getHeaders();
+    console.log(headers);
+    answer({ user: headers.authorization });
+  }
+  console.log("OK new order");
+});
 
 const app = express();
 

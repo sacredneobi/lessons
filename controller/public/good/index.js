@@ -1,4 +1,4 @@
-const models = require("../../../db/models");
+const models = require("@models");
 
 const name = "good";
 const model = models[name];

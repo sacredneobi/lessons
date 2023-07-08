@@ -1,8 +1,8 @@
 const path = require("path");
 const Sequelize = require("sequelize");
-const config = require("../../config/config.json");
+const config = require("@config/config.json");
 const file = require("file");
-const { ErrorLoaderModule } = require("../../class");
+const { ErrorLoaderModule } = require("@class");
 
 const db = {};
 

@@ -1,7 +1,7 @@
 const path = require("path");
 const file = require("file");
 const { Router } = require("express");
-const { jwtMiddleware } = require("../../utils");
+const { jwtMiddleware } = require("@utils");
 
 const basename = path.basename(__filename);
 

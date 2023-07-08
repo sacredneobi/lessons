@@ -26,6 +26,13 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "module-alias": "^2.2.2",
     "nodemon": "^2.0.22"
+  },
+  "_moduleAliases": {
+    "@utils": "utils",
+    "@class": "class",
+    "@models": "db/models",
+    "@config": "config"
   }
 }
