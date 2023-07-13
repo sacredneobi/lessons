@@ -3,6 +3,7 @@ require("./config");
 require("./events");
 const express = require("express");
 const controllers = require("./controller");
+const wsServer = require("./wsServer");
 
 const timer = () => {
   return new Promise((res) => {
@@ -22,7 +23,21 @@ process.myEvents?.on("new order", async (_, getHeaders, answer) => {
   console.log("OK new order");
 });
 
+process.myEvents?.on("webSocketData", (props) => {
+  const { data, send } = props;
+  send("pong : " + data);
+});
+
+process.myEvents?.on("webSocketData", (props) => {
+  const { data, send } = props;
+  send("new listener pong : " + data);
+});
+
 const app = express();
+
+if (typeof wsServer === "function") {
+  wsServer(app);
+}
 
 app.use(express.json());
 
