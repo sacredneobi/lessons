@@ -141,6 +141,14 @@
                     "field": "caption",
                     "seqType": "Sequelize.TEXT"
                 },
+                "login": {
+                    "field": "login",
+                    "seqType": "Sequelize.TEXT"
+                },
+                "password": {
+                    "field": "password",
+                    "seqType": "Sequelize.TEXT"
+                },
                 "description": {
                     "field": "description",
                     "seqType": "Sequelize.TEXT"
@@ -166,5 +174,5 @@
     "path": "D:\\work\\react\\test_module_Name\\test2\\db\\migrations\\_current.json",
     "backupPath": "D:\\work\\react\\test_module_Name\\test2\\db\\migrations\\_current_bak.json",
     "exists": true,
-    "revision": 5
+    "revision": 6
 }

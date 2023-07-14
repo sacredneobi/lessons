@@ -1,9 +1,18 @@
 const expressWs = require("express-ws");
+const { jwtVal } = require("@utils");
 
 const clients = {};
 
 module.exports = (app) => {
-  expressWs(app);
+  expressWs(app, undefined, {
+    wsOptions: {
+      verifyClient: (data, next) => {
+        const query = new URLSearchParams(data.req.url.split("?")[1]);
+
+        next(!!jwtVal(query.get("token")));
+      },
+    },
+  });
 
   app.ws("/ws/user", (wsClient) => {
     const id = Math.random();

@@ -4,6 +4,7 @@ require("./events");
 const express = require("express");
 const controllers = require("./controller");
 const wsServer = require("./wsServer");
+const { user } = require("@models");
 
 const timer = () => {
   return new Promise((res) => {
@@ -62,3 +63,9 @@ if (Array.isArray(controllers.public)) {
 app.listen(8989, () => {
   console.log("server listen on port: 8989");
 });
+
+// user.findAll().then((data) => {
+//   console.log(data.map((item) => item.toJSON()));
+// });
+
+// user.create({ login: "SACRED", password: "123" });

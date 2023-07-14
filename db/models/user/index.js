@@ -5,6 +5,10 @@ module.exports = (db, defOptions, modelName) => {
     modelName,
     {
       caption: DataTypes.TEXT,
+
+      login: DataTypes.TEXT,
+      password: DataTypes.TEXT,
+
       description: DataTypes.TEXT,
     },
     defOptions
