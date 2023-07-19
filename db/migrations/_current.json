@@ -153,6 +153,14 @@
                     "field": "description",
                     "seqType": "Sequelize.TEXT"
                 },
+                "isAdmin": {
+                    "field": "isAdmin",
+                    "seqType": "Sequelize.BOOLEAN"
+                },
+                "isSuperAdmin": {
+                    "field": "isSuperAdmin",
+                    "seqType": "Sequelize.BOOLEAN"
+                },
                 "createdAt": {
                     "allowNull": false,
                     "field": "createdAt",
@@ -169,10 +177,60 @@
                 }
             },
             "indexes": []
+        },
+        "userRoles": {
+            "tableName": "userRoles",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "caption": {
+                    "field": "caption",
+                    "seqType": "Sequelize.TEXT"
+                },
+                "description": {
+                    "field": "description",
+                    "seqType": "Sequelize.TEXT"
+                },
+                "controller": {
+                    "field": "controller",
+                    "seqType": "Sequelize.TEXT"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "deletedAt": {
+                    "field": "deletedAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "userId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "users",
+                        "key": "id"
+                    },
+                    "onDelete": "CASCADE",
+                    "onUpdate": "NO ACTION",
+                    "field": "userId",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
         }
     },
     "path": "D:\\work\\react\\test_module_Name\\test2\\db\\migrations\\_current.json",
     "backupPath": "D:\\work\\react\\test_module_Name\\test2\\db\\migrations\\_current_bak.json",
     "exists": true,
-    "revision": 6
+    "revision": 8
 }

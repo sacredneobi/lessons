@@ -1,5 +1,5 @@
 const { Op } = require("sequelize");
-const { user } = require("@models");
+const { user, userRole } = require("@models");
 const { checkVal } = require("@utils");
 
 const getURI = (req, res) => {
@@ -21,15 +21,6 @@ const get = (req, res) => {
   process.myEvents?.emit("sacred", req.userData);
   process.myEvents?.emit("new order", req.userData);
 
-  if (!req.userData?.role?.getUser) {
-    res
-      .status(401)
-      .send({ error: `${req.userData.caption} not access to get user` });
-    return;
-  }
-
-  console.log(req.userData.toJSON());
-
   const where = search ? { caption: { [Op.getLike()]: `%${search}%` } } : null;
 
   user
@@ -38,10 +29,25 @@ const get = (req, res) => {
       ...(limit ? { limit } : {}),
       ...(offset ? { offset } : {}),
     })
-    .then((data) => {
-      res.send(data);
+    .then(async (data) => {
+      const userRoleData = await userRole.findAll({
+        where: { userId: data.rows.map((item) => item.id) },
+      });
+
+      const result = {
+        count: data.count,
+        rows: data.rows.map((item) => {
+          return {
+            ...item.toJSON(),
+            userRoles: userRoleData.find((role) => role.userId === item.id),
+          };
+        }),
+      };
+
+      res.send(result);
     })
     .catch((err) => {
+      console.log(err);
       res.status(500).send(err);
     });
 };

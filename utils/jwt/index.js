@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const config = require("@config/config.json");
 const models = require("@models");
+const { HasMany } = require("sequelize");
 
 const password = config?.jwt ?? "123";
 
@@ -24,10 +25,30 @@ const jwtMiddleware = async (req, res, next) => {
   }
 
   req.userData = await models.user.findOne({
+    include: [
+      {
+        association: new HasMany(models.user, models.userRole, {
+          sourceKey: "id",
+          foreignKey: "userId",
+        }),
+      },
+    ],
     where: { id: jwtVal(authorization)?.id },
   });
 
-  next();
+  if (req.userData?.isAdmin || req.userData?.isSuperAdmin) {
+    next();
+    return;
+  }
+
+  const findAccess = req.userData?.userRoles?.find(
+    (item) => item.controller === req.baseUrl.replaceAll("/", "")
+  );
+  if (findAccess) {
+    next();
+    return;
+  }
+  res.status(401).send("user not found");
 };
 
 module.exports = { jwtCreate, jwtVal, jwtMiddleware };

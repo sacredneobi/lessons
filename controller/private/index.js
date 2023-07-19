@@ -29,13 +29,13 @@ file.walkSync(__dirname, (dir, dirs, files) => {
     });
 });
 
-const loaderFile = [];
+const loadController = [];
 
 findFile.forEach((item) => {
   const extension = path.extname(item);
   const file = path.basename(item, extension);
 
-  const modelName =
+  const controllerName =
     path.dirname(item.replace(__dirname + path.sep, "")) !== "."
       ? path
           .dirname(item.replace(__dirname + path.sep, ""))
@@ -46,17 +46,17 @@ findFile.forEach((item) => {
           .join("") + capitalizeFirstLetterWithoutIndex(file)
       : file;
 
-  const model = require(item);
+  const controller = require(item);
 
-  if (typeof model === "function") {
+  if (typeof controller === "function") {
     const router = Router();
     router.use(jwtMiddleware);
 
-    const loadModel = model(router, modelName);
+    const isLoad = controller(router, controllerName);
 
-    if (loadModel) {
-      loaderFile.push(modelName);
-      controllers.push({ name: `/${modelName}`, router });
+    if (isLoad) {
+      loadController.push(controllerName);
+      controllers.push({ name: `/${controllerName}`, router });
     }
   }
 });
@@ -64,10 +64,12 @@ findFile.forEach((item) => {
 if (typeof console.logUserDone === "function") {
   console.logUserDone(
     "SYSTEM",
-    `Controllers PRIVATE:\n ${loaderFile.join(", ")}`
+    `Controllers PRIVATE:\n ${loadController.join(", ")}`
   );
 } else {
-  console.log("SYSTEM", `Controllers PRIVATE:\n ${loaderFile.join(", ")}`);
+  console.log("SYSTEM", `Controllers PRIVATE:\n ${loadController.join(", ")}`);
 }
+
+process.controllers = { private: loadController };
 
 module.exports = controllers;

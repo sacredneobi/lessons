@@ -5,17 +5,18 @@ module.exports = (db, defOptions, modelName) => {
     modelName,
     {
       caption: DataTypes.TEXT,
-
-      login: DataTypes.TEXT,
-      password: DataTypes.TEXT,
-
       description: DataTypes.TEXT,
-
-      isAdmin: DataTypes.BOOLEAN,
-      isSuperAdmin: DataTypes.BOOLEAN,
+      controller: DataTypes.TEXT,
     },
     defOptions
   );
+
+  model.associate = (models) => {
+    model.belongsTo(models.user, {
+      onUpdate: "NO ACTION",
+      onDelete: "CASCADE",
+    });
+  };
 
   return model;
 };

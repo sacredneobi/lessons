@@ -26,8 +26,6 @@ const get = (req, res) => {
     });
 };
 
-//http://localhost/api/auth?login=123&password=123
-
 module.exports = (router, moduleName) => {
   router.get("/", get);
 
