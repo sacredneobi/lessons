@@ -11,19 +11,14 @@ const get = (req, res) => {
     .findOne({ where: { login, password } })
     .then((data) => {
       if (data) {
-        res.send({
+        return {
           token: jwtCreate({ id: data.id }),
           userCaption: data.login,
-        });
-        return;
+        };
       }
-
-      res.status(401).send({ msg: "Auth error" });
+      throw new Error("Auth error");
     })
-    .catch((err) => {
-      console.log(err);
-      res.status(401).send({ msg: "Auth error" });
-    });
+    .defAnswer(res, 401, { msg: "Auth error" });
 };
 
 module.exports = (router, moduleName) => {

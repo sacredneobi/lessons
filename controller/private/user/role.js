@@ -4,31 +4,11 @@ const { checkVal } = require("@utils");
 
 const getURI = (req, res) => {
   const { id } = req.params;
-
-  user
-    .findOne({ where: { id } })
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send(err);
-    });
+  user.findOne({ where: { id } }).defAnswer(res);
 };
 
 const get = (req, res) => {
   const { search, limit, offset } = req.query;
-
-  process.myEvents?.emit("sacred", req.userData);
-  process.myEvents?.emit("new order", req.userData);
-
-  if (!req.userData?.role?.getUser) {
-    res
-      .status(401)
-      .send({ error: `${req.userData.caption} not access to get user` });
-    return;
-  }
-
-  console.log(req.userData.toJSON());
 
   const where = search ? { caption: { [Op.getLike()]: `%${search}%` } } : null;
 
@@ -38,25 +18,12 @@ const get = (req, res) => {
       ...(limit ? { limit } : {}),
       ...(offset ? { offset } : {}),
     })
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send(err);
-    });
+    .defAnswer(res);
 };
 
 const update = (req, res) => {
   const { id, ...other } = req.body;
-
-  user
-    .update(other, { where: { id } })
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send(err);
-    });
+  user.update(other, { where: { id } }).defAnswer(res);
 };
 
 module.exports = (router) => {

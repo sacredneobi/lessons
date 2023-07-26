@@ -13,7 +13,7 @@ const checkVal = (fields, place) => {
     if (checkArr.length > 0) {
       res.status(500).send({
         error: true,
-        message: `Not found "${checkArr.join(",")}" in request."${place}"`,
+        message: `Not found "${checkArr.join(", ")}" in request. "${place}"`,
       });
       return;
     }

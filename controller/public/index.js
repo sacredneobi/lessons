@@ -1,6 +1,7 @@
 const path = require("path");
 const file = require("file");
 const { Router } = require("express");
+const { routerCheck } = require("@utils");
 
 const basename = path.basename(__filename);
 
@@ -53,6 +54,17 @@ findFile.forEach((item) => {
     const loadModel = model(router, modelName);
 
     if (loadModel) {
+      if (typeof routerCheck === "function") {
+        const checkResult = routerCheck(router, ["put", "post", "delete"]);
+        if (checkResult.length > 0) {
+          console.log(
+            `❌ in PUBLIC router \x1b[33m"${modelName.toUpperCase()}"\x1b[0m found dangerous method: \x1b[31m"${checkResult.join(
+              ", "
+            )}"\x1b[0m\n`
+          );
+        }
+      }
+
       loaderFile.push(modelName);
       controllers.push({ name: `/${modelName}`, router });
     }

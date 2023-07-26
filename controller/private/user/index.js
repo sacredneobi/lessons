@@ -4,22 +4,11 @@ const { checkVal } = require("@utils");
 
 const getURI = (req, res) => {
   const { id } = req.params;
-
-  user
-    .findOne({ where: { id } })
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send(err);
-    });
+  user.findOne({ where: { id1: id } }).defAnswer(res);
 };
 
 const get = (req, res) => {
   const { search, limit, offset } = req.query;
-
-  process.myEvents?.emit("sacred", req.userData);
-  process.myEvents?.emit("new order", req.userData);
 
   const where = search ? { caption: { [Op.getLike()]: `%${search}%` } } : null;
 
@@ -34,7 +23,7 @@ const get = (req, res) => {
         where: { userId: data.rows.map((item) => item.id) },
       });
 
-      const result = {
+      return {
         count: data.count,
         rows: data.rows.map((item) => {
           return {
@@ -43,26 +32,14 @@ const get = (req, res) => {
           };
         }),
       };
-
-      res.send(result);
     })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send(err);
-    });
+    .defAnswer(res);
 };
 
 const update = (req, res) => {
   const { id, ...other } = req.body;
 
-  user
-    .update(other, { where: { id } })
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send(err);
-    });
+  user.update(other, { where: { id } }).defAnswer(res);
 };
 
 module.exports = (router) => {
