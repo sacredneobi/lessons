@@ -4,7 +4,8 @@ require("./events");
 const express = require("express");
 const controllers = require("./controller");
 const wsServer = require("./wsServer");
-const { userRole } = require("@models");
+const { userRole, media } = require("@models");
+const fileUpload = require("express-fileupload");
 
 const timer = () => {
   return new Promise((res) => {
@@ -41,6 +42,14 @@ if (typeof wsServer === "function") {
 }
 
 app.use(express.json());
+app.use(
+  fileUpload({
+    createParentPath: true,
+    defParamCharset: "utf-8",
+    // useTempFiles: true,
+    // tempFileDir: "./temp_test",
+  })
+);
 
 if (Array.isArray(controllers.private)) {
   controllers.private.forEach((item) => {
@@ -64,4 +73,8 @@ app.listen(8989, () => {
   console.log("server listen on port: 8989");
 });
 
-// userRole.create({ caption: "auto create", controller: "user", userId: 1 });
+media.findAll().then((data) => {
+  console.log(data.map((item) => item.toJSON()));
+});
+
+// userRole.create({ caption: "auto create", controller: "good", userId: 1 });

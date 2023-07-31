@@ -153,6 +153,14 @@
                     "field": "description",
                     "seqType": "Sequelize.TEXT"
                 },
+                "isAdmin": {
+                    "field": "isAdmin",
+                    "seqType": "Sequelize.BOOLEAN"
+                },
+                "isSuperAdmin": {
+                    "field": "isSuperAdmin",
+                    "seqType": "Sequelize.BOOLEAN"
+                },
                 "createdAt": {
                     "allowNull": false,
                     "field": "createdAt",
@@ -224,5 +232,5 @@
     "path": "D:\\work\\react\\test_module_Name\\test2\\db\\migrations\\_current.json",
     "backupPath": "D:\\work\\react\\test_module_Name\\test2\\db\\migrations\\_current_bak.json",
     "exists": true,
-    "revision": 7
+    "revision": 8
 }

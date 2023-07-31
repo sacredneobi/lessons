@@ -1,0 +1,13 @@
+POST http://localhost:8989/good
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6IlNBQ1JFRCJ9.VPCTlJ9rF4yRDl5KBKioAElbn-8ulcrm-OEcVmQESA4
+Content-Type: multipart/form-data; boundary=MfnBoundry
+
+--MfnBoundry
+Content-Disposition: form-data; name="file2"; filename="Привет.png"
+Content-Type: image/png
+
+< C:\ws_1.png
+--MfnBoundry--
+
+###
+http://localhost:8989/media?fileId=91a0883aba81e97b74215a0913a31b3c
