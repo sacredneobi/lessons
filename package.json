@@ -25,7 +25,8 @@
     "sequelize": "^6.32.0",
     "sequelize-cli": "^6.6.1",
     "sequelize-migration-wrapper": "github:sacredneobi/sequelize-migration-wrapper",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "module-alias": "^2.2.2",

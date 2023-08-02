@@ -1,0 +1,14 @@
+POST http://localhost:8989/document
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6IlNBQ1JFRCJ9.VPCTlJ9rF4yRDl5KBKioAElbn-8ulcrm-OEcVmQESA4
+Content-Type: multipart/form-data; boundary=MfnBoundry
+
+--MfnBoundry
+Content-Disposition: form-data; name="file2"; filename="1.xlsx"
+Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+
+< D:\1.xlsx
+--MfnBoundry--
+
+###
+http://localhost:8989/document?id=4&column=["A","C"]
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6IlNBQ1JFRCJ9.VPCTlJ9rF4yRDl5KBKioAElbn-8ulcrm-OEcVmQESA4

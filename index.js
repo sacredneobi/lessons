@@ -73,8 +73,8 @@ app.listen(8989, () => {
   console.log("server listen on port: 8989");
 });
 
-media.findAll().then((data) => {
-  console.log(data.map((item) => item.toJSON()));
-});
+// media.findAll().then((data) => {
+//   console.log(data.map((item) => item.toJSON()));
+// });
 
-// userRole.create({ caption: "auto create", controller: "good", userId: 1 });
+// userRole.create({ caption: "auto create", controller: "document", userId: 1 });

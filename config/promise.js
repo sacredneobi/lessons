@@ -1,7 +1,7 @@
 Promise.prototype.defAnswer = function (res, errorStatus = 500, errorMessage) {
   return this.then((data) => {
     if (typeof res?.send === "function") {
-      res.send({ ...data, new: true });
+      res.send(data);
     }
   }).catch((err) => {
     console.log(`\x1b[31mERROR:\x1b[0m`, err);
