@@ -80,4 +80,4 @@ if (typeof console.logUserDone === "function") {
   console.log("SYSTEM", `Controllers PUBLIC:\n ${loaderFile.join(", ")}`);
 }
 
-module.exports = controllers;
+module.exports = { path: "/api/public", controllers };

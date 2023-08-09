@@ -19,6 +19,8 @@ const jwtVal = (token) => {
 const jwtMiddleware = async (req, res, next) => {
   const { authorization } = req.headers;
 
+  console.log(req.baseUrl.replaceAll("/api/private/", "").replaceAll("/", ""));
+
   if (!authorization || !jwtVal(authorization)) {
     res.status(401).send("user not found");
     return;
@@ -42,7 +44,9 @@ const jwtMiddleware = async (req, res, next) => {
   }
 
   const findAccess = req.userData?.userRoles?.find(
-    (item) => item.controller === req.baseUrl.replaceAll("/", "")
+    (item) =>
+      item.controller ===
+      req.baseUrl.replaceAll("/api/private/", "").replaceAll("/", "")
   );
   if (findAccess) {
     next();

@@ -1,4 +1,4 @@
-POST http://localhost:8989/document
+POST http://localhost:8989/api/private/document
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6IlNBQ1JFRCJ9.VPCTlJ9rF4yRDl5KBKioAElbn-8ulcrm-OEcVmQESA4
 Content-Type: multipart/form-data; boundary=MfnBoundry
 
@@ -10,5 +10,5 @@ Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
 --MfnBoundry--
 
 ###
-http://localhost:8989/document?id=4&column=["A","C"]
+http://localhost:8989/api/private/document?id=4&column=["A","C"]
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6IlNBQ1JFRCJ9.VPCTlJ9rF4yRDl5KBKioAElbn-8ulcrm-OEcVmQESA4

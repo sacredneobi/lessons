@@ -1,4 +1,4 @@
-http://localhost:8989/user
+http://localhost:8989/api/private/user
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6IlNBQ1JFRCJ9.VPCTlJ9rF4yRDl5KBKioAElbn-8ulcrm-OEcVmQESA4
 
 ###

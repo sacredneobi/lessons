@@ -72,4 +72,4 @@ if (typeof console.logUserDone === "function") {
 
 process.controllers = { private: loadController };
 
-module.exports = controllers;
+module.exports = { path: "/api/private", controllers };
