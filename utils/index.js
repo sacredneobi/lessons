@@ -5,4 +5,5 @@ module.exports = {
   ...require("./jwt"),
   ...require("./fs"),
   ...require("./class"),
+  ...require("./file"),
 };

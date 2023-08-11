@@ -1,7 +1,6 @@
 const path = require("path");
-const file = require("file");
 const { Router } = require("express");
-const { routerCheck } = require("@utils");
+const { routerCheck, walkDir } = require("@utils");
 
 const basename = path.basename(__filename);
 
@@ -15,7 +14,7 @@ function capitalizeFirstLetterWithoutIndex(string) {
   return string[0].toUpperCase() + string.slice(1);
 }
 
-file.walkSync(__dirname, (dir, dirs, files) => {
+walkDir(__dirname, (dir, files) => {
   files
     .filter((item) => {
       return (

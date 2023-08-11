@@ -1,4 +1,4 @@
-const { ErrorMiddleWare } = require("@utils");
+const { ErrorMiddleWare } = require("../class");
 
 const checkVal = (fields, place) => {
   if (!Array.isArray(fields)) {

@@ -18,7 +18,6 @@
     "express": "^4.18.2",
     "express-fileupload": "^1.4.0",
     "express-ws": "^5.0.2",
-    "file": "^0.2.2",
     "jsonwebtoken": "^9.0.0",
     "pg": "^8.11.0",
     "pg-hstore": "^2.3.4",
