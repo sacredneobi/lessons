@@ -6,13 +6,20 @@ module.exports = (db, defOptions, modelName) => {
     {
       caption: DataTypes.TEXT,
       description: DataTypes.TEXT,
-      name: DataTypes.TEXT,
-      size: DataTypes.FLOAT,
-      mimeType: DataTypes.TEXT,
       fileId: DataTypes.TEXT,
+      name: DataTypes.TEXT,
+      size: DataTypes.INTEGER,
+      mimeType: DataTypes.TEXT,
     },
     defOptions
   );
+
+  model.associate = (models) => {
+    model.belongsTo(models.user, {
+      onUpdate: "NO ACTION",
+      onDelete: "CASCADE",
+    });
+  };
 
   return model;
 };

@@ -1,6 +1,6 @@
 const path = require("path");
 const { Router } = require("express");
-const { routerCheck, walkDir } = require("@utils");
+const { routerCheck, fileWalk } = require("@utils");
 
 const basename = path.basename(__filename);
 
@@ -14,7 +14,7 @@ function capitalizeFirstLetterWithoutIndex(string) {
   return string[0].toUpperCase() + string.slice(1);
 }
 
-walkDir(__dirname, (dir, files) => {
+fileWalk(__dirname, (dir, files) => {
   files
     .filter((item) => {
       return (
@@ -70,13 +70,10 @@ findFile.forEach((item) => {
   }
 });
 
-if (typeof console.logUserDone === "function") {
-  console.logUserDone(
-    "SYSTEM",
-    `Controllers PUBLIC:\n ${loaderFile.join(", ")}`
-  );
+if (typeof console.done === "function") {
+  console.done("SYSTEM", `Controllers PUBLIC:\n ${loaderFile.join(", ")}`);
 } else {
   console.log("SYSTEM", `Controllers PUBLIC:\n ${loaderFile.join(", ")}`);
 }
 
-module.exports = { path: "/api/public", controllers };
+module.exports = { path: "/api", controllers };

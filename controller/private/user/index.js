@@ -1,52 +1,121 @@
-const { Op } = require("sequelize");
-const { user, userRole } = require("@models");
-const { checkVal } = require("@utils");
-
-const getURI = (req, res) => {
-  const { id } = req.params;
-  user.findOne({ where: { id1: id } }).defAnswer(res);
-};
+const { Op, HasOne } = require("sequelize");
+const { user: model, media } = require("@models");
+const {
+  checkVal,
+  defExclude,
+  buildLimit,
+  defAnswerError,
+  mediaPath,
+  defDelete,
+} = require("@utils");
 
 const get = (req, res) => {
-  const { search, limit, offset } = req.query;
+  const { id, search, limit, offset } = req.query;
+
+  if (id) {
+    model
+      .findOne({
+        ...defExclude(["password"]),
+        include: [
+          {
+            association: new HasOne(model, media, {
+              sourceKey: "id",
+              foreignKey: "userId",
+              as: "media",
+            }),
+            ...defExclude(),
+          },
+        ],
+        where: { id },
+      })
+      .defAnswer(res);
+    return;
+  }
 
   const where = search ? { caption: { [Op.getLike()]: `%${search}%` } } : null;
 
-  user
+  model
     .findAndCountAll({
+      ...buildLimit(limit, offset, ["password"]),
+      include: [
+        {
+          association: new HasOne(model, media, {
+            sourceKey: "id",
+            foreignKey: "userId",
+            as: "media",
+          }),
+          ...defExclude(),
+        },
+      ],
       where,
-      ...(limit ? { limit } : {}),
-      ...(offset ? { offset } : {}),
-    })
-    .then(async (data) => {
-      const userRoleData = await userRole.findAll({
-        where: { userId: data.rows.map((item) => item.id) },
-      });
-
-      return {
-        count: data.count,
-        rows: data.rows.map((item) => {
-          return {
-            ...item.toJSON(),
-            userRoles: userRoleData.find((role) => role.userId === item.id),
-          };
-        }),
-      };
+      order: ["id"],
     })
     .defAnswer(res);
 };
 
-const update = (req, res) => {
-  const { id, ...other } = req.body;
+const post = (req, res) => {
+  const { ...other } = req.body;
+  model
+    .create(other)
+    .then(async (data) => {
+      if (req.files) {
+        for (const inputFile of Object.keys(req.files)) {
+          const file = req.files[inputFile];
+          file.mv(mediaPath + "/" + file.md5);
+          await media.create({
+            fileId: file.md5,
+            mimeType: file.mimetype,
+            name: file.name,
+            size: file.size,
+            userId: data.id,
+          });
+          break;
+        }
+      }
+    })
+    .defAnswer(res);
+};
 
-  user.update(other, { where: { id } }).defAnswer(res);
+const update = async (req, res) => {
+  const { id, removeMedia, ...other } = req.body;
+  if (req.files) {
+    for (const inputFile of Object.keys(req.files)) {
+      const file = req.files[inputFile];
+      file.mv(mediaPath + "/" + file.md5);
+      let find = await media.findOne({ where: { userId: id } });
+      if (find) {
+        await media.update(
+          {
+            fileId: file.md5,
+            mimeType: file.mimetype,
+            name: file.name,
+            size: file.size,
+          },
+          { where: { id: find?.id } }
+        );
+      } else {
+        await media.create({
+          fileId: file.md5,
+          mimeType: file.mimetype,
+          name: file.name,
+          size: file.size,
+          userId: id,
+        });
+      }
+      break;
+    }
+  }
+  if (removeMedia) {
+    await media.destroy({ where: { userId: id } });
+  }
+  model.update(other, { where: { id } }).defAnswer(res);
 };
 
 module.exports = (router) => {
   router.get("/", get);
-  router.get("/:id", getURI);
-
+  router.post("/", post);
   router.put("/", checkVal(["id"], "body"), update);
+  router.delete("/", ...defDelete(model));
 
-  return true;
+  return !!model;
 };

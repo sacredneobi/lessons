@@ -1,19 +1,20 @@
 const { Op } = require("sequelize");
-const { user } = require("@models");
-const { checkVal } = require("@utils");
-
-const getURI = (req, res) => {
-  const { id } = req.params;
-  user.findOne({ where: { id } }).defAnswer(res);
-};
+const { userRole: model } = require("@models");
+const { defDelete, defUpdate } = require("@utils");
 
 const get = (req, res) => {
-  const { search, limit, offset } = req.query;
+  const { id, search, limit, offset } = req.query;
+
+  if (id) {
+    model.findOne({ ...defExclude(), where: { id } }).defAnswer(res);
+    return;
+  }
 
   const where = search ? { caption: { [Op.getLike()]: `%${search}%` } } : null;
 
-  user
+  model
     .findAndCountAll({
+      ...defExclude(),
       where,
       ...(limit ? { limit } : {}),
       ...(offset ? { offset } : {}),
@@ -21,16 +22,16 @@ const get = (req, res) => {
     .defAnswer(res);
 };
 
-const update = (req, res) => {
-  const { id, ...other } = req.body;
-  user.update(other, { where: { id } }).defAnswer(res);
+const post = (req, res) => {
+  const { ...other } = req.body;
+  model.create(other).defAnswer(res);
 };
 
 module.exports = (router) => {
   router.get("/", get);
-  router.get("/:id", getURI);
+  router.post("/", post);
+  router.put("/", ...defUpdate(model));
+  router.delete("/", ...defDelete(model));
 
-  router.put("/", checkVal(["id"], "body"), update);
-
-  return true;
+  return !!model;
 };

@@ -2,8 +2,8 @@ const { EventEmitter } = require("events");
 
 class MyEvents extends EventEmitter {}
 
-const myEvents = new MyEvents();
+const rootEvents = new MyEvents();
 
-process.myEvents = myEvents;
+process.rootEvents = rootEvents;
 
-module.exports = myEvents;
+module.exports = rootEvents;

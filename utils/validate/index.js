@@ -15,4 +15,4 @@ const checkVal = (fn, validate) => {
   }
 };
 
-module.exports = { checkVal };
+module.exports = { checkVal, ...require("./checkProps") };

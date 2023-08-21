@@ -1,9 +1,9 @@
 const jwt = require("jsonwebtoken");
-const config = require("@config/config.json");
 const models = require("@models");
-const { HasMany } = require("sequelize");
+const { HasMany, HasOne } = require("sequelize");
+const { defExclude } = require("../db");
 
-const password = config?.jwt ?? "123";
+const password = process.setting?.jwt ?? "123";
 
 const jwtCreate = (data) => jwt.sign(data, password, { noTimestamp: true });
 
@@ -11,15 +11,15 @@ const jwtVal = (token) => {
   try {
     return jwt.verify(token, password);
   } catch (err) {
-    console.log(err);
+    console.error("JWT", err);
     return false;
   }
 };
 
 const jwtMiddleware = async (req, res, next) => {
-  const { authorization } = req.headers;
+  const { authorization: authorizationProps } = req.headers;
 
-  console.log(req.baseUrl.replaceAll("/api/private/", "").replaceAll("/", ""));
+  const authorization = authorizationProps.replaceAll("JWT ", "");
 
   if (!authorization || !jwtVal(authorization)) {
     res.status(401).send("user not found");
@@ -27,12 +27,22 @@ const jwtMiddleware = async (req, res, next) => {
   }
 
   req.userData = await models.user.findOne({
+    ...defExclude(["password"]),
     include: [
       {
         association: new HasMany(models.user, models.userRole, {
           sourceKey: "id",
           foreignKey: "userId",
         }),
+        ...defExclude(),
+      },
+      {
+        association: new HasOne(models.user, models.media, {
+          sourceKey: "id",
+          foreignKey: "userId",
+          as: "media",
+        }),
+        attributes: ["fileId"],
       },
     ],
     where: { id: jwtVal(authorization)?.id },

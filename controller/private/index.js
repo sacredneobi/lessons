@@ -1,6 +1,6 @@
 const path = require("path");
 const { Router } = require("express");
-const { jwtMiddleware, walkDir } = require("@utils");
+const { jwtMiddleware, fileWalk } = require("@utils");
 
 const basename = path.basename(__filename);
 
@@ -14,7 +14,7 @@ function capitalizeFirstLetterWithoutIndex(string) {
   return string[0].toUpperCase() + string.slice(1);
 }
 
-walkDir(__dirname, (dir, files) => {
+fileWalk(__dirname, (dir, files) => {
   files
     .filter((item) => {
       return (
@@ -60,11 +60,8 @@ findFile.forEach((item) => {
   }
 });
 
-if (typeof console.logUserDone === "function") {
-  console.logUserDone(
-    "SYSTEM",
-    `Controllers PRIVATE:\n ${loadController.join(", ")}`
-  );
+if (typeof console.done === "function") {
+  console.done("SYSTEM", `Controllers PRIVATE:\n ${loadController.join(", ")}`);
 } else {
   console.log("SYSTEM", `Controllers PRIVATE:\n ${loadController.join(", ")}`);
 }

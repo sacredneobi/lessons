@@ -1,23 +1,29 @@
 const path = require("path");
 const Sequelize = require("sequelize");
-const config = require("../../config/config.json");
 const { ErrorLoaderModule } = require("../../utils/class");
-const { walkDir } = require("../../utils/file");
+const { fileWalk } = require("../../utils/file");
+require("../../config/setting");
 
 const db = {};
 
 const basename = path.basename(__filename);
 
-let sequelize;
-sequelize = new Sequelize(
-  config.db.database,
-  config.db.username,
-  config.db.password,
-  {
-    ...config.db,
-    logging: null,
-  }
-);
+let sequelize = process.setting?.db
+  ? new Sequelize(
+      process.setting.db.database,
+      process.setting.db.username,
+      process.setting.db.password,
+      {
+        ...process.setting.db,
+        logging: null,
+      }
+    )
+  : null;
+
+if (!sequelize) {
+  console.error("MODEL", "setting empty");
+  return;
+}
 
 const defOptions = { paranoid: true };
 const defField = {
@@ -34,7 +40,7 @@ function capitalizeFirstLetterWithoutIndex(string) {
   return string[0].toUpperCase() + string.slice(1);
 }
 
-walkDir(__dirname, (dir, files) => {
+fileWalk(__dirname, (dir, files) => {
   files
     .filter((item) => {
       return (
@@ -93,8 +99,8 @@ Object.keys(db).forEach((modelName) => {
 
 db.sequelize = sequelize;
 
-if (typeof console.logUserDone === "function") {
-  console.logUserDone("SYSTEM", `DB-models:\n ${loaderFile.join(", ")}`);
+if (typeof console.done === "function") {
+  console.done("SYSTEM", `DB-models:\n ${loaderFile.join(", ")}`);
 } else {
   console.log("SYSTEM", `DB-models:\n ${loaderFile.join(", ")}`);
 }

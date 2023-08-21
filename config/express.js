@@ -8,9 +8,11 @@ app.use(
   fileUpload({
     createParentPath: true,
     defParamCharset: "utf-8",
-    // useTempFiles: true,
-    // tempFileDir: "./temp_test",
   })
 );
+app.use((req, res, next) => {
+  res.setHeader("X-Server", process.setting.version);
+  next();
+});
 
 module.exports = { app };

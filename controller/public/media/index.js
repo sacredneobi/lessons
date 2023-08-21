@@ -1,13 +1,18 @@
-const { getMediaPath, checkVal } = require("@utils");
+const { checkVal, mediaPath } = require("@utils");
 const fs = require("fs");
 const zlib = require("zlib");
+const path = require("path");
 const { media } = require("@models");
 
 const get = async (req, res) => {
-  const { fileId } = req.query;
+  const { fileId: fileIdProps } = req.query;
 
-  if (fs.existsSync(getMediaPath() + fileId)) {
-    const fileData = await media.findOne({ where: { fileId } });
+  const fileId = String(fileIdProps).split(".")?.[0];
+
+  if (fs.existsSync(mediaPath + path.sep + fileId)) {
+    const fileData = await media.findOne({
+      where: { fileId: fileId },
+    });
 
     if (fileData) {
       const header = {
@@ -19,7 +24,7 @@ const get = async (req, res) => {
         "Content-Range": `bytes 0-*/${fileData.size}`,
       };
 
-      const file = fs.createReadStream(getMediaPath() + fileId);
+      const file = fs.createReadStream(mediaPath + path.sep + fileId);
 
       if (req.acceptsEncodings("br") === "br") {
         res.writeHead(200, { ...header, "Content-Encoding": "br" });
@@ -37,9 +42,9 @@ const get = async (req, res) => {
 
       return;
     }
-    res.status(404).send("not found");
+    res.status(404).send(`${fileId}: not found`);
   } else {
-    res.status(404).send("not found");
+    res.status(404).send(`${fileId}: not found`);
   }
 };
 

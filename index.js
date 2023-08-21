@@ -1,6 +1,7 @@
 require("module-alias/register");
-const { app } = require("./config");
 require("./events");
+const { app } = require("./config");
+require("./res").init();
 const initLoad = require("./controller");
 const wsServer = require("./wsServer");
 
@@ -12,16 +13,6 @@ if (typeof initLoad === "function") {
   initLoad(app);
 }
 
-app.listen(8989, () => {
-  console.log("server listen on port: 8989");
+app.listen(process.setting.port, () => {
+  console.log(`server listen on port: ${process.setting.port}`);
 });
-
-//---------------- ТЕСТОВО ДЛЯ СОЗДАНИЯ ЗАПИСИ
-
-// const { userRole, media } = require("@models");
-
-// media.findAll().then((data) => {
-//   console.log(data.map((item) => item.toJSON()));
-// });
-
-// userRole.create({ caption: "auto create", controller: "document", userId: 1 });

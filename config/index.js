@@ -1,3 +1,4 @@
+require("./setting");
 require("./console");
 require("./sequelize");
 require("./promise");

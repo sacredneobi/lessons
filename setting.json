@@ -1,0 +1,11 @@
+{
+  "db": {
+    "username": "postgres",
+    "password": "postgres",
+    "database": "swan",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "port": 4002,
+  "jwt": "x1x2"
+}

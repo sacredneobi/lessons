@@ -23,7 +23,7 @@ module.exports = (app) => {
     wsClient.on("message", (data) => {
       console.log(data, id);
 
-      process.myEvents.emit("webSocketData", {
+      process.events?.root?.emit("webSocketData", {
         data: data,
         send: (sendData) => {
           wsClient.send(sendData);
