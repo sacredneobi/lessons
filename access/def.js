@@ -2,12 +2,12 @@ const adminRoot = [
   {
     name: "service",
     isSetting: true,
-    route: [{ name: "translate" }, { name: "task", withOutOperation: true }],
+    route: [{ name: "translate" }, { name: "scripts" }],
   },
   {
     name: "users",
     isSetting: true,
-    route: [{ name: "settings" }, { name: "role/:id", withOutOperation: true }],
+    route: [{ name: "settings" }, { name: "role/:id" }],
   },
 ];
 

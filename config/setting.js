@@ -19,7 +19,11 @@ try {
   const data = fs.readFileSync("./setting.json");
   if (data) {
     const loadData = JSON.parse(data);
-    process.setting = { ...process.setting, ...loadData };
+    process.setting = {
+      ...process.setting,
+      ...loadData,
+      db: { ...process.setting?.db, ...loadData?.db },
+    };
   }
 } catch (err) {
   console.error("SETTING", err);

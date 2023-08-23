@@ -18,30 +18,6 @@ Promise.prototype.defJSON = function (res, errorStatus = 500, errorMessage) {
         }
       });
     }
-    return data ? data : {};
+    return data ?? {};
   });
-};
-
-Promise.prototype.dropAttributes = function (arr, isUpdate) {
-  return Array.isArray(arr) && arr.length > 0
-    ? this.then((data) => {
-        let newData;
-        if (!isUpdate) {
-          newData = typeof data?.toJSON === "function" ? data.toJSON() : data;
-        } else {
-          let test;
-          if (data?.[1]) {
-            test = data[1];
-          } else {
-            test = data[0];
-          }
-          newData = typeof test?.toJSON === "function" ? test.toJSON() : test;
-        }
-        arr.forEach((item) => {
-          console.log(item, newData);
-          delete newData[item];
-        });
-        return newData;
-      })
-    : this;
 };

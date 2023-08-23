@@ -2,18 +2,7 @@ const { Op, HasMany } = require("sequelize");
 const { media } = require("@models");
 const { defExclude } = require("./defExclude");
 
-const attr = [
-  "id",
-  // "caption",
-  // "description",
-  "fileId",
-  "name",
-  "size",
-  "mimeType",
-  // "createdAt",
-  // "updatedAt",
-  // "deletedAt",
-];
+const attr = ["id", "fileId", "name", "size", "mimeType"];
 
 const getMedia = (model) => {
   if (!model) {
