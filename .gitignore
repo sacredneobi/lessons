@@ -13,11 +13,11 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 .pnpm-debug.log*
-media/*
+server/media/*
 server/build
 build
-client/build
-client/storybook-static
+admin/build
+admin/storybook-static
 media_resto/
 
 # Diagnostic reports (https://nodejs.org/api/report.html)

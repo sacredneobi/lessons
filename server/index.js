@@ -16,3 +16,5 @@ if (typeof initLoad === "function") {
 app.listen(process.setting.port, () => {
   console.log(`server listen on port: ${process.setting.port}`);
 });
+
+console.log("dddd");
