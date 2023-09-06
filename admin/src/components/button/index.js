@@ -27,4 +27,8 @@ const Delete = (props) => {
   );
 };
 
-export { Default as Button, Delete as ButtonDelete };
+const MenuButton = (props) => {
+  return <Default variant="text" {...props} />;
+};
+
+export { Default as Button, Delete as ButtonDelete, MenuButton };

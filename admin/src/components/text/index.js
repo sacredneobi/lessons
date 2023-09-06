@@ -4,7 +4,7 @@ const Default = (props) => {
   const { name, caption, sx, ...other } = props;
 
   return (
-    <Typography variant="h5" sx={{ ...sx }} {...other}>
+    <Typography sx={{ ...sx }} {...other}>
       {caption}
     </Typography>
   );
