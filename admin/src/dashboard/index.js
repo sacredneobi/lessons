@@ -1,5 +1,7 @@
 import { Box, Divider, MenuButton, Text, Icon } from "@components";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
+import { useStore } from "@utils";
+import { DashboardContext, useDashboard } from "@context";
 
 const MyButton = (props) => {
   const { name, open, ...other } = props;
@@ -33,15 +35,23 @@ const MyButton = (props) => {
 };
 
 const Default = () => {
-  const [open, setOpen] = useState(localStorage.getItem("leftPane") === "true");
+  const [open, setOpen] = useStore("leftPane");
 
   const leftPanelOpen = useCallback(() => {
     setOpen((prev) => !prev);
-  }, []);
+  }, [setOpen]);
+
+  const data = useDashboard();
 
   useEffect(() => {
-    localStorage.setItem("leftPane", open);
-  }, [open]);
+    console.log(data);
+    setTimeout(() => {
+      data.token = "asdasd";
+    }, 2000);
+    setTimeout(() => {
+      console.log(data);
+    }, 4000);
+  }, [data]);
 
   return (
     <Box defFlex grow row>
@@ -92,4 +102,12 @@ const Default = () => {
   );
 };
 
-export { Default as Dashboard };
+const RootDefault = (props) => {
+  return (
+    <DashboardContext>
+      <Default {...props} />
+    </DashboardContext>
+  );
+};
+
+export { RootDefault as Dashboard };

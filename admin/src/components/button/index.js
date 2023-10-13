@@ -25,6 +25,8 @@ const Default = (props) => {
   );
 };
 
+Default.mui = Button;
+
 const Delete = (props) => {
   const { name, caption = "delete", ...other } = props;
 
