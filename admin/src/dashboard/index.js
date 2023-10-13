@@ -1,7 +1,8 @@
 import { Box, Divider, MenuButton, Text, Icon } from "@components";
 import { useCallback, useEffect } from "react";
-import { useStore } from "@utils";
-import { DashboardContext, useDashboard } from "@context";
+import { addEvent, dispatch, useStore } from "@utils";
+import { DashboardContext } from "@context";
+import Pages from "./pages";
 
 const MyButton = (props) => {
   const { name, open, ...other } = props;
@@ -41,17 +42,13 @@ const Default = () => {
     setOpen((prev) => !prev);
   }, [setOpen]);
 
-  const data = useDashboard();
-
   useEffect(() => {
-    console.log(data);
-    setTimeout(() => {
-      data.token = "asdasd";
-    }, 2000);
-    setTimeout(() => {
-      console.log(data);
-    }, 4000);
-  }, [data]);
+    return addEvent("drawer", () => {
+      if (document.body.clientWidth <= 1000) {
+        setOpen(false);
+      }
+    });
+  }, [setOpen]);
 
   return (
     <Box defFlex grow row>
@@ -85,8 +82,20 @@ const Default = () => {
           </Box>
           <Divider sx={{ my: 1.5 }} />
           <Box defFlex gap={1} grow>
-            <MyButton name="home" open={open} onClick={() => {}} />
-            <MyButton name="portfolio" open={open} />
+            <MyButton
+              name="home"
+              open={open}
+              onClick={() => {
+                dispatch("route", { caption: "hello" });
+              }}
+            />
+            <MyButton
+              name="portfolio"
+              open={open}
+              onClick={() => {
+                dispatch("route", { caption: "word" });
+              }}
+            />
           </Box>
           <Box defFlex>
             <MyButton
@@ -97,7 +106,9 @@ const Default = () => {
           </Box>
         </Box>
       </Box>
-      <Box grow />
+      <Box defFlex grow sx={{ py: 2, pr: 1 }}>
+        <Pages />
+      </Box>
     </Box>
   );
 };
