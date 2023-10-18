@@ -6,7 +6,7 @@ const iconData = {
   defIcon: "do_not_disturb_off",
   open: "keyboard_tab",
   close: "keyboard_tab_rtl",
-  logo: "change_history",
+  logo: "auto_stories",
 };
 
 const Default = (props) => {

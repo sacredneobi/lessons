@@ -1,18 +1,37 @@
 import { Box, Divider, MenuButton, Text, Icon } from "@components";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { addEvent, dispatch, useStore } from "@utils";
 import { DashboardContext } from "@context";
 import Pages from "./pages";
 
 const MyButton = (props) => {
-  const { name, open, ...other } = props;
+  const { name, open, sxCaption, sx, sxIcon, ...other } = props;
+
+  const [active, setActive] = useState(
+    window.location.hash?.replace("#", "") === name
+  );
+
+  useEffect(() => {
+    const event = () => {
+      setActive(window.location.hash?.replace("#", "") === name);
+    };
+
+    window.addEventListener("hashchange", event, false);
+
+    return () => {
+      window.removeEventListener("hashchange", event);
+    };
+  }, [name]);
 
   return (
     <MenuButton
       color="inherit"
+      variant={active ? "contained" : "text"}
+      disableElevation
+      disableFocusRipple
       caption={
         <>
-          <Icon name={name} />
+          <Icon name={name} sx={{ color: "text.secondary", ...sxIcon }} />
           <Text
             caption={name}
             sx={{
@@ -20,6 +39,7 @@ const MyButton = (props) => {
               textTransform: "capitalize",
               opacity: open ? 1 : 0,
               transition: "opacity 100ms linear",
+              ...sxCaption,
             }}
           />
         </>
@@ -29,6 +49,11 @@ const MyButton = (props) => {
         borderRadius: 2,
         minHeight: 40,
         minWidth: 0,
+        p: 1,
+        ...sx,
+      }}
+      onClick={() => {
+        dispatch("route", { route: name });
       }}
       {...other}
     />
@@ -44,7 +69,7 @@ const Default = () => {
 
   useEffect(() => {
     return addEvent("drawer", () => {
-      if (document.body.clientWidth <= 1000) {
+      if (document.body.clientWidth <= 100) {
         setOpen(false);
       }
     });
@@ -70,43 +95,29 @@ const Default = () => {
           }}
           grow
         >
-          <Box defFlex sx={{ height: 32 }} ai row gap>
-            <Icon name="logo" sx={{ fontSize: 42 }} />
-            <Text
-              caption="LOGO"
-              sx={{
-                opacity: open ? 1 : 0,
-                transition: "opacity 100ms linear",
-              }}
+          <Box defFlex sx={{ height: 32 }} gap>
+            <MyButton
+              name="logo"
+              open={open}
+              sxIcon={{ color: "primary.light" }}
             />
           </Box>
           <Divider sx={{ my: 1.5 }} />
           <Box defFlex gap={1} grow>
-            <MyButton
-              name="home"
-              open={open}
-              onClick={() => {
-                dispatch("route", { caption: "hello" });
-              }}
-            />
-            <MyButton
-              name="portfolio"
-              open={open}
-              onClick={() => {
-                dispatch("route", { caption: "word" });
-              }}
-            />
+            <MyButton name="home" open={open} />
+            <MyButton name="portfolio" open={open} />
           </Box>
           <Box defFlex>
             <MyButton
               name={open ? "close" : "open"}
               open={open}
+              sxIcon={{ color: "primary.light" }}
               onClick={leftPanelOpen}
             />
           </Box>
         </Box>
       </Box>
-      <Box defFlex grow sx={{ py: 2, pr: 1 }}>
+      <Box defFlex grow sx={{ py: 2, pr: 2 }}>
         <Pages />
       </Box>
     </Box>
