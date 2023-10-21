@@ -1,21 +1,21 @@
-const dispatch = (name, data) => {
+const dispatch = (name, data, obj = document) => {
   const event = new CustomEvent(name, {
     bubbles: true,
     detail: data,
   });
-  document.dispatchEvent(event);
+  obj.dispatchEvent(event);
 };
 
-const addEvent = (name, event) => {
+const addEvent = (name, event, obj = document, ...args) => {
   const localEvent = ({ detail }) => {
     if (typeof event === "function") {
       event(detail);
     }
   };
 
-  document.addEventListener(name, localEvent);
+  obj.addEventListener(name, localEvent, ...args);
   return () => {
-    document.removeEventListener(name, localEvent);
+    obj.removeEventListener(name, localEvent);
   };
 };
 

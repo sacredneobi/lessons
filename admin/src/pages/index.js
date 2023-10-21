@@ -1,3 +1,3 @@
 export * from "./main";
-export * from "./hello";
-export * from "./word";
+export * from "./good";
+export * from "./order";

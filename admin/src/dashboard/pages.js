@@ -1,29 +1,24 @@
 import { Box } from "@components";
-import { addEvent, dispatch } from "@utils";
+import { addEvent, dispatch, getHash, setHash } from "@utils";
 import { useEffect, useState } from "react";
-import { PageMain, PageHello, PageWord } from "../pages";
+import { PageMain, PageGood, PageOrder } from "../pages";
 
 const Default = () => {
-  const [route, setRoute] = useState(window.location.hash?.replace("#", ""));
+  const [route, setRoute] = useState(getHash());
 
-  useEffect(() => {
-    const event = () => {
-      setRoute(window.location.hash?.replace("#", ""));
-    };
+  useEffect(
+    () => addEvent("hashchange", () => setRoute(getHash()), window, false),
+    []
+  );
 
-    window.addEventListener("hashchange", event, false);
-
-    return () => {
-      window.removeEventListener("hashchange", event);
-    };
-  }, []);
-
-  useEffect(() => {
-    return addEvent("route", (data) => {
-      window.location.hash = data?.route;
-      dispatch("drawer");
-    });
-  }, []);
+  useEffect(
+    () =>
+      addEvent("route", (data) => {
+        setHash(data?.route);
+        dispatch("drawer");
+      }),
+    []
+  );
 
   return (
     <Box
@@ -36,9 +31,9 @@ const Default = () => {
         p: 1,
       }}
     >
-      {(route === "logo" || !route) && <PageMain />}
-      {route === "home" && <PageHello />}
-      {route === "portfolio" && <PageWord />}
+      {(route === "main" || !route) && <PageMain />}
+      {route === "good" && <PageGood />}
+      {route === "order" && <PageOrder />}
     </Box>
   );
 };

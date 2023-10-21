@@ -1,27 +1,24 @@
 import { Box, Divider, MenuButton, Text, Icon } from "@components";
 import { useCallback, useEffect, useState } from "react";
-import { addEvent, dispatch, useStore } from "@utils";
+import { addEvent, dispatch, getHash, useStore } from "@utils";
 import { DashboardContext } from "@context";
 import Pages from "./pages";
 
 const MyButton = (props) => {
   const { name, open, sxCaption, sx, sxIcon, ...other } = props;
 
-  const [active, setActive] = useState(
-    window.location.hash?.replace("#", "") === name
+  const [active, setActive] = useState(getHash() === name);
+
+  useEffect(
+    () =>
+      addEvent(
+        "hashchange",
+        () => setActive(getHash() === name),
+        window,
+        false
+      ),
+    [name]
   );
-
-  useEffect(() => {
-    const event = () => {
-      setActive(window.location.hash?.replace("#", "") === name);
-    };
-
-    window.addEventListener("hashchange", event, false);
-
-    return () => {
-      window.removeEventListener("hashchange", event);
-    };
-  }, [name]);
 
   return (
     <MenuButton
@@ -97,15 +94,15 @@ const Default = () => {
         >
           <Box defFlex sx={{ height: 32 }} gap>
             <MyButton
-              name="logo"
+              name="main"
               open={open}
               sxIcon={{ color: "primary.light" }}
             />
           </Box>
           <Divider sx={{ my: 1.5 }} />
           <Box defFlex gap={1} grow>
-            <MyButton name="home" open={open} />
-            <MyButton name="portfolio" open={open} />
+            <MyButton name="good" open={open} />
+            <MyButton name="order" open={open} />
           </Box>
           <Box defFlex>
             <MyButton

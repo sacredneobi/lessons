@@ -7,6 +7,9 @@ const iconData = {
   open: "keyboard_tab",
   close: "keyboard_tab_rtl",
   logo: "auto_stories",
+  good: "dinner_dining",
+  main: "home_work",
+  order: "receipt_long",
 };
 
 const Default = (props) => {
