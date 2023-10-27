@@ -10,10 +10,14 @@ const iconData = {
   good: "dinner_dining",
   main: "home_work",
   order: "receipt_long",
+  setting: "tune",
+  filter: "filter_alt",
 };
 
 const Default = (props) => {
   const { name, ...other } = props;
+
+  console.log(props);
 
   const icon = iconData[name] ? iconData[name] : iconData.defIcon;
 

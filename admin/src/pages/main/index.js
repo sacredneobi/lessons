@@ -1,18 +1,24 @@
-import { Box, Button, Table } from "@components";
+import { Box, IconButton, Table } from "@components";
 
 const Default = () => {
   return (
     <Box name="main" defFlex center sx={{ width: "100%", height: "100%" }}>
       <Table
+        name="goods"
         sx={{ flexGrow: 1 }}
         items={new Array(50)
           .fill(1)
           .map((_, index) => ({ id: index, caption: `test ${index}` }))}
         topButtons={
           <>
-            <Button caption="T" sx={{ borderTopRightRadius: 10 }} />
+            <IconButton name="filter" />
+            <IconButton name="filter2" />
           </>
         }
+        pageCount={20}
+        onChangePage={(name) => (page) => {
+          console.log(name, page);
+        }}
       />
     </Box>
   );

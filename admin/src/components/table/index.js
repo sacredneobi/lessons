@@ -1,12 +1,31 @@
 import { useState } from "react";
-import { Pagination, Stack, TextField } from "@mui/material";
-import { Box, Button, Divider } from "..";
+import {
+  Checkbox,
+  Pagination,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { Box, Divider, IconButton } from "..";
+
+const defStyle = { sxIcon: { fontSize: 18 } };
 
 const Default = (props) => {
-  const { items, topButtons, onSearch, sx, sxHeader, sxTable, sxFooter } =
-    props;
+  const {
+    items,
+    pageCount,
+    topButtons,
+    onSearch,
+    sx,
+    sxHeader,
+    sxTable,
+    sxFooter,
+    name,
+    onChangePage,
+  } = props;
 
   const [search, setSearch] = useState(null);
+  const [checked, setChecked] = useState([]);
 
   return (
     <Box name="rootTable" gap={0.5} defFlex sx={{ width: 1, height: 2, ...sx }}>
@@ -30,7 +49,32 @@ const Default = (props) => {
           }}
           size="small"
         />
-        {topButtons}
+        {typeof topButtons === "function" ? (
+          topButtons(defStyle)
+        ) : typeof topButtons.props.children === "function" ? (
+          topButtons.props.children(defStyle)
+        ) : Array.isArray(topButtons.props.children) ? (
+          topButtons.props.children.map((item) => {
+            if (typeof item === "function") {
+              return item(defStyle);
+            }
+
+            return (
+              <item.type
+                {...item.props}
+                sxIcon={{ ...item.props.sxIcon, ...defStyle.sxIcon }}
+                onClick={(e) => {
+                  console.log(item.props);
+                }}
+              />
+            );
+          })
+        ) : (
+          <topButtons.type
+            {...topButtons.props}
+            sxIcon={{ ...topButtons.props.sxIcon, ...defStyle.sxIcon }}
+          />
+        )}
       </Box>
       <Box
         defFlex
@@ -43,26 +87,46 @@ const Default = (props) => {
             <Box
               key={item?.id ?? index}
               sx={{
-                // borderRadius: 2,
                 minHeight: 32,
                 p: 0.5,
-                // border: ({ palette }) => `1px solid ${palette.divider}`,
               }}
             >
+              <Checkbox
+                checked={!!checked.find((check) => check.id === item.id)}
+                onChange={({ target }) => {
+                  if (target.checked) {
+                    setChecked((prev) => {
+                      prev.push(item);
+                      return [...prev];
+                    });
+                  } else {
+                    setChecked((prev) => {
+                      return prev.filter((check) => check.id !== item.id);
+                    });
+                  }
+                }}
+              />
               {item?.caption}
             </Box>
           ))}
         </Stack>
       </Box>
       <Divider flexItem />
-      <Box defFlex row jc="space-between" name="footer" sx={sxFooter}>
-        <Button caption="S" sx={{ borderBottomLeftRadius: 10 }} />
+      <Box defFlex row jc="space-between" ai name="footer" sx={sxFooter}>
+        <IconButton name="setting" {...defStyle} />
+        {checked.length > 0 ? (
+          <Typography>Выделенные элементы : {checked.length}</Typography>
+        ) : null}
         <Pagination
-          count={(items?.length ?? 0) / 50}
+          count={pageCount}
           variant="outlined"
           shape="rounded"
           size="small"
-          boundaryCount={0}
+          onChange={(e, page) => {
+            if (typeof onChangePage === "function") {
+              onChangePage(name)(page);
+            }
+          }}
         />
       </Box>
     </Box>
