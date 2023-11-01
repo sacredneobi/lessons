@@ -17,7 +17,7 @@ const iconData = {
 const Default = (props) => {
   const { name, ...other } = props;
 
-  console.log(props);
+  // console.log(props);
 
   const icon = iconData[name] ? iconData[name] : iconData.defIcon;
 

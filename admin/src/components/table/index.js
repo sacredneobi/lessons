@@ -1,31 +1,27 @@
 import { useState } from "react";
-import {
-  Checkbox,
-  Pagination,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
-import { Box, Divider, IconButton } from "..";
+import { TextField } from "@mui/material";
+import { Box, Divider } from "..";
+import { TableContext } from "@context/table";
+import Rows from "./rows";
+import Bottom from "./bottom";
 
 const defStyle = { sxIcon: { fontSize: 18 } };
 
 const Default = (props) => {
   const {
     items,
-    pageCount,
     topButtons,
     onSearch,
     sx,
     sxHeader,
     sxTable,
+    pageCount,
     sxFooter,
     name,
     onChangePage,
   } = props;
 
   const [search, setSearch] = useState(null);
-  const [checked, setChecked] = useState([]);
 
   return (
     <Box name="rootTable" gap={0.5} defFlex sx={{ width: 1, height: 2, ...sx }}>
@@ -54,13 +50,14 @@ const Default = (props) => {
         ) : typeof topButtons.props.children === "function" ? (
           topButtons.props.children(defStyle)
         ) : Array.isArray(topButtons.props.children) ? (
-          topButtons.props.children.map((item) => {
+          topButtons.props.children.map((item, index) => {
             if (typeof item === "function") {
               return item(defStyle);
             }
 
             return (
               <item.type
+                key={item.props?.id ?? index}
                 {...item.props}
                 sxIcon={{ ...item.props.sxIcon, ...defStyle.sxIcon }}
                 onClick={(e) => {
@@ -82,55 +79,26 @@ const Default = (props) => {
         name="table"
         sx={{ overflow: "auto", p: 0.25, ...sxTable }}
       >
-        <Stack divider={<Divider flexItem sx={{ my: 0.25 }} />}>
-          {items?.map((item, index) => (
-            <Box
-              key={item?.id ?? index}
-              sx={{
-                minHeight: 32,
-                p: 0.5,
-              }}
-            >
-              <Checkbox
-                checked={!!checked.find((check) => check.id === item.id)}
-                onChange={({ target }) => {
-                  if (target.checked) {
-                    setChecked((prev) => {
-                      prev.push(item);
-                      return [...prev];
-                    });
-                  } else {
-                    setChecked((prev) => {
-                      return prev.filter((check) => check.id !== item.id);
-                    });
-                  }
-                }}
-              />
-              {item?.caption}
-            </Box>
-          ))}
-        </Stack>
+        <Rows items={items} name={name} />
       </Box>
       <Divider flexItem />
-      <Box defFlex row jc="space-between" ai name="footer" sx={sxFooter}>
-        <IconButton name="setting" {...defStyle} />
-        {checked.length > 0 ? (
-          <Typography>Выделенные элементы : {checked.length}</Typography>
-        ) : null}
-        <Pagination
-          count={pageCount}
-          variant="outlined"
-          shape="rounded"
-          size="small"
-          onChange={(e, page) => {
-            if (typeof onChangePage === "function") {
-              onChangePage(name)(page);
-            }
-          }}
-        />
-      </Box>
+      <Bottom
+        pageCount={pageCount}
+        sxFooter={sxFooter}
+        name={name}
+        onChangePage={onChangePage}
+        defStyle={defStyle}
+      />
     </Box>
   );
 };
 
-export { Default as Table };
+const ContextTable = (props) => {
+  return (
+    <TableContext>
+      <Default {...props} />
+    </TableContext>
+  );
+};
+
+export { ContextTable as Table };

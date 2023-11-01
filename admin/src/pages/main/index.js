@@ -12,7 +12,10 @@ const Default = () => {
         topButtons={
           <>
             <IconButton name="filter" />
-            <IconButton name="filter2" />
+            <IconButton name="filter" />
+            {(props) => {
+              return <IconButton name="filter" {...props} />;
+            }}
           </>
         }
         pageCount={20}
