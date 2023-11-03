@@ -2,7 +2,7 @@ import { Pagination, Typography } from "@mui/material";
 import { Box, IconButton } from "..";
 import { useTable } from "@context";
 import { useEffect, useState } from "react";
-import { addEvent } from "@utils";
+import { addEvent, dispatch } from "@utils";
 
 const CountSelect = (props) => {
   const { name } = props;
@@ -18,8 +18,19 @@ const CountSelect = (props) => {
     [name]
   );
 
-  return tableData?.selected?.length > 0 ? (
-    <Typography>Выделенные элементы : {tableData.selected.length}</Typography>
+  const count = Object.keys(tableData?.selected ?? {}).length;
+
+  return count > 0 ? (
+    <Typography
+      onClick={(e) => {
+        dispatch(`${name}.selectClear`, {});
+        setReload((prev) => !prev);
+        tableData.selected = {};
+        e.stopPropagation();
+      }}
+    >
+      Выделенные элементы : {count}
+    </Typography>
   ) : null;
 };
 

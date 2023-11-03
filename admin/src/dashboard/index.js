@@ -3,6 +3,19 @@ import { useCallback, useEffect, useState } from "react";
 import { addEvent, dispatch, getHash, useStore } from "@utils";
 import { DashboardContext } from "@context";
 import Pages from "./pages";
+import { memo } from "react";
+
+function areEqual(prev, next) {
+  return true;
+}
+
+const NewPages = memo(() => {
+  return (
+    <Box defFlex grow sx={{ py: 2, pr: 2 }}>
+      <Pages />
+    </Box>
+  );
+}, areEqual);
 
 const MyButton = (props) => {
   const { name, open, sxCaption, sx, sxIcon, ...other } = props;
@@ -114,9 +127,7 @@ const Default = () => {
           </Box>
         </Box>
       </Box>
-      <Box defFlex grow sx={{ py: 2, pr: 2 }}>
-        <Pages />
-      </Box>
+      <NewPages />
     </Box>
   );
 };

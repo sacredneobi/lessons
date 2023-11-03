@@ -2,7 +2,7 @@ import { createContext, useContext } from "react";
 
 class TableStore {
   constructor() {
-    this._selected = [];
+    this._selected = {};
   }
 
   get selected() {

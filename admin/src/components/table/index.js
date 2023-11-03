@@ -27,7 +27,7 @@ const Default = (props) => {
     <Box name="rootTable" gap={0.5} defFlex sx={{ width: 1, height: 2, ...sx }}>
       <Box defFlex row gap name="header" sx={{ width: 1, ...sxHeader }}>
         <TextField
-          value={search}
+          value={search ?? ""}
           onChange={({ target }) => setSearch(target.value)}
           onKeyUp={(e) => {
             if (e.keyChar === 13) {
@@ -52,7 +52,7 @@ const Default = (props) => {
         ) : Array.isArray(topButtons.props.children) ? (
           topButtons.props.children.map((item, index) => {
             if (typeof item === "function") {
-              return item(defStyle);
+              return item({ ...defStyle, key: item.props?.id ?? index });
             }
 
             return (
@@ -94,6 +94,7 @@ const Default = (props) => {
 };
 
 const ContextTable = (props) => {
+  console.log("render root table");
   return (
     <TableContext>
       <Default {...props} />
