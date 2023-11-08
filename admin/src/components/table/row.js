@@ -6,12 +6,14 @@ import { addEvent, dispatch } from "@utils";
 
 function areEqual(prev, next) {
   const result =
-    prev.checked === next.checked && prev.setChecked === next.setChecked;
+    prev.checked === next.checked &&
+    prev.setChecked === next.setChecked &&
+    prev.onItemRender === next.onItemRender;
   return result;
 }
 
 const Default = memo((props) => {
-  const { item, name } = props;
+  const { item, name, onItemRender } = props;
   const { id, caption } = item ?? {};
 
   const tableData = useTable();
@@ -37,9 +39,15 @@ const Default = memo((props) => {
   };
 
   return (
-    <Box sx={{ minHeight: 32, p: 0.5 }}>
+    <Box defFlex row sx={{ minHeight: 32, p: 0.5 }}>
       <Checkbox checked={checked} onChange={handleOnChange} />
-      {caption}
+      {typeof onItemRender === "function" ? (
+        <Box defFlex jc sx={{ width: "100%" }}>
+          {onItemRender(item)}
+        </Box>
+      ) : (
+        caption
+      )}
     </Box>
   );
 }, areEqual);

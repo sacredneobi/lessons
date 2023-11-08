@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { memo, useState } from "react";
 import { TextField } from "@mui/material";
 import { Box, Divider } from "..";
 import { TableContext } from "@context/table";
@@ -6,6 +6,31 @@ import Rows from "./rows";
 import Bottom from "./bottom";
 
 const defStyle = { sxIcon: { fontSize: 18 } };
+
+function areEqual(prev, next) {
+  let render = true;
+  for (const item of Object.keys(prev)) {
+    console.log(typeof prev[item]);
+
+    if (prev[item]?.type) {
+      continue;
+    }
+
+    let newPrev =
+      typeof prev[item] === "object" ? JSON.stringify(prev[item]) : prev[item];
+    let newNext =
+      typeof next[item] === "object" ? JSON.stringify(next[item]) : next[item];
+
+    if (newPrev !== newNext) {
+      console.log(item, newNext);
+      console.log(item, newPrev);
+      console.log("not equal");
+      render = false;
+      break;
+    }
+  }
+  return render;
+}
 
 const Default = (props) => {
   const {
@@ -19,6 +44,7 @@ const Default = (props) => {
     sxFooter,
     name,
     onChangePage,
+    onItemRender,
   } = props;
 
   const [search, setSearch] = useState(null);
@@ -79,7 +105,7 @@ const Default = (props) => {
         name="table"
         sx={{ overflow: "auto", p: 0.25, ...sxTable }}
       >
-        <Rows items={items} name={name} />
+        <Rows items={items} name={name} onItemRender={onItemRender} />
       </Box>
       <Divider flexItem />
       <Bottom
@@ -93,13 +119,12 @@ const Default = (props) => {
   );
 };
 
-const ContextTable = (props) => {
-  console.log("render root table");
+const ContextTable = memo((props) => {
   return (
     <TableContext>
       <Default {...props} />
     </TableContext>
   );
-};
+}, areEqual);
 
 export { ContextTable as Table };
