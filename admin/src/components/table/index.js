@@ -10,8 +10,6 @@ const defStyle = { sxIcon: { fontSize: 18 } };
 function areEqual(prev, next) {
   let render = true;
   for (const item of Object.keys(prev)) {
-    console.log(typeof prev[item]);
-
     if (prev[item]?.type) {
       continue;
     }
@@ -22,9 +20,9 @@ function areEqual(prev, next) {
       typeof next[item] === "object" ? JSON.stringify(next[item]) : next[item];
 
     if (newPrev !== newNext) {
-      console.log(item, newNext);
-      console.log(item, newPrev);
-      console.log("not equal");
+      // console.log(item, newNext);
+      // console.log(item, newPrev);
+      // console.log("not equal");
       render = false;
       break;
     }
@@ -45,6 +43,7 @@ const Default = (props) => {
     name,
     onChangePage,
     onItemRender,
+    onBottomRender,
   } = props;
 
   const [search, setSearch] = useState(null);
@@ -114,6 +113,7 @@ const Default = (props) => {
         name={name}
         onChangePage={onChangePage}
         defStyle={defStyle}
+        onBottomRender={onBottomRender}
       />
     </Box>
   );

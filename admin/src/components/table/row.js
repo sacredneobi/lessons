@@ -8,7 +8,8 @@ function areEqual(prev, next) {
   const result =
     prev.checked === next.checked &&
     prev.setChecked === next.setChecked &&
-    prev.onItemRender === next.onItemRender;
+    prev.onItemRender === next.onItemRender &&
+    JSON.stringify(prev.item ?? {}) === JSON.stringify(next.item ?? {});
   return result;
 }
 
@@ -39,7 +40,7 @@ const Default = memo((props) => {
   };
 
   return (
-    <Box defFlex row sx={{ minHeight: 32, p: 0.5 }}>
+    <Box defFlex row sx={{ minHeight: 32, p: 0.5 }} ai>
       <Checkbox checked={checked} onChange={handleOnChange} />
       {typeof onItemRender === "function" ? (
         <Box defFlex jc sx={{ width: "100%" }}>

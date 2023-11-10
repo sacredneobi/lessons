@@ -1,26 +1,41 @@
 import { Box, IconButton, Table } from "@components";
 import { useCallback, useState } from "react";
 
-const testArr = new Array(50)
-  .fill(1)
-  .map((_, index) => ({ id: index, caption: `test ${index}` }));
+const testArr = (page = 0) => {
+  const perPage = 50;
+
+  return new Array(perPage).fill(1).map((_, index) => ({
+    id: page * perPage + index,
+    caption: `test ${page * perPage + index}`,
+    caption2: `Количество элементов на страницу ${perPage}`,
+  }));
+};
 
 const Default = () => {
   const [, setData] = useState(false);
-  const [arr] = useState(testArr);
+  const [page, setPage] = useState(0);
 
   const handleOnChangePage = useCallback(
     (name) => (page) => {
-      console.log(name, page);
+      setPage(page);
     },
     []
   );
+
+  const handelOnButtonRender = useCallback(() => {
+    return <Box>TEST BOTTOM</Box>;
+  }, []);
 
   const handelOnRender = useCallback(
     (data) => {
       return (
         <Box defFlex row jc="space-between" ai>
-          <div>{data.caption}</div>
+          <Box defFlex>
+            <div>{data.caption}</div>
+            <Box sx={{ fontSize: 12, color: "text.secondary" }}>
+              {data.caption2}
+            </Box>
+          </Box>
           <IconButton
             name="filter"
             onClick={() => {
@@ -38,10 +53,11 @@ const Default = () => {
       <Table
         name="goods"
         sx={{ flexGrow: 1 }}
-        items={arr}
+        items={testArr(page)}
         topButtons={<IconButton name="filter" />}
         pageCount={20}
         onItemRender={handelOnRender}
+        onBottomRender={handelOnButtonRender}
         onChangePage={handleOnChangePage}
       />
     </Box>

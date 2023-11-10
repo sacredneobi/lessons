@@ -1,8 +1,9 @@
 import { Pagination, Typography } from "@mui/material";
-import { Box, IconButton } from "..";
+import { Box } from "..";
 import { useTable } from "@context";
 import { useEffect, useState } from "react";
-import { addEvent, dispatch } from "@utils";
+import { addEvent } from "@utils";
+import Popover from "./popover";
 
 const CountSelect = (props) => {
   const { name } = props;
@@ -18,28 +19,33 @@ const CountSelect = (props) => {
     [name]
   );
 
+  useEffect(
+    () =>
+      addEvent(`${name}.selectClear`, () => {
+        setReload((prev) => !prev);
+        tableData.selected = {};
+      }),
+    [name, tableData]
+  );
+
   const count = Object.keys(tableData?.selected ?? {}).length;
 
   return count > 0 ? (
-    <Typography
-      onClick={(e) => {
-        dispatch(`${name}.selectClear`, {});
-        setReload((prev) => !prev);
-        tableData.selected = {};
-        e.stopPropagation();
-      }}
-    >
-      Выделенные элементы : {count}
-    </Typography>
+    <Typography>Выделенные элементы : {count}</Typography>
   ) : null;
 };
 
 const Default = (props) => {
-  const { pageCount, sxFooter, name, onChangePage, defStyle } = props;
+  const { pageCount, sxFooter, name, onChangePage, defStyle, onBottomRender } =
+    props;
 
   return (
     <Box defFlex row jc="space-between" ai name="footer" sx={sxFooter}>
-      <IconButton name="setting" {...defStyle} />
+      <Popover
+        onBottomRender={onBottomRender}
+        defStyle={defStyle}
+        name={name}
+      />
       <CountSelect name={name} />
       <Pagination
         count={pageCount}
@@ -48,7 +54,7 @@ const Default = (props) => {
         size="small"
         onChange={(e, page) => {
           if (typeof onChangePage === "function") {
-            onChangePage(name)(page);
+            onChangePage(name)(page - 1);
           }
         }}
       />
