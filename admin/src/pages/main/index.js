@@ -1,5 +1,7 @@
 import { Box, IconButton, Table } from "@components";
 import { useCallback, useState } from "react";
+import useRenderRow from "./row";
+import Dialog from "./dialog";
 
 const testArr = (page = 0) => {
   const perPage = 50;
@@ -11,8 +13,9 @@ const testArr = (page = 0) => {
   }));
 };
 
+const langBase = "goods";
+
 const Default = () => {
-  const [, setData] = useState(false);
   const [page, setPage] = useState(0);
 
   const handleOnChangePage = useCallback(
@@ -22,31 +25,7 @@ const Default = () => {
     []
   );
 
-  const handelOnButtonRender = useCallback(() => {
-    return <Box>TEST BOTTOM</Box>;
-  }, []);
-
-  const handelOnRender = useCallback(
-    (data) => {
-      return (
-        <Box defFlex row jc="space-between" ai>
-          <Box defFlex>
-            <div>{data.caption}</div>
-            <Box sx={{ fontSize: 12, color: "text.secondary" }}>
-              {data.caption2}
-            </Box>
-          </Box>
-          <IconButton
-            name="filter"
-            onClick={() => {
-              setData((prev) => !prev);
-            }}
-          />
-        </Box>
-      );
-    },
-    [setData]
-  );
+  const handelOnRender = useRenderRow();
 
   return (
     <Box name="main" defFlex center sx={{ width: "100%", height: "100%" }}>
@@ -57,9 +36,10 @@ const Default = () => {
         topButtons={<IconButton name="filter" />}
         pageCount={20}
         onItemRender={handelOnRender}
-        onBottomRender={handelOnButtonRender}
         onChangePage={handleOnChangePage}
+        langBase={langBase}
       />
+      <Dialog langBase={langBase} />
     </Box>
   );
 };

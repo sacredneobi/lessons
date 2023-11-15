@@ -44,6 +44,7 @@ const Default = (props) => {
     onChangePage,
     onItemRender,
     onBottomRender,
+    langBase,
   } = props;
 
   const [search, setSearch] = useState(null);
@@ -104,7 +105,12 @@ const Default = (props) => {
         name="table"
         sx={{ overflow: "auto", p: 0.25, ...sxTable }}
       >
-        <Rows items={items} name={name} onItemRender={onItemRender} />
+        <Rows
+          items={items}
+          name={name}
+          onItemRender={onItemRender}
+          langBase={langBase}
+        />
       </Box>
       <Divider flexItem />
       <Bottom

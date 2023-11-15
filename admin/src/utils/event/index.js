@@ -6,6 +6,14 @@ const dispatch = (name, data, obj = document) => {
   obj.dispatchEvent(event);
 };
 
+const dispatchEdit = (langBase, data, obj = document) => {
+  dispatch(`${langBase}.dialog.edit`, data, obj);
+};
+
+const dispatchDelete = (langBase, data, obj = document) => {
+  dispatch(`${langBase}.dialog.delete`, data, obj);
+};
+
 const addEvent = (name, event, obj = document, ...args) => {
   const localEvent = ({ detail }) => {
     if (typeof event === "function") {
@@ -19,4 +27,4 @@ const addEvent = (name, event, obj = document, ...args) => {
   };
 };
 
-export { dispatch, addEvent };
+export { dispatch, dispatchEdit, dispatchDelete, addEvent };

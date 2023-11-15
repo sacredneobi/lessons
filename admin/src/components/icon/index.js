@@ -12,6 +12,8 @@ const iconData = {
   order: "receipt_long",
   setting: "tune",
   filter: "filter_alt",
+  edit: "stylus",
+  delete: "delete",
 };
 
 const Default = (props) => {

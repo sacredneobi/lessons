@@ -9,13 +9,15 @@ function areEqual(prev, next) {
     prev.checked === next.checked &&
     prev.setChecked === next.setChecked &&
     prev.onItemRender === next.onItemRender &&
+    prev.langBase === next.langBase &&
     JSON.stringify(prev.item ?? {}) === JSON.stringify(next.item ?? {});
   return result;
 }
 
-const Default = memo((props) => {
-  const { item, name, onItemRender } = props;
-  const { id, caption } = item ?? {};
+const Checker = (props) => {
+  const { id, name } = props;
+
+  const [show, setShow] = useState(false);
 
   const tableData = useTable();
 
@@ -24,6 +26,12 @@ const Default = memo((props) => {
   useEffect(() => {
     return addEvent(`${name}.selectClear`, () => {
       setChecked(false);
+    });
+  }, [name]);
+
+  useEffect(() => {
+    return addEvent(`${name}.showCheckbox`, (detail) => {
+      setShow(detail?.show);
     });
   }, [name]);
 
@@ -39,12 +47,23 @@ const Default = memo((props) => {
     });
   };
 
+  if (!show) {
+    return null;
+  }
+
+  return <Checkbox checked={checked} onChange={handleOnChange} />;
+};
+
+const Default = memo((props) => {
+  const { item, name, onItemRender, langBase } = props;
+  const { id, caption } = item ?? {};
+
   return (
     <Box defFlex row sx={{ minHeight: 32, p: 0.5 }} ai>
-      <Checkbox checked={checked} onChange={handleOnChange} />
+      <Checker id={id} name={name} />
       {typeof onItemRender === "function" ? (
         <Box defFlex jc sx={{ width: "100%" }}>
-          {onItemRender(item)}
+          {onItemRender(item, langBase)}
         </Box>
       ) : (
         caption

@@ -3,7 +3,7 @@ import { Divider } from "..";
 import Row from "./row";
 
 const Default = (props) => {
-  const { items, name, onItemRender } = props;
+  const { items, name, onItemRender, langBase } = props;
 
   if (!Array.isArray(items) || !items.length > 0) {
     return null;
@@ -17,6 +17,7 @@ const Default = (props) => {
           item={item}
           name={name}
           onItemRender={onItemRender}
+          langBase={langBase}
         />
       ))}
     </Stack>

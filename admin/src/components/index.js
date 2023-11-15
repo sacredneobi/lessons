@@ -5,3 +5,4 @@ export * from "./divider";
 export * from "./icon";
 export * from "./table";
 export * from "./iconButton";
+export * from "./dialog";

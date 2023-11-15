@@ -11,6 +11,7 @@ const Default = (props) => {
   const tableData = useTable();
 
   const [, setReload] = useState(false);
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     const change = addEvent(`${name}.selectChange`, () => {
@@ -34,6 +35,8 @@ const Default = (props) => {
   };
 
   const open = Boolean(anchorEl);
+
+  const selectedItems = Object.keys(tableData.selected ?? {}).length === 0;
 
   return (
     <>
@@ -64,10 +67,25 @@ const Default = (props) => {
       >
         <Box defFlex gap sx={{ p: 1 }}>
           <Button
-            caption="Снять выделения"
-            disabled={Object.keys(tableData.selected ?? {}).length === 0}
+            caption={
+              show
+                ? selectedItems
+                  ? "Скрыть выбор элемента"
+                  : "Снять выделения"
+                : "Показать выбор элемента"
+            }
             onClick={() => {
-              dispatch(`${name}.selectClear`, {});
+              if (show) {
+                if (!selectedItems) {
+                  dispatch(`${name}.selectClear`, {});
+                }
+                setShow(false);
+                dispatch(`${name}.showCheckbox`, { show: false });
+              } else {
+                setShow(true);
+                dispatch(`${name}.showCheckbox`, { show: true });
+                handlePopoverClose();
+              }
             }}
           />
           {typeof onBottomRender === "function" ? onBottomRender() : null}
