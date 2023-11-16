@@ -1,0 +1,15 @@
+.item {
+  flex: 0 0 auto;
+  padding: 1rem;
+  border-radius: 1rem;
+  background-color: rgba(44, 44, 46, 0.445);
+  overflow: hidden;
+  max-width: 75%;
+  min-height: 42px;
+  margin-bottom: 16px;
+}
+
+.item.odd {
+  align-self: flex-end;
+  background-color: rgb(10, 132, 255);
+}

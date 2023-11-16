@@ -37,7 +37,7 @@ const Default = (props) => {
     onSearch,
     sx,
     sxHeader,
-    sxTable,
+    // sxTable,
     pageCount,
     sxFooter,
     name,
@@ -99,19 +99,12 @@ const Default = (props) => {
           />
         )}
       </Box>
-      <Box
-        defFlex
-        grow
-        name="table"
-        sx={{ overflow: "auto", p: 0.25, ...sxTable }}
-      >
-        <Rows
-          items={items}
-          name={name}
-          onItemRender={onItemRender}
-          langBase={langBase}
-        />
-      </Box>
+      <Rows
+        items={items}
+        name={name}
+        onItemRender={onItemRender}
+        langBase={langBase}
+      />
       <Divider flexItem />
       <Bottom
         pageCount={pageCount}

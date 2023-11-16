@@ -59,7 +59,7 @@ const Default = memo((props) => {
   const { id, caption } = item ?? {};
 
   return (
-    <Box defFlex row sx={{ minHeight: 32, p: 0.5 }} ai>
+    <Box defFlex grow row sx={{ minHeight: 32, p: 0.5 }} ai>
       <Checker id={id} name={name} />
       {typeof onItemRender === "function" ? (
         <Box defFlex jc sx={{ width: "100%" }}>
