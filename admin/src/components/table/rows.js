@@ -24,7 +24,7 @@ const Default = (props) => {
         willChange: "transform",
       }}
     >
-      <ViewportList viewportRef={ref} items={items} overscan={5}>
+      <ViewportList viewportRef={ref} items={items} overscan={10}>
         {(item, index, arr) => (
           <Box defFlex grow key={item?.id ?? index}>
             <Row

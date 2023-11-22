@@ -6,3 +6,4 @@ export * from "./icon";
 export * from "./table";
 export * from "./iconButton";
 export * from "./dialog";
+export * from "./input";
