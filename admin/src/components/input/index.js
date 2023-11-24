@@ -1,19 +1,7 @@
-import { memo } from "react";
-import { IconButton } from "..";
+import { IconButton } from "../iconButton";
+import { memo } from "@utils";
 
-const { TextField } = require("@mui/material");
-
-function areEqual(prev, next) {
-  return (
-    prev.value === next.value &&
-    prev.onChange === next.onChange &&
-    prev.caption === next.caption &&
-    prev.name === next.name &&
-    prev.startComponent === next.startComponent &&
-    prev.endComponent === next.endComponent &&
-    prev.clear === next.clear
-  );
-}
+import { TextField } from "@mui/material";
 
 const Default = memo((props) => {
   const {
@@ -64,6 +52,6 @@ const Default = memo((props) => {
       }}
     />
   );
-}, areEqual);
+});
 
 export { Default as Input };

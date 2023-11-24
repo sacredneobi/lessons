@@ -1,58 +1,30 @@
-import { useCallback, useState } from "react";
-
-const { Box, Input } = require("@components");
+import { Box, Input } from "@components";
+import { useAction } from "@utils";
+import { useState } from "react";
 
 const Default = (props) => {
   const [data, setData] = useState(null);
+  const handleOnChange = useAction(setData);
 
-  const handleOnChange = useCallback(
-    (name) => (value) => {
-      setData((prev) => {
-        if (!prev) {
-          prev = {};
-        }
-        prev[name] = value;
-        return { ...prev };
-      });
-    },
-    []
-  );
+  const def = (name) => ({
+    name,
+    caption: name,
+    value: data?.[name],
+    onChange: handleOnChange,
+    clear: true,
+  });
 
   return (
     <Box defFlex gap sx={{ pt: 0.75 }}>
-      <Box defFlex row gap>
-        <Input
-          name="caption"
-          caption="Caption"
-          value={data?.caption}
-          onChange={handleOnChange}
-          clear
-          sx={{ flexBasis: "50%" }}
-        />
-        <Input
-          name="caption1"
-          caption="Caption"
-          value={data?.caption1}
-          onChange={handleOnChange}
-          sx={{ flexBasis: "50%" }}
-        />
-      </Box>
-      <Box defFlex row gap>
-        <Input
-          name="caption2"
-          caption="Caption"
-          value={data?.caption2}
-          onChange={handleOnChange}
-          sx={{ flexBasis: "50%" }}
-        />
-        <Input
-          name="caption3"
-          caption="Caption"
-          value={data?.caption3}
-          onChange={handleOnChange}
-          clear
-          sx={{ flexBasis: "50%" }}
-        />
+      <Box
+        defGrid
+        gap
+        sx={{ gridTemplateColumns: "1fr 1fr", gridTemplateRows: "1fr 1fr" }}
+      >
+        <Input {...def("caption")} />
+        <Input {...def("caption1")} />
+        <Input {...def("caption2")} />
+        <Input {...def("caption3")} />
       </Box>
     </Box>
   );

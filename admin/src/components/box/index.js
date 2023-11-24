@@ -1,7 +1,19 @@
 import { Box } from "@mui/material";
 
 const Default = (props) => {
-  const { defFlex, ai, jc, center, row, gap, grow, sx, ...other } = props;
+  const {
+    defFlex,
+    defGrid,
+    ai,
+    jc,
+    jc_sp,
+    center,
+    row,
+    gap,
+    grow,
+    sx,
+    ...other
+  } = props;
 
   const newSx = {};
 
@@ -10,12 +22,20 @@ const Default = (props) => {
     newSx.flexDirection = "column";
   }
 
+  if (defGrid) {
+    newSx.display = "grid";
+  }
+
   if (ai) {
     newSx.alignItems = ai === true ? "center" : ai;
   }
 
   if (jc) {
     newSx.justifyContent = jc === true ? "center" : jc;
+  }
+
+  if (jc_sp) {
+    newSx.justifyContent = "space-between";
   }
 
   if (center) {

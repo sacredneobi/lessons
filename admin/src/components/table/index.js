@@ -1,34 +1,12 @@
-import { memo, useState } from "react";
+import { useState } from "react";
 import { TextField } from "@mui/material";
 import { Box, Divider } from "..";
 import { TableContext } from "@context/table";
+import { memo } from "@utils";
 import Rows from "./rows";
 import Bottom from "./bottom";
 
 const defStyle = { sxIcon: { fontSize: 18 } };
-
-function areEqual(prev, next) {
-  let render = true;
-  for (const item of Object.keys(prev)) {
-    if (prev[item]?.type) {
-      continue;
-    }
-
-    let newPrev =
-      typeof prev[item] === "object" ? JSON.stringify(prev[item]) : prev[item];
-    let newNext =
-      typeof next[item] === "object" ? JSON.stringify(next[item]) : next[item];
-
-    if (newPrev !== newNext) {
-      // console.log(item, newNext);
-      // console.log(item, newPrev);
-      // console.log("not equal");
-      render = false;
-      break;
-    }
-  }
-  return render;
-}
 
 const Default = (props) => {
   const {
@@ -71,33 +49,35 @@ const Default = (props) => {
           }}
           size="small"
         />
-        {typeof topButtons === "function" ? (
-          topButtons(defStyle)
-        ) : typeof topButtons.props.children === "function" ? (
-          topButtons.props.children(defStyle)
-        ) : Array.isArray(topButtons.props.children) ? (
-          topButtons.props.children.map((item, index) => {
-            if (typeof item === "function") {
-              return item({ ...defStyle, key: item.props?.id ?? index });
-            }
+        {topButtons ? (
+          typeof topButtons === "function" ? (
+            topButtons(defStyle)
+          ) : typeof topButtons.props.children === "function" ? (
+            topButtons.props.children(defStyle)
+          ) : Array.isArray(topButtons.props.children) ? (
+            topButtons.props.children.map((item, index) => {
+              if (typeof item === "function") {
+                return item({ ...defStyle, key: item.props?.id ?? index });
+              }
 
-            return (
-              <item.type
-                key={item.props?.id ?? index}
-                {...item.props}
-                sxIcon={{ ...item.props.sxIcon, ...defStyle.sxIcon }}
-                onClick={(e) => {
-                  console.log(item.props);
-                }}
-              />
-            );
-          })
-        ) : (
-          <topButtons.type
-            {...topButtons.props}
-            sxIcon={{ ...topButtons.props.sxIcon, ...defStyle.sxIcon }}
-          />
-        )}
+              return (
+                <item.type
+                  key={item.props?.id ?? index}
+                  {...item.props}
+                  sxIcon={{ ...item.props.sxIcon, ...defStyle.sxIcon }}
+                  onClick={(e) => {
+                    console.log(item.props);
+                  }}
+                />
+              );
+            })
+          ) : (
+            <topButtons.type
+              {...topButtons.props}
+              sxIcon={{ ...topButtons.props.sxIcon, ...defStyle.sxIcon }}
+            />
+          )
+        ) : null}
       </Box>
       <Rows
         items={items}
@@ -124,6 +104,6 @@ const ContextTable = memo((props) => {
       <Default {...props} />
     </TableContext>
   );
-}, areEqual);
+});
 
 export { ContextTable as Table };

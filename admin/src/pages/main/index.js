@@ -25,6 +25,11 @@ const Default = () => {
     []
   );
 
+  const handleOnFilter = useCallback(
+    (props) => <IconButton name="filter" {...props} />,
+    []
+  );
+
   const handelOnRender = useRenderRow();
 
   return (
@@ -33,7 +38,7 @@ const Default = () => {
         name="goods"
         sx={{ flexGrow: 1 }}
         items={testArr(page)}
-        topButtons={<IconButton name="filter" />}
+        topButtons={handleOnFilter}
         pageCount={20}
         onItemRender={handelOnRender}
         onChangePage={handleOnChangePage}

@@ -1,4 +1,4 @@
-const { useState, useCallback, useEffect } = require("react");
+import { useState, useCallback, useEffect } from "react";
 
 const useStore = (storeName, def) => {
   const [name, setName] = useState(storeName);
