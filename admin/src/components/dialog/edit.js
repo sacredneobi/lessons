@@ -10,9 +10,10 @@ import { useTheme } from "@mui/material/styles";
 import { addEvent } from "@utils";
 import { useEffect, useState } from "react";
 import { Button } from "../button";
+import { Divider } from "../divider";
 
 const Edit = (props) => {
-  const { langBase, container } = props;
+  const { langBase, container, sxDialogContent, sxHeader } = props;
 
   const [open, setOpen] = useState(false);
   const [data, setData] = useState(null);
@@ -34,15 +35,28 @@ const Edit = (props) => {
   };
 
   return (
-    <Dialog fullScreen={fullScreen} open={open} onClose={handleClose}>
-      <DialogTitle>Редактирование: {data?.caption}</DialogTitle>
-      <DialogContent>
+    <Dialog fullScreen={fullScreen} open={open} maxWidth="md" fullWidth>
+      <DialogTitle sx={{ py: 1, ...sxHeader }}>
+        Редактирование: {data?.caption}
+      </DialogTitle>
+      <Divider />
+      <DialogContent
+        sx={{
+          py: 1,
+          px: 0,
+          display: "flex",
+          flexDirection: "column",
+          gap: 0.5,
+          ...sxDialogContent,
+        }}
+      >
         {container ? (
           container
         ) : (
           <DialogContentText>{data?.caption2}</DialogContentText>
         )}
       </DialogContent>
+      <Divider />
       <DialogActions>
         <Button onClick={handleClose} caption="Сохранить" variant="default" />
         <Button

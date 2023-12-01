@@ -1,32 +1,31 @@
-import { Box, Input } from "@components";
-import { useAction } from "@utils";
+import { Tabs, DialogContent } from "@components";
+import { useAction, useDef, useDialogDef } from "@utils";
 import { useState } from "react";
+import Setting from "./setting";
+import Price from "./price";
+
+const tabs = [
+  { name: "setting", validate: ["caption"] },
+  { name: "price", validate: ["price"] },
+];
 
 const Default = (props) => {
-  const [data, setData] = useState(null);
-  const handleOnChange = useAction(setData);
+  const { langBase } = props;
 
-  const def = (name) => ({
-    name,
-    caption: name,
-    value: data?.[name],
-    onChange: handleOnChange,
-    clear: true,
-  });
+  const [data, setData] = useState(null);
+  const { dialogData, OnDialogChange } = useDialogDef(langBase);
+
+  const handleOnChange = useAction(setData);
+  const def = useDef(data, handleOnChange);
 
   return (
-    <Box defFlex gap sx={{ pt: 0.75 }}>
-      <Box
-        defGrid
-        gap
-        sx={{ gridTemplateColumns: "1fr 1fr", gridTemplateRows: "1fr 1fr" }}
-      >
-        <Input {...def("caption")} />
-        <Input {...def("caption1")} />
-        <Input {...def("caption2")} />
-        <Input {...def("caption3")} />
-      </Box>
-    </Box>
+    <>
+      <Tabs items={tabs} tabs={dialogData?.tabs} onChange={OnDialogChange} />
+      <DialogContent>
+        {dialogData?.tabs === 0 && <Setting def={def} />}
+        {dialogData?.tabs === 1 && <Price def={def} />}
+      </DialogContent>
+    </>
   );
 };
 

@@ -6,7 +6,11 @@ const Default = (props) => {
 
   return (
     <>
-      <DialogEdit langBase={langBase} container={<Container />} />
+      <DialogEdit
+        langBase={langBase}
+        container={<Container langBase={`${langBase}.dialog.edit`} />}
+        sxDialogContent={{ minHeight: 250, maxHeight: 400 }}
+      />
       <DialogDelete langBase={langBase} />
     </>
   );
