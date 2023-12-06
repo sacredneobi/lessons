@@ -23,12 +23,22 @@ const Default = (props) => {
     onItemRender,
     onBottomRender,
     langBase,
+    loading,
   } = props;
 
   const [search, setSearch] = useState(null);
 
   return (
-    <Box name="rootTable" gap={0.5} defFlex sx={{ width: 1, height: 2, ...sx }}>
+    <Box
+      name="rootTable"
+      gap={0.5}
+      defFlex
+      sx={{
+        width: 1,
+        height: 2,
+        ...sx,
+      }}
+    >
       <Box defFlex row gap name="header" sx={{ width: 1, ...sxHeader }}>
         <TextField
           value={search ?? ""}
@@ -84,6 +94,7 @@ const Default = (props) => {
         name={name}
         onItemRender={onItemRender}
         langBase={langBase}
+        loading={loading}
       />
       <Divider flexItem />
       <Bottom

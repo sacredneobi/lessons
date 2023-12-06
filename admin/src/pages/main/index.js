@@ -1,22 +1,19 @@
 import { Box, IconButton, Table } from "@components";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useRenderRow from "./row";
 import Dialog from "./dialog";
-
-const testArr = (page = 0) => {
-  const perPage = 50;
-
-  return new Array(perPage).fill(1).map((_, index) => ({
-    id: page * perPage + index,
-    caption: `test ${page * perPage + index}`,
-    caption2: `Количество элементов на страницу ${perPage}`,
-  }));
-};
+import { useGoodsGet } from "@api";
 
 const langBase = "goods";
 
 const Default = () => {
   const [page, setPage] = useState(0);
+
+  const [callbackGet, loading, rows] = useGoodsGet(20);
+
+  useEffect(() => {
+    callbackGet({ page });
+  }, [callbackGet, page]);
 
   const handleOnChangePage = useCallback(
     (name) => (page) => {
@@ -37,12 +34,16 @@ const Default = () => {
       <Table
         name="goods"
         sx={{ flexGrow: 1 }}
-        items={testArr(page)}
+        items={rows?.products?.map((item) => ({
+          ...item,
+          caption: item.title,
+        }))}
         topButtons={handleOnFilter}
-        pageCount={20}
+        pageCount={rows?.totalPage}
         onItemRender={handelOnRender}
         onChangePage={handleOnChangePage}
         langBase={langBase}
+        loading={loading}
       />
       <Dialog langBase={langBase} />
     </Box>

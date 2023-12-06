@@ -5,7 +5,7 @@ import Row from "./row";
 import { ViewportList } from "react-viewport-list";
 
 const Default = (props) => {
-  const { items, name, onItemRender, langBase } = props;
+  const { items, name, onItemRender, langBase, loading } = props;
 
   const ref = useRef();
 
@@ -22,11 +22,14 @@ const Default = (props) => {
         overflowX: "hidden",
         overflowY: "auto",
         willChange: "transform",
+        flexGrow: 1,
+        filter: `blur(${loading ? 2 : 0}px)`,
+        transition: "filter 500ms linear",
       }}
     >
       <ViewportList viewportRef={ref} items={items} overscan={10}>
         {(item, index, arr) => (
-          <Box defFlex grow key={item?.id ?? index}>
+          <Box defFlex key={item?.id ?? index}>
             <Row
               item={item}
               name={name}

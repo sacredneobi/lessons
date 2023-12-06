@@ -51,7 +51,14 @@ const Checker = (props) => {
     return null;
   }
 
-  return <Checkbox checked={checked} onChange={handleOnChange} />;
+  return (
+    <Checkbox
+      checked={checked}
+      onChange={handleOnChange}
+      size="small"
+      sx={{ p: 0.25, mr: 1 }}
+    />
+  );
 };
 
 const Default = memo((props) => {

@@ -8,12 +8,12 @@ import {
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { addEvent } from "@utils";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button } from "../button";
 import { Divider } from "../divider";
 
 const Edit = (props) => {
-  const { langBase, container, sxDialogContent, sxHeader } = props;
+  const { langBase, container, sxDialogContent, sxHeader, useData } = props;
 
   const [open, setOpen] = useState(false);
   const [data, setData] = useState(null);
@@ -29,6 +29,22 @@ const Edit = (props) => {
       }),
     [langBase]
   );
+
+  const handleOk = useCallback(() => {
+    if (data?.id) {
+      if (typeof useData?.onEdit === "function") {
+        useData.onEdit(data, () => {
+          setOpen(false);
+        });
+      }
+      return;
+    }
+    if (typeof useData?.onPost === "function") {
+      useData.onPost(data, () => {
+        setOpen(false);
+      });
+    }
+  }, [useData, data]);
 
   const handleClose = () => {
     setOpen(false);
@@ -58,13 +74,19 @@ const Edit = (props) => {
       </DialogContent>
       <Divider />
       <DialogActions>
-        <Button onClick={handleClose} caption="Сохранить" variant="default" />
+        <Button
+          onClick={handleOk}
+          caption="Сохранить"
+          variant="default"
+          disabled={useData?.loading}
+        />
         <Button
           onClick={handleClose}
           autoFocus
           caption="Отмена"
           variant="outlined"
           sx={{ color: "warning.main" }}
+          disabled={useData?.loading}
         />
       </DialogActions>
     </Dialog>
