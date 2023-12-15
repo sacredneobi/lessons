@@ -25,6 +25,24 @@ const useGet = (perPage) => {
   ];
 };
 
+const useGetById = () => {
+  return [
+    useCallback((data, setData) => {
+      fetch(`https://dummyjson.com/products/${data?.id}`)
+        .then(async (response) => {
+          if (response?.ok) {
+            setData(await response.json());
+          } else {
+            console.log(await response.json());
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }, []),
+  ];
+};
+
 const useGetAll = () => {};
 
 const useUpdate = () => {};
@@ -35,6 +53,7 @@ const useDel = () => {};
 
 export {
   useGet as useGoodsGet,
+  useGetById as useGoodsGetById,
   useGetAll as useGoodsGetAll,
   useUpdate as useGoodsUpdate,
   usePost as useGoodsPost,

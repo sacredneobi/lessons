@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { TextField } from "@mui/material";
 import { Box, Divider } from "..";
 import { TableContext } from "@context/table";
 import { memo } from "@utils";
 import Rows from "./rows";
 import Bottom from "./bottom";
+import { Input } from "../input";
 
 const defStyle = { sxIcon: { fontSize: 18 } };
 
@@ -40,9 +40,9 @@ const Default = (props) => {
       }}
     >
       <Box defFlex row gap name="header" sx={{ width: 1, ...sxHeader }}>
-        <TextField
+        <Input
           value={search ?? ""}
-          onChange={({ target }) => setSearch(target.value)}
+          onChange={() => setSearch}
           onKeyUp={(e) => {
             if (e.keyChar === 13) {
               if (typeof onSearch === "function") {
@@ -57,7 +57,7 @@ const Default = (props) => {
             },
             flexGrow: 1,
           }}
-          size="small"
+          clear
         />
         {topButtons ? (
           typeof topButtons === "function" ? (

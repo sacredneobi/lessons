@@ -10,11 +10,11 @@ const Default = (props) => {
         gap
         sx={{ gridTemplateColumns: "1fr 1fr", gridTemplateRows: "1fr 1fr" }}
       >
-        <Input {...def("caption")} />
-        <Input {...def("caption1")} />
-        <Input {...def("caption2")} />
-        <Input {...def("caption3")} />
+        <Input {...def("title")} />
+        <Input {...def("category")} />
+        <Input {...def("brand")} />
       </Box>
+      <Input {...def("description")} rows={4} />
     </Box>
   );
 };

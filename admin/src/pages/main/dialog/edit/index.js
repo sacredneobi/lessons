@@ -10,9 +10,9 @@ const tabs = [
 ];
 
 const Default = (props) => {
-  const { langBase } = props;
+  const { langBase, data: oldData } = props;
 
-  const [data, setData] = useState(null);
+  const [data, setData] = useState(oldData);
   const { dialogData, OnDialogChange } = useDialogDef(langBase);
 
   const handleOnChange = useAction(setData);

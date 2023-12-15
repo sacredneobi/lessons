@@ -1,9 +1,13 @@
 import { DialogDelete, DialogEdit } from "@components";
 import Container from "./edit";
-import { useState } from "react";
+import { useState, memo } from "react";
+import { useGoodsGetById } from "@api";
+import { areEqualObject } from "@utils";
 
 const useData = () => {
   const [loading, setLoading] = useState(false);
+
+  const [callbackGet] = useGoodsGetById();
 
   const handleOnPost = (data, onClose) => {
     setLoading(true);
@@ -23,10 +27,19 @@ const useData = () => {
     }, 500);
   };
 
-  return { onPost: handleOnPost, onEdit: handleOnEdit, loading };
+  const handelOnGet = (data, onClose) => {
+    callbackGet(data, onClose);
+  };
+
+  return {
+    onPost: handleOnPost,
+    onEdit: handleOnEdit,
+    onGet: handelOnGet,
+    loading: loading,
+  };
 };
 
-const Default = (props) => {
+const Default = memo((props) => {
   const { langBase } = props;
 
   return (
@@ -34,12 +47,13 @@ const Default = (props) => {
       <DialogEdit
         langBase={langBase}
         container={<Container langBase={`${langBase}.dialog.edit`} />}
-        sxDialogContent={{ minHeight: 250, maxHeight: 400 }}
+        sxDialogContent={{ minHeight: 250, height: 300, maxHeight: 400 }}
         useData={useData()}
+        needLoading
       />
       <DialogDelete langBase={langBase} />
     </>
   );
-};
+}, areEqualObject);
 
 export default Default;
