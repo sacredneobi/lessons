@@ -1,42 +1,52 @@
+import { useGoodGetById } from "@api";
 import { DialogDelete, DialogEdit } from "@components";
-import Container from "./edit";
-import { useState, memo } from "react";
-import { useGoodsGetById } from "@api";
 import { areEqualObject } from "@utils";
+import { memo, useCallback, useMemo, useState } from "react";
+import Container from "./edit";
 
 const useData = () => {
   const [loading, setLoading] = useState(false);
 
-  const [callbackGet] = useGoodsGetById();
+  const [callbackGet, loadingGet] = useGoodGetById();
 
-  const handleOnPost = (data, onClose) => {
+  const handleOnPost = useCallback((data, onClose) => {
     setLoading(true);
     console.log(data);
     onClose();
     setTimeout(() => {
       setLoading(false);
     }, 500);
-  };
+  }, []);
 
-  const handleOnEdit = (data, onClose) => {
+  const handleOnEdit = useCallback((data, onClose) => {
     setLoading(true);
     console.log(data);
     onClose();
     setTimeout(() => {
       setLoading(false);
     }, 500);
-  };
+  }, []);
 
-  const handelOnGet = (data, onClose) => {
-    callbackGet(data, onClose);
-  };
+  const handelOnGet = useCallback(
+    (data, onClose) => {
+      callbackGet(data, onClose);
+    },
+    [callbackGet]
+  );
 
-  return {
-    onPost: handleOnPost,
-    onEdit: handleOnEdit,
-    onGet: handelOnGet,
-    loading: loading,
-  };
+  const result = useMemo(() => {
+    return {
+      useData: {
+        onGet: handelOnGet,
+        onEdit: handleOnEdit,
+        onPost: handleOnPost,
+      },
+    };
+  }, [handelOnGet, handleOnEdit, handleOnPost]);
+
+  result.loading = loading || loadingGet;
+
+  return result;
 };
 
 const Default = memo((props) => {
@@ -48,7 +58,7 @@ const Default = memo((props) => {
         langBase={langBase}
         container={<Container langBase={`${langBase}.dialog.edit`} />}
         sxDialogContent={{ minHeight: 250, height: 300, maxHeight: 400 }}
-        useData={useData()}
+        {...useData()}
         needLoading
       />
       <DialogDelete langBase={langBase} />

@@ -21,12 +21,12 @@ const Edit = (props) => {
     sxHeader,
     useData,
     needLoading,
+    loading: loadingProps,
   } = props;
 
   const [open, setOpen] = useState(false);
   const [data, setData] = useState(null);
   const [id, setId] = useState(null);
-  const [loading, setLoading] = useState(needLoading ?? false);
 
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -49,14 +49,10 @@ const Edit = (props) => {
 
   useEffect(() => {
     if (needLoading && id) {
-      if (typeof useData.onGet === "function") {
-        setLoading(true);
+      if (typeof useData?.onGet === "function") {
         useData.onGet({ id }, (data) => {
           setData(data);
-          setLoading(false);
         });
-      } else {
-        setLoading(false);
       }
     }
   }, [needLoading, id, useData]);
@@ -88,10 +84,12 @@ const Edit = (props) => {
       <container.type {...container.props} data={data} />
     );
 
+  const calcLoading = loadingProps;
+
   return (
     <Dialog fullScreen={fullScreen} open={open} maxWidth="md" fullWidth>
       <DialogTitle sx={{ py: 1, ...sxHeader }}>
-        {loading
+        {calcLoading
           ? "loading"
           : `Редактирование: ${data?.caption ?? data?.title}`}
       </DialogTitle>
@@ -106,9 +104,9 @@ const Edit = (props) => {
           ...sxDialogContent,
         }}
       >
-        {loading ? (
+        {calcLoading ? (
           <Box defFlex center grow>
-            LOADING{" "}
+            LOADING
           </Box>
         ) : calcContainer ? (
           calcContainer
@@ -122,7 +120,7 @@ const Edit = (props) => {
           onClick={handleOk}
           caption="Сохранить"
           variant="default"
-          disabled={useData?.loading || loading}
+          disabled={calcLoading}
         />
         <Button
           onClick={handleClose}
@@ -130,7 +128,7 @@ const Edit = (props) => {
           caption="Отмена"
           variant="outlined"
           sx={{ color: "warning.main" }}
-          disabled={useData?.loading || loading}
+          disabled={calcLoading}
         />
       </DialogActions>
     </Dialog>

@@ -2,14 +2,14 @@ import { Box, IconButton, Table } from "@components";
 import { useCallback, useEffect, useState } from "react";
 import useRenderRow from "./row";
 import Dialog from "./dialog";
-import { useGoodsGet } from "@api";
+import { useGoodGet } from "@api";
 
 const langBase = "goods";
 
 const Default = () => {
   const [page, setPage] = useState(0);
 
-  const [callbackGet, loading, rows] = useGoodsGet(20);
+  const [callbackGet, loading, rows] = useGoodGet(50);
 
   useEffect(() => {
     callbackGet({ page });

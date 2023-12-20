@@ -9,10 +9,6 @@ const Default = (props) => {
 
   const ref = useRef();
 
-  if (!Array.isArray(items) || !items.length > 0) {
-    return null;
-  }
-
   return (
     <div
       ref={ref}
