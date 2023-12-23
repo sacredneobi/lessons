@@ -1,7 +1,7 @@
-import { Box, Divider, MenuButton, Text, Icon } from "@components";
+import { Box, Divider, MenuButton, Text, Icon, Button } from "@components";
 import { useCallback, useEffect, useState } from "react";
 import { addEvent, dispatch, getHash, useStore } from "@utils";
-import { DashboardContext } from "@context";
+import { DashboardContext, useRootSetting } from "@context";
 import Pages from "./pages";
 import { memo } from "react";
 
@@ -133,9 +133,32 @@ const Default = () => {
 };
 
 const RootDefault = (props) => {
+  const [, setReload] = useState(false);
+
+  const context = useRootSetting();
+
+  useEffect(() => addEvent("auth", () => setReload((prev) => !prev)), []);
+
   return (
     <DashboardContext>
-      <Default {...props} />
+      {context?.userAuth ? (
+        <Button
+          caption="SUPER USER"
+          color="success"
+          onClick={() => {
+            context.userAuth = false;
+          }}
+        />
+      ) : (
+        <Button
+          caption="NOT AUTH"
+          color="warning"
+          onClick={() => {
+            context.userAuth = true;
+          }}
+        />
+      )}
+      {context?.userAuth && <Default {...props} />}
     </DashboardContext>
   );
 };

@@ -9,9 +9,6 @@ const useDefault = (url, cachePolicy, headersProps, dependency, persist) => {
       cachePolicy,
       cacheLife: 1000 * 60 * 60,
       persist,
-      onAbort: () => {
-        console.log("abort", url);
-      },
       onError: (err) => {
         console.log("fetch error", err);
       },
