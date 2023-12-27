@@ -25,7 +25,6 @@
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.32.0",
     "sequelize-cli": "^6.6.1",
-    "sequelize-mig": "github:sacredneobi/sequelize-mig",
     "uuid": "^9.0.0",
     "xlsx": "^0.18.5"
   },

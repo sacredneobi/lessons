@@ -14,7 +14,8 @@ const iconData = {
   filter: "filter_alt",
   edit: "stylus",
   delete: "delete",
-  clearInput : "close"
+  clearInput: "close",
+  logout: "digital_out_of_home",
 };
 
 const Default = (props) => {

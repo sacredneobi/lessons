@@ -15,7 +15,8 @@ const get = (req, res) => {
     })
     .defJSON()
     .then((data) => {
-      if (data) {
+      console.log(data);
+      if (data?.id) {
         return {
           isAuth: true,
           accessToken: jwtCreate({ id: data.id }),

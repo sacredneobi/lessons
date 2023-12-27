@@ -16,12 +16,14 @@ const Default = (props) => {
         interceptors: {
           request: ({ options }) => {
             options.headers["x-server-sacredApp"] = "0.0.1";
-            options.headers["authorization"] = context.userAuth;
+            options.headers["authorization"] =
+              localStorage.getItem("token") ?? "";
 
             return options;
           },
           response: ({ response }) => {
             if (response.status === 401) {
+              localStorage.removeItem("token");
               context.userAuth = false;
             }
             return response;

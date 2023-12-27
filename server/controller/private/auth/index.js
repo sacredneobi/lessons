@@ -96,10 +96,6 @@ const get = async (req, res) => {
     },
   };
 
-  if (process.setting.isDemo) {
-    defData.isDemo = process.setting.isDemo;
-  }
-
   defAnswer(res)(defData);
 };
 

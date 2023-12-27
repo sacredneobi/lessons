@@ -13,6 +13,7 @@ const Default = memo((props) => {
     endComponent,
     clear,
     sx,
+    sxIcon,
     ...other
   } = props;
 
@@ -21,7 +22,14 @@ const Default = memo((props) => {
   let clearComponent = clear ? (
     <IconButton
       name="clearInput"
-      sxIcon={{ fontSize: 18 }}
+      sxIcon={{
+        fontSize: 18,
+        ...sxIcon,
+        ...(other?.disabled && {
+          color: ({ palette }) => palette.action.disabled,
+        }),
+      }}
+      disabled={other?.disabled}
       onClick={(e) => {
         if (typeof onChange === "function") {
           onChange(name)(null);

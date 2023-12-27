@@ -9,6 +9,9 @@ class RootSettingStore {
   set userAuth(value) {
     this._userAuth = value;
     localStorage.setItem("auth", JSON.stringify(value));
+    if (!value) {
+      localStorage.removeItem("token");
+    }
     dispatch("auth");
   }
 

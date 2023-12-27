@@ -1,9 +1,10 @@
-import { Box, Divider, MenuButton, Text, Icon, Button } from "@components";
+import { Box, Divider, MenuButton, Text, Icon } from "@components";
 import { useCallback, useEffect, useState } from "react";
 import { addEvent, dispatch, getHash, useStore } from "@utils";
 import { DashboardContext, useRootSetting } from "@context";
-import Pages from "./pages";
 import { memo } from "react";
+import Pages from "./pages";
+import Login from "./login";
 
 function areEqual(prev, next) {
   return true;
@@ -73,6 +74,8 @@ const MyButton = (props) => {
 const Default = () => {
   const [open, setOpen] = useStore("leftPane");
 
+  const context = useRootSetting();
+
   const leftPanelOpen = useCallback(() => {
     setOpen((prev) => !prev);
   }, [setOpen]);
@@ -119,6 +122,14 @@ const Default = () => {
           </Box>
           <Box defFlex>
             <MyButton
+              name="logout"
+              open={open}
+              onClick={() => {
+                context.userAuth = false;
+              }}
+            />
+            <Divider sx={{ my: 1.5 }} />
+            <MyButton
               name={open ? "close" : "open"}
               open={open}
               sxIcon={{ color: "primary.light" }}
@@ -141,24 +152,7 @@ const RootDefault = (props) => {
 
   return (
     <DashboardContext>
-      {context?.userAuth ? (
-        <Button
-          caption="SUPER USER"
-          color="success"
-          onClick={() => {
-            context.userAuth = false;
-          }}
-        />
-      ) : (
-        <Button
-          caption="NOT AUTH"
-          color="warning"
-          onClick={() => {
-            context.userAuth = true;
-          }}
-        />
-      )}
-      {context?.userAuth && <Default {...props} />}
+      {context?.userAuth ? <Default {...props} /> : <Login />}
     </DashboardContext>
   );
 };
