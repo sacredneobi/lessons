@@ -80,9 +80,43 @@ const useUpdate = () => {
   ];
 };
 
-const usePost = () => {};
+const usePost = () => {
+  const { response, post, loading, abort } = useFetch(baseUrl);
 
-const useDel = () => {};
+  return [
+    useCallback(
+      (data, setData) => {
+        post(data).then((data) => {
+          if (typeof setData === "function" && response.ok) {
+            setData(data);
+          }
+        });
+      },
+      [post, response]
+    ),
+    loading,
+    abort,
+  ];
+};
+
+const useDel = () => {
+  const { response, del, loading, abort } = useFetch(baseUrl);
+
+  return [
+    useCallback(
+      (data, setData) => {
+        del(data).then((data) => {
+          if (typeof setData === "function" && response.ok) {
+            setData(data);
+          }
+        });
+      },
+      [del, response]
+    ),
+    loading,
+    abort,
+  ];
+};
 
 export {
   useGet as useGoodGet,

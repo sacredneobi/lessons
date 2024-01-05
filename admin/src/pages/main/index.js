@@ -1,4 +1,11 @@
-import { Box, IconButton, Table } from "@components";
+import {
+  Box,
+  IconButton,
+  IconButtonCreate,
+  Table,
+  Stack,
+  IconButtonReload,
+} from "@components";
 import { useCallback, useEffect, useState } from "react";
 import useRenderRow from "./row";
 import Dialog from "./dialog";
@@ -23,7 +30,13 @@ const Default = () => {
   );
 
   const handleOnFilter = useCallback(
-    (props) => <IconButton name="filter" {...props} />,
+    (props) => (
+      <Stack>
+        <IconButtonReload langBase={langBase} />
+        <IconButtonCreate {...props} langBase={langBase} />
+        <IconButton name="filter" {...props} />
+      </Stack>
+    ),
     []
   );
 

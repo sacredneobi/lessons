@@ -1,23 +1,26 @@
-import { useGoodGetById, useGoodUpdate } from "@api";
+import {
+  useGoodGetById,
+  useGoodUpdate,
+  useGoodPost,
+  useGoodDelete,
+} from "@api";
 import { DialogDelete, DialogEdit } from "@components";
 import { areEqualObject } from "@utils";
-import { memo, useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useMemo } from "react";
 import Container from "./edit";
 
 const useData = () => {
-  const [loading, setLoading] = useState(false);
-
   const [callbackGet, loadingGet] = useGoodGetById();
   const [callbackUpdate, loadingUpdate] = useGoodUpdate();
+  const [callbackPost, loadingPost] = useGoodPost();
+  const [callbackDelete, loadingDelete] = useGoodDelete();
 
-  const handleOnPost = useCallback((data, onClose) => {
-    setLoading(true);
-    console.log(data);
-    onClose();
-    setTimeout(() => {
-      setLoading(false);
-    }, 500);
-  }, []);
+  const handleOnPost = useCallback(
+    (data, onClose) => {
+      callbackPost(data, onClose);
+    },
+    [callbackPost]
+  );
 
   const handleOnEdit = useCallback(
     (data, onClose) => {
@@ -33,17 +36,25 @@ const useData = () => {
     [callbackGet]
   );
 
+  const handelOnDelete = useCallback(
+    (data, onClose) => {
+      callbackDelete(data, onClose);
+    },
+    [callbackDelete]
+  );
+
   const result = useMemo(() => {
     return {
       useData: {
         onGet: handelOnGet,
         onEdit: handleOnEdit,
         onPost: handleOnPost,
+        onDelete: handelOnDelete,
       },
     };
-  }, [handelOnGet, handleOnEdit, handleOnPost]);
+  }, [handelOnGet, handleOnEdit, handleOnPost, handelOnDelete]);
 
-  result.loading = loading || loadingGet || loadingUpdate;
+  result.loading = loadingGet || loadingUpdate || loadingPost || loadingDelete;
 
   return result;
 };
@@ -60,7 +71,7 @@ const Default = memo((props) => {
         {...useData()}
         needLoading
       />
-      <DialogDelete langBase={langBase} />
+      <DialogDelete langBase={langBase} {...useData()} />
     </>
   );
 }, areEqualObject);

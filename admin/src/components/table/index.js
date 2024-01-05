@@ -39,7 +39,7 @@ const Default = (props) => {
         ...sx,
       }}
     >
-      <Box defFlex row gap name="header" sx={{ width: 1, ...sxHeader }}>
+      <Box defFlex row gap name="header" ai sx={{ width: 1, ...sxHeader }}>
         <Input
           value={search ?? ""}
           onChange={() => setSearch}

@@ -16,6 +16,8 @@ const iconData = {
   delete: "delete",
   clearInput: "close",
   logout: "digital_out_of_home",
+  create: "add_circle",
+  reload: "cached",
 };
 
 const Default = (props) => {

@@ -1,4 +1,4 @@
-import { dispatchDelete, dispatchEdit } from "@utils";
+import { dispatch, dispatchDelete, dispatchEdit } from "@utils";
 import { IconButton } from "@mui/material";
 import { Icon } from "../icon";
 
@@ -39,8 +39,38 @@ const Delete = (props) => {
   );
 };
 
+const Create = (props) => {
+  const { langBase, data } = props;
+
+  return (
+    <Default
+      name="create"
+      onClick={() => {
+        dispatchEdit(langBase, data);
+      }}
+      sxIcon={{ fontSize: 18, color: "warning.main" }}
+    />
+  );
+};
+
+const Reload = (props) => {
+  const { langBase } = props;
+
+  return (
+    <Default
+      name="reload"
+      onClick={() => {
+        dispatch("reload", { name: langBase });
+      }}
+      sxIcon={{ fontSize: 18, color: "warning.main" }}
+    />
+  );
+};
+
 export {
   Default as IconButton,
   Edit as IconButtonEdit,
   Delete as IconButtonDelete,
+  Create as IconButtonCreate,
+  Reload as IconButtonReload,
 };

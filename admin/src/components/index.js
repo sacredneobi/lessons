@@ -8,3 +8,4 @@ export * from "./iconButton";
 export * from "./dialog";
 export * from "./input";
 export * from "./tabs";
+export * from "./stack";

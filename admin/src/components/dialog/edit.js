@@ -93,7 +93,9 @@ const Edit = (props) => {
       <DialogTitle sx={{ py: 1, ...sxHeader }}>
         {calcLoading
           ? "loading"
-          : `Редактирование: ${data?.caption ?? data?.title}`}
+          : data?.id
+          ? `Редактирование: ${data?.caption ?? data?.title}`
+          : `Создать элемент`}
       </DialogTitle>
       <Divider />
       <DialogContent
@@ -121,7 +123,7 @@ const Edit = (props) => {
       <DialogActions>
         <Button
           onClick={handleOk}
-          caption="Сохранить"
+          caption={data?.id ? "Сохранить" : "Создать"}
           variant="default"
           disabled={calcLoading}
         />
