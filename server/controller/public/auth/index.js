@@ -15,7 +15,6 @@ const get = (req, res) => {
     })
     .defJSON()
     .then((data) => {
-      console.log(data);
       if (data?.id) {
         return {
           isAuth: true,

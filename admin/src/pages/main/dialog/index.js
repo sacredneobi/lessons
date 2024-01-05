@@ -1,4 +1,4 @@
-import { useGoodGetById } from "@api";
+import { useGoodGetById, useGoodUpdate } from "@api";
 import { DialogDelete, DialogEdit } from "@components";
 import { areEqualObject } from "@utils";
 import { memo, useCallback, useMemo, useState } from "react";
@@ -8,6 +8,7 @@ const useData = () => {
   const [loading, setLoading] = useState(false);
 
   const [callbackGet, loadingGet] = useGoodGetById();
+  const [callbackUpdate, loadingUpdate] = useGoodUpdate();
 
   const handleOnPost = useCallback((data, onClose) => {
     setLoading(true);
@@ -18,14 +19,12 @@ const useData = () => {
     }, 500);
   }, []);
 
-  const handleOnEdit = useCallback((data, onClose) => {
-    setLoading(true);
-    console.log(data);
-    onClose();
-    setTimeout(() => {
-      setLoading(false);
-    }, 500);
-  }, []);
+  const handleOnEdit = useCallback(
+    (data, onClose) => {
+      callbackUpdate(data, onClose);
+    },
+    [callbackUpdate]
+  );
 
   const handelOnGet = useCallback(
     (data, onClose) => {
@@ -44,7 +43,7 @@ const useData = () => {
     };
   }, [handelOnGet, handleOnEdit, handleOnPost]);
 
-  result.loading = loading || loadingGet;
+  result.loading = loading || loadingGet || loadingUpdate;
 
   return result;
 };

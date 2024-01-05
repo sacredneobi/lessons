@@ -1,10 +1,10 @@
 const { Op } = require("sequelize");
-const { user, media } = require("@models");
-const { checkVal, getMediaPath } = require("@utils");
+const { good } = require("@models");
+const { checkVal, parseLimit, defExclude } = require("@utils");
 
-const getURI = (req, res) => {
+const getById = (req, res) => {
   const { id } = req.params;
-  user.findOne({ where: { id } }).defAnswer(res);
+  good.findOne({ ...defExclude(), where: { id } }).defAnswer(res);
 };
 
 const get = (req, res) => {
@@ -12,8 +12,9 @@ const get = (req, res) => {
 
   const where = search ? { caption: { [Op.getLike()]: `%${search}%` } } : null;
 
-  user
+  good
     .findAndCountAll({
+      ...defExclude(),
       where,
       ...(limit ? { limit } : {}),
       ...(offset ? { offset } : {}),
@@ -23,31 +24,16 @@ const get = (req, res) => {
 
 const update = (req, res) => {
   const { id, ...other } = req.body;
-  user.update(other, { where: { id } }).defAnswer(res);
+  good.update(other, { where: { id } }).defAnswer(res);
 };
 
-const post = async (req, res) => {
-  const files = Object.keys(req.files);
-
-  for (const file of files) {
-    const item = req.files[file];
-
-    await media.create({
-      name: item.name,
-      size: item.size,
-      mimeType: item.mimetype,
-      fileId: item.md5,
-    });
-
-    item.mv(`${getMediaPath()}${item.md5}`);
-  }
-
-  res.status(500).send("d");
+const post = (req, res) => {
+  good.create(req.body).defAnswer(res);
 };
 
 module.exports = (router) => {
-  router.get("/", get);
-  router.get("/:id", getURI);
+  router.get("/", parseLimit, get);
+  router.get("/:id", getById);
   router.put("/", checkVal(["id"], "body"), update);
   router.post("/", post);
 

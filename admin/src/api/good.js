@@ -1,26 +1,40 @@
-import { useCallback, useState } from "react";
-import { buildGet, useFetch } from "@utils";
+import { useCallback, useEffect, useState } from "react";
+import { addEvent, buildGet, useFetch } from "@utils";
 
-const baseUrl = "https://dummyjson.com/products";
+const baseUrl = "/api/private/good";
 
-const useGet = (limit) => {
+const useGet = (limit, eventName) => {
   const [rows, setRows] = useState(null);
+  const [reload, setReload] = useState(null);
   const { loading, response, get, abort } = useFetch(baseUrl);
+
+  useEffect(() => {
+    if (eventName) {
+      return addEvent("reload", (detail) => {
+        if (detail?.name === eventName) {
+          setReload((prev) => !prev);
+        }
+      });
+    }
+  }, [eventName]);
 
   return [
     useCallback(
       (data) => {
         const { page } = data ?? {};
+
+        if (reload === 20) console.log(reload);
+
         get(buildGet({ limit, skip: page * limit })).then((res) => {
           if (response.ok) {
             if (res) {
-              res.totalPage = Math.ceil(res.total / limit);
+              res.totalPage = Math.ceil(res.count / limit);
             }
-            setRows(res);
+            setRows(res?.rows);
           }
         });
       },
-      [get, limit, response]
+      [get, limit, response, reload]
     ),
     loading,
     rows,
@@ -47,7 +61,24 @@ const useGetById = () => {
 
 const useGetAll = () => {};
 
-const useUpdate = () => {};
+const useUpdate = () => {
+  const { response, put, loading, abort } = useFetch(baseUrl);
+
+  return [
+    useCallback(
+      (data, setData) => {
+        put(data).then((data) => {
+          if (typeof setData === "function" && response.ok) {
+            setData(data);
+          }
+        });
+      },
+      [put, response]
+    ),
+    loading,
+    abort,
+  ];
+};
 
 const usePost = () => {};
 

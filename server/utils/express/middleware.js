@@ -21,4 +21,13 @@ const checkVal = (fields, place) => {
   };
 };
 
-module.exports = { checkVal };
+const parseLimit = (req, res, next) => {
+  const { limit, offset } = req.query ?? {};
+  if (req.query) {
+    req.query.limit = parseInt(limit);
+    req.query.offset = parseInt(offset);
+  }
+  next();
+};
+
+module.exports = { checkVal, parseLimit };

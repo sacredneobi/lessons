@@ -1,6 +1,6 @@
 import { Tabs, DialogContent } from "@components";
 import { useAction, useDef, useDialogDef } from "@utils";
-import { useState } from "react";
+// import { useState } from "react";
 import Setting from "./setting";
 import Price from "./price";
 
@@ -10,9 +10,9 @@ const tabs = [
 ];
 
 const Default = (props) => {
-  const { langBase, data: oldData } = props;
+  const { langBase, data, setData } = props;
 
-  const [data, setData] = useState(oldData);
+  // const [data, setData] = useState(oldData);
   const { dialogData, OnDialogChange } = useDialogDef(langBase);
 
   const handleOnChange = useAction(setData);

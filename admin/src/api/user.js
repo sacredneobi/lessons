@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { buildGet, useFetch } from "@utils";
 
-const baseUrl = "api/private/auth";
+const baseUrl = "/api/private/auth";
 
 const useGet = (limit) => {
   const [rows, setRows] = useState(null);

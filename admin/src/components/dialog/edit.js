@@ -7,7 +7,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import { addEvent } from "@utils";
+import { addEvent, dispatch } from "@utils";
 import { useCallback, useEffect, useState } from "react";
 import { Button } from "../button";
 import { Divider } from "../divider";
@@ -61,6 +61,7 @@ const Edit = (props) => {
     if (data?.id) {
       if (typeof useData?.onEdit === "function") {
         useData.onEdit(data, () => {
+          dispatch("reload", { name: langBase });
           setOpen(false);
         });
       }
@@ -68,10 +69,11 @@ const Edit = (props) => {
     }
     if (typeof useData?.onPost === "function") {
       useData.onPost(data, () => {
+        dispatch("reload", { name: langBase });
         setOpen(false);
       });
     }
-  }, [useData, data]);
+  }, [useData, data, langBase]);
 
   const handleClose = () => {
     setOpen(false);
@@ -79,9 +81,9 @@ const Edit = (props) => {
 
   const calcContainer =
     typeof container === "function" ? (
-      container(data)
+      container(data, setData)
     ) : (
-      <container.type {...container.props} data={data} />
+      <container.type {...container.props} data={data} setData={setData} />
     );
 
   const calcLoading = loadingProps;
@@ -114,6 +116,7 @@ const Edit = (props) => {
           <DialogContentText>{data?.caption2}</DialogContentText>
         )}
       </DialogContent>
+      <Box grow />
       <Divider />
       <DialogActions>
         <Button

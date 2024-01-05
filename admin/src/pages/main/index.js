@@ -9,7 +9,7 @@ const langBase = "goods";
 const Default = () => {
   const [page, setPage] = useState(0);
 
-  const [callbackGet, loading, rows] = useGoodGet(50);
+  const [callbackGet, loading, rows] = useGoodGet(50, langBase);
 
   useEffect(() => {
     callbackGet({ page });
@@ -34,10 +34,7 @@ const Default = () => {
       <Table
         name="goods"
         sx={{ flexGrow: 1 }}
-        items={rows?.products?.map((item) => ({
-          ...item,
-          caption: item.title,
-        }))}
+        items={rows}
         topButtons={handleOnFilter}
         pageCount={rows?.totalPage}
         onItemRender={handelOnRender}

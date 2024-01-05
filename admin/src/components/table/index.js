@@ -90,7 +90,7 @@ const Default = (props) => {
         ) : null}
       </Box>
       <Rows
-        items={items}
+        items={items ?? []}
         name={name}
         onItemRender={onItemRender}
         langBase={langBase}
