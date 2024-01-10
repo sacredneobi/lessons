@@ -3,4 +3,5 @@ module.exports = {
   ...require("./buildLimit"),
   ...require("./getMedia"),
   ...require("./defLimit"),
+  ...require("./defSearch"),
 };

@@ -1,5 +1,5 @@
 const fs = require("fs");
-const main = require("./main.json");
+const main = require("../package.json");
 
 process.setting = {
   db: {
@@ -28,3 +28,5 @@ try {
 } catch (err) {
   console.error("SETTING", err);
 }
+
+module.exports = process.setting.db;

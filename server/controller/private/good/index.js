@@ -1,6 +1,12 @@
-const { Op } = require("sequelize");
+const { Op, DataTypes } = require("sequelize");
 const { good } = require("@models");
-const { checkVal, parseLimit, defExclude, defLimit } = require("@utils");
+const {
+  checkVal,
+  parseLimit,
+  defExclude,
+  defLimit,
+  defSearch,
+} = require("@utils");
 
 const getById = (req, res) => {
   const { id } = req.params;
@@ -8,12 +14,18 @@ const getById = (req, res) => {
 };
 
 const get = (req, res) => {
-  const { search } = req.query;
-
-  const where = search ? { caption: { [Op.getLike()]: `%${search}%` } } : null;
+  const search = defSearch(good, req.query);
 
   good
-    .findAndCountAll({ ...defExclude(), where, ...defLimit(req.query) })
+    .findAndCountAll({
+      ...defExclude(),
+      ...defLimit(req.query),
+      where: search.where,
+    })
+    .then((data) => {
+      data.searchColumns = search.columns;
+      return data;
+    })
     .defAnswer(res);
 };
 
