@@ -62,7 +62,7 @@ const useGetById = () => {
 const useGetAll = () => {};
 
 const useUpdate = () => {
-  const { response, put, loading, abort } = useFetch(baseUrl);
+  const { response, put, loading, abort } = useFetch(baseUrl, undefined, {});
 
   return [
     useCallback(

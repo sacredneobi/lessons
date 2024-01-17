@@ -22,7 +22,7 @@ const fileWalk = (dir, cb) => {
 
 const scriptsPath = path.resolve(`./scripts/`);
 const langPath = path.resolve(`./res/`);
-const mediaPath = path.resolve(`./media/`);
+const mediaPath = path.resolve(`./media/`) + path.sep;
 
 if (!fs.existsSync(scriptsPath)) {
   fs.mkdirSync(scriptsPath);

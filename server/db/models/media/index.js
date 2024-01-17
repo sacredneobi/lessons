@@ -19,6 +19,10 @@ module.exports = (db, defOptions, modelName) => {
       onUpdate: "NO ACTION",
       onDelete: "CASCADE",
     });
+    model.belongsTo(models.good, {
+      onUpdate: "NO ACTION",
+      onDelete: "CASCADE",
+    });
   };
 
   return model;

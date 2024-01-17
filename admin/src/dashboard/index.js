@@ -1,14 +1,10 @@
 import { Box, Divider, MenuButton, Text, Icon } from "@components";
 import { useCallback, useEffect, useState } from "react";
-import { addEvent, dispatch, getHash, useStore } from "@utils";
+import { addEvent, areEqualAlways, dispatch, getHash, useStore } from "@utils";
 import { DashboardContext, useRootSetting } from "@context";
 import { memo } from "react";
 import Pages from "./pages";
 import Login from "./login";
-
-function areEqual(prev, next) {
-  return true;
-}
 
 const NewPages = memo(() => {
   return (
@@ -16,7 +12,7 @@ const NewPages = memo(() => {
       <Pages />
     </Box>
   );
-}, areEqual);
+}, areEqualAlways);
 
 const MyButton = (props) => {
   const { name, open, sxCaption, sx, sxIcon, ...other } = props;
@@ -27,7 +23,9 @@ const MyButton = (props) => {
     () =>
       addEvent(
         "hashchange",
-        () => setActive(getHash() === name),
+        () => {
+          setActive(getHash() === name);
+        },
         window,
         false
       ),

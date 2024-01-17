@@ -14,6 +14,7 @@ const Default = memo((props) => {
     clear,
     sx,
     sxIcon,
+    type,
     ...other
   } = props;
 
@@ -44,11 +45,30 @@ const Default = memo((props) => {
       label={caption}
       variant="outlined"
       size="small"
-      value={value ?? ""}
+      value={type === "file" ? "" : value ?? ""}
       {...other}
+      type={type}
       onChange={(e) => {
         if (typeof onChange === "function") {
-          onChange(name)(e?.target?.value);
+          if (type === "file") {
+            Array.prototype.forEach.call(e.target.files, (file) => {
+              let reader = new FileReader();
+              reader.onloadend = (...arg) => {
+                const data = {
+                  caption: file.name,
+                  data: file,
+                  type: file.type,
+                  preview: reader.result,
+                };
+                onChange(name)(data);
+              };
+
+              reader.readAsDataURL(file);
+            });
+            e.target.value = "";
+          } else {
+            onChange(name)(e?.target?.value);
+          }
         }
       }}
       sx={{

@@ -5,7 +5,7 @@ import {
   useGoodDelete,
 } from "@api";
 import { DialogDelete, DialogEdit } from "@components";
-import { areEqualObject } from "@utils";
+import { areEqualObject, createMultiPart } from "@utils";
 import { memo, useCallback, useMemo } from "react";
 import Container from "./edit";
 
@@ -24,7 +24,7 @@ const useData = () => {
 
   const handleOnEdit = useCallback(
     (data, onClose) => {
-      callbackUpdate(data, onClose);
+      callbackUpdate(createMultiPart(data), onClose);
     },
     [callbackUpdate]
   );
@@ -67,7 +67,7 @@ const Default = memo((props) => {
       <DialogEdit
         langBase={langBase}
         container={<Container langBase={`${langBase}.dialog.edit`} />}
-        sxDialogContent={{ minHeight: 250, height: 300, maxHeight: 400 }}
+        sxDialogContent={{ minHeight: 250, height: 420, maxHeight: 420 }}
         {...useData()}
         needLoading
       />
