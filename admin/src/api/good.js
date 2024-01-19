@@ -81,7 +81,7 @@ const useUpdate = () => {
 };
 
 const usePost = () => {
-  const { response, post, loading, abort } = useFetch(baseUrl);
+  const { response, post, loading, abort } = useFetch(baseUrl, undefined, {});
 
   return [
     useCallback(

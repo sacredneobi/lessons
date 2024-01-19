@@ -1,3 +1,4 @@
+const { mediaPath } = require("../file");
 const { ErrorMiddleWare } = require("../class");
 
 const checkVal = (fields, place) => {
@@ -30,4 +31,40 @@ const parseLimit = (req, res, next) => {
   next();
 };
 
-module.exports = { checkVal, parseLimit };
+const mediaMiddleware = async (req, res, next) => {
+  if (typeof req.body?.data === "string") {
+    try {
+      req.body = JSON.parse(req.body?.data);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  req.newFiles = [];
+
+  if (req.files && Object.keys(req.files).length > 0) {
+    for (const key in req.files) {
+      const item = req.files[key];
+
+      const fileName = mediaPath + item.md5;
+
+      try {
+        await item.mv(fileName);
+
+        req.newFiles.push({
+          fileId: item.md5,
+          name: item.name,
+          size: item.size,
+          mimeType: item.mimetype,
+          fileName,
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }
+
+  next();
+};
+
+module.exports = { checkVal, parseLimit, mediaMiddleware };

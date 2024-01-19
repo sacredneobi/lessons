@@ -17,7 +17,7 @@ const useData = () => {
 
   const handleOnPost = useCallback(
     (data, onClose) => {
-      callbackPost(data, onClose);
+      callbackPost(createMultiPart(data), onClose);
     },
     [callbackPost]
   );
@@ -67,7 +67,7 @@ const Default = memo((props) => {
       <DialogEdit
         langBase={langBase}
         container={<Container langBase={`${langBase}.dialog.edit`} />}
-        sxDialogContent={{ minHeight: 250, height: 420, maxHeight: 420 }}
+        sxDialogContent={{ minHeight: 250, height: 420 }}
         {...useData()}
         needLoading
       />

@@ -18,6 +18,7 @@ const iconData = {
   logout: "digital_out_of_home",
   create: "add_circle",
   reload: "cached",
+  file: "note_stack",
 };
 
 const Default = (props) => {

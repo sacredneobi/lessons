@@ -6,8 +6,7 @@ const {
   defExclude,
   defLimit,
   defSearch,
-  mediaPath,
-  defAnswerError,
+  mediaMiddleware,
 } = require("@utils");
 
 const getById = (req, res) => {
@@ -21,7 +20,7 @@ const getById = (req, res) => {
             sourceKey: "id",
             foreignKey: "goodId",
           }),
-          ...defExclude(["userId", "goodId", "caption", "description"]),
+          ...defExclude(["userId", "goodId", "caption", "description", "size"]),
         },
       ],
       where: { id },
@@ -37,6 +36,7 @@ const get = (req, res) => {
       ...defExclude(),
       ...defLimit(req.query),
       where: search.where,
+      order: ["id"],
     })
     .then((data) => {
       data.searchColumns = search.columns;
@@ -48,9 +48,13 @@ const get = (req, res) => {
 const update = async (req, res) => {
   const { id, ...other } = req.body;
 
+  for (const mediaData of req.body.media?.filter((item) => item.isDelete) ??
+    []) {
+    await media.destroy({ where: { id: mediaData.id } });
+  }
+
   for (const file of req.newFiles) {
     file.goodId = id;
-    // await media.destroy({ where: { goodId: id } });
     await media.create(file);
   }
 
@@ -58,7 +62,16 @@ const update = async (req, res) => {
 };
 
 const post = (req, res) => {
-  good.create(req.body).defAnswer(res);
+  good
+    .create(req.body)
+    .then(async (data) => {
+      for (const file of req.newFiles) {
+        file.goodId = data.id;
+        await media.create(file);
+      }
+      return data;
+    })
+    .defAnswer(res);
 };
 
 const del = (req, res) => {
@@ -69,47 +82,8 @@ const del = (req, res) => {
 module.exports = (router) => {
   router.get("/", parseLimit, get);
   router.get("/:id", getById);
-  router.put(
-    "/",
-    async (req, res, next) => {
-      if (typeof req.body?.data === "string") {
-        try {
-          req.body = JSON.parse(req.body?.data);
-        } catch (err) {
-          console.log(err);
-        }
-      }
-
-      req.newFiles = [];
-
-      if (req.files && Object.keys(req.files).length > 0) {
-        for (const key in req.files) {
-          const item = req.files[key];
-
-          const fileName = mediaPath + item.md5;
-
-          try {
-            await item.mv(fileName);
-
-            req.newFiles.push({
-              fileId: item.md5,
-              name: item.name,
-              size: item.size,
-              mimeType: item.mimetype,
-              fileName,
-            });
-          } catch (err) {
-            console.log(err);
-          }
-        }
-      }
-
-      next();
-    },
-    checkVal(["id"], "body"),
-    update
-  );
-  router.post("/", post);
+  router.put("/", mediaMiddleware, checkVal(["id"], "body"), update);
+  router.post("/", mediaMiddleware, post);
   router.delete("/", checkVal(["id"], "body"), del);
 
   return true;

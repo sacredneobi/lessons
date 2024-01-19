@@ -2,6 +2,10 @@ import { IconButton } from "../iconButton";
 import { memo } from "@utils";
 
 import { TextField } from "@mui/material";
+import { Box } from "../box";
+import { useRef } from "react";
+import { Icon } from "../icon";
+import { Text } from "../text";
 
 const Default = memo((props) => {
   const {
@@ -84,4 +88,94 @@ const Default = memo((props) => {
   );
 });
 
-export { Default as Input };
+const InputFile = (props) => {
+  const { accept, clear, sxIcon, onChange, name, caption, value, ...other } =
+    props;
+
+  const ref = useRef();
+
+  let clearComponent = clear ? (
+    <IconButton
+      name="clearInput"
+      sxIcon={{
+        fontSize: 18,
+        ...sxIcon,
+        ...(other?.disabled && {
+          color: ({ palette }) => palette.action.disabled,
+        }),
+      }}
+      disabled={other?.disabled}
+      onClick={(e) => {
+        if (typeof onChange === "function") {
+          onChange(name)(null);
+        }
+        e.stopPropagation();
+      }}
+    />
+  ) : null;
+
+  return (
+    <Box
+      defFlex
+      row
+      ai
+      gap
+      sx={{
+        pl: 0.5,
+        cursor: "pointer",
+        minHeight: 40,
+        borderRadius: 1,
+        border: ({ palette }) => `1px solid ${palette.action.disabled}`,
+        "&:hover": {
+          border: ({ palette }) => `1px solid ${palette.action.active}`,
+        },
+        transition: "all 200ms linear",
+      }}
+      onClick={() => {
+        if (ref?.current) {
+          ref.current.click();
+        }
+      }}
+    >
+      <input
+        type="file"
+        accept={accept}
+        style={{ opacity: 0, display: "none" }}
+        ref={ref}
+        onChange={(e) => {
+          Array.prototype.forEach.call(e.target.files, (file) => {
+            let reader = new FileReader();
+            reader.onloadend = (...arg) => {
+              const data = {
+                caption: file.name,
+                data: file,
+                type: file.type,
+                preview: reader.result,
+              };
+              onChange(name)(data);
+            };
+
+            reader.readAsDataURL(file);
+          });
+          e.target.value = "";
+        }}
+      />
+      <Icon
+        name="file"
+        sx={{ color: ({ palette }) => palette.text.secondary }}
+      />
+      <Text
+        caption={value?.caption ?? caption}
+        sx={{
+          width: 1,
+          ...(!value?.caption && {
+            color: ({ palette }) => palette.text.secondary,
+          }),
+        }}
+      />
+      {clearComponent}
+    </Box>
+  );
+};
+
+export { Default as Input, InputFile };
