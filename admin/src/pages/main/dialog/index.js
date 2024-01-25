@@ -17,14 +17,14 @@ const useData = () => {
 
   const handleOnPost = useCallback(
     (data, onClose) => {
-      callbackPost(createMultiPart(data), onClose);
+      callbackPost(createMultiPart(data, ["file"]), onClose);
     },
     [callbackPost]
   );
 
   const handleOnEdit = useCallback(
     (data, onClose) => {
-      callbackUpdate(createMultiPart(data), onClose);
+      callbackUpdate(createMultiPart(data, ["file"]), onClose);
     },
     [callbackUpdate]
   );

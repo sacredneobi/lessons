@@ -1,12 +1,26 @@
-const createMultiPart = (data) => {
+const createMultiPart = (data, arrFile = []) => {
   const result = new FormData();
 
   const newData = Object.keys(data).reduce((prev, item) => {
-    if (data[item]?.preview) {
-      result.append(data[item].caption, data[item]?.data);
+    if (arrFile.includes(item)) {
+      if (data[item]?.data instanceof File) {
+        result.append(data[item].caption, data[item]?.data);
+      }
+      if (Array.isArray(data[item])) {
+        data[item].forEach((item) => {
+          if (item.data instanceof File) {
+            result.append(item.caption, item.data);
+          }
+        });
+      }
     } else {
-      prev[item] = data[item];
+      if (data[item]?.preview) {
+        result.append(data[item].caption, data[item]?.data);
+      } else {
+        prev[item] = data[item];
+      }
     }
+
     return prev;
   }, {});
 

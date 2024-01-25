@@ -88,31 +88,48 @@ const Default = memo((props) => {
   );
 });
 
+function uuid() {
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+    var uuid = (Math.random() * 16) | 0;
+    return uuid.toString(16);
+  });
+}
+
 const InputFile = (props) => {
-  const { accept, clear, sxIcon, onChange, name, caption, value, ...other } =
-    props;
+  const {
+    accept,
+    clear,
+    sxIcon,
+    onChange,
+    name,
+    caption,
+    value,
+    multiple,
+    ...other
+  } = props;
 
   const ref = useRef();
 
-  let clearComponent = clear ? (
-    <IconButton
-      name="clearInput"
-      sxIcon={{
-        fontSize: 18,
-        ...sxIcon,
-        ...(other?.disabled && {
-          color: ({ palette }) => palette.action.disabled,
-        }),
-      }}
-      disabled={other?.disabled}
-      onClick={(e) => {
-        if (typeof onChange === "function") {
-          onChange(name)(null);
-        }
-        e.stopPropagation();
-      }}
-    />
-  ) : null;
+  let clearComponent =
+    clear && !multiple ? (
+      <IconButton
+        name="clearInput"
+        sxIcon={{
+          fontSize: 18,
+          ...sxIcon,
+          ...(other?.disabled && {
+            color: ({ palette }) => palette.action.disabled,
+          }),
+        }}
+        disabled={other?.disabled}
+        onClick={(e) => {
+          if (typeof onChange === "function") {
+            onChange(name)(null);
+          }
+          e.stopPropagation();
+        }}
+      />
+    ) : null;
 
   return (
     <Box
@@ -142,8 +159,21 @@ const InputFile = (props) => {
         accept={accept}
         style={{ opacity: 0, display: "none" }}
         ref={ref}
+        multiple={multiple}
         onChange={(e) => {
+          const newData = value ?? [];
+
           Array.prototype.forEach.call(e.target.files, (file) => {
+            if (multiple) {
+              newData.push({
+                id: uuid(),
+                caption: file.name,
+                data: file,
+                type: file.type,
+              });
+              return;
+            }
+
             let reader = new FileReader();
             reader.onloadend = (...arg) => {
               const data = {
@@ -157,6 +187,11 @@ const InputFile = (props) => {
 
             reader.readAsDataURL(file);
           });
+
+          if (multiple) {
+            onChange(name)(newData);
+          }
+
           e.target.value = "";
         }}
       />
@@ -165,7 +200,11 @@ const InputFile = (props) => {
         sx={{ color: ({ palette }) => palette.text.secondary }}
       />
       <Text
-        caption={value?.caption ?? caption}
+        caption={
+          Array.isArray(value) && value?.length > 0
+            ? value?.map((item) => item.caption)?.join(", ") ?? caption
+            : value?.caption ?? caption
+        }
         sx={{
           width: 1,
           ...(!value?.caption && {

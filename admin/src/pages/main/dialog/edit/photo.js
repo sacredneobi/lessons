@@ -1,7 +1,21 @@
 import { Box, Button, Icon, InputFile } from "@components";
+import { useEffect, useState } from "react";
 
 const MyImage = (props) => {
-  const { src, url, onChange, name, value, id } = props;
+  const { src: srcProps, url, onChange, name, value, id, file, local } = props;
+
+  const [src, setSrc] = useState(srcProps);
+
+  useEffect(() => {
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = (...arg) => {
+        setSrc(reader.result);
+      };
+
+      reader.readAsDataURL(file);
+    }
+  }, [file]);
 
   return (
     <Box
@@ -51,6 +65,13 @@ const MyImage = (props) => {
           color="warning"
           onClick={(e) => {
             if (typeof onChange === "function") {
+              e.stopPropagation();
+
+              if (local) {
+                onChange(name)(value.filter((item) => item.id !== id));
+                return;
+              }
+
               if (Array.isArray(value)) {
                 value.forEach((item) => {
                   if (item.id === id) {
@@ -62,7 +83,6 @@ const MyImage = (props) => {
                 onChange(name)(null);
               }
             }
-            e.stopPropagation();
           }}
         >
           <Icon name="delete" sx={{ fontSize: 18 }} />
@@ -76,13 +96,10 @@ const Default = (props) => {
   const { def } = props;
 
   const media = def("media")?.value;
-  const selectImage = def("file")?.value;
-
-  const isImage = !!selectImage?.preview;
 
   return (
     <Box defFlex gap grow sx={{ pt: 0.75 }}>
-      <InputFile {...def("file")} type="file" accept="image/*" />
+      <InputFile {...def("file")} type="file" accept="image/*" multiple />
       <Box
         defFlex
         row
@@ -96,7 +113,17 @@ const Default = (props) => {
           alignContent: "flex-start",
         }}
       >
-        {isImage && <MyImage src={selectImage?.preview} {...def("file")} />}
+        {Array.isArray(def("file")?.value) &&
+          def("file").value.map((item) => (
+            <MyImage
+              local
+              key={item?.id}
+              src={item?.preview}
+              file={item?.data}
+              id={item?.id}
+              {...def("file")}
+            />
+          ))}
         {Array.isArray(media) &&
           media
             .filter((item) => !item.isDelete)

@@ -26,7 +26,7 @@ const Default = (props) => {
       <DialogContent>
         {dialogData?.tabs === 0 && <Setting def={def} />}
         {dialogData?.tabs === 1 && <Price def={def} />}
-        {dialogData?.tabs === 2 && <Photo def={def} />}
+        {dialogData?.tabs === 2 && <Photo def={def} setData={setData} />}
       </DialogContent>
     </>
   );
