@@ -19,6 +19,8 @@ const iconData = {
   create: "add_circle",
   reload: "cached",
   file: "note_stack",
+  loading: "downloading",
+  broken: "broken_image",
 };
 
 const Default = (props) => {
