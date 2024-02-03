@@ -21,12 +21,13 @@ const iconData = {
   file: "note_stack",
   loading: "downloading",
   broken: "broken_image",
+  done: "done",
+  error: "notification_important",
+  closeAlert: "close",
 };
 
 const Default = (props) => {
   const { name, ...other } = props;
-
-  // console.log(props);
 
   const icon = iconData[name] ? iconData[name] : iconData.defIcon;
 

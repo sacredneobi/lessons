@@ -4,16 +4,31 @@ import {
   IconButtonDelete,
   IconButtonEdit,
 } from "@components";
+import { copyText } from "@utils";
 import { useCallback } from "react";
 
 const useRenderRow = () =>
   useCallback(
     (data, langBase) => (
       <Box defFlex row jc_sp ai>
-        <Box defFlex>
-          <Box>{data.caption}</Box>
-          <Box sx={{ fontSize: 12, color: "text.secondary" }}>
-            {data.caption2}
+        <Box defFlex row ai gap>
+          <Box
+            sx={{
+              px: 1,
+              py: 0.25,
+              backgroundColor: "action.disabled",
+              borderRadius: 1,
+              cursor: "pointer",
+            }}
+            onClick={() => copyText(`goodId : ${data?.id}`)}
+          >
+            {data.id}
+          </Box>
+          <Box defFlex>
+            <Box>{data.caption}</Box>
+            <Box sx={{ fontSize: 12, color: "text.secondary" }}>
+              {data.caption2}
+            </Box>
           </Box>
         </Box>
         <Box defFlex row>

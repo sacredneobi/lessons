@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from "react";
 
 const useStore = (storeName, def) => {
   const [name, setName] = useState(storeName);
-  const [data, setData] = useState(def);
+  const [data, setData] = useState(localStorage.getItem(storeName) ?? def);
 
   const setNewData = useCallback(
     (value) => {

@@ -1,4 +1,4 @@
-import { Box, Divider, MenuButton, Text, Icon } from "@components";
+import { Box, Divider, MenuButton, Text, Icon, Snackbar } from "@components";
 import { useCallback, useEffect, useState } from "react";
 import { addEvent, areEqualAlways, dispatch, getHash, useStore } from "@utils";
 import { DashboardContext, useRootSetting } from "@context";
@@ -72,6 +72,8 @@ const MyButton = (props) => {
 const Default = () => {
   const [open, setOpen] = useStore("leftPane");
 
+  const isOpen = open === "false" ? false : open;
+
   const context = useRootSetting();
 
   const leftPanelOpen = useCallback(() => {
@@ -91,7 +93,7 @@ const Default = () => {
       <Box
         defFlex
         sx={{
-          width: open ? 240 : 90,
+          width: isOpen ? 240 : 90,
           p: 2,
           transition: "width 200ms linear",
         }}
@@ -109,27 +111,27 @@ const Default = () => {
           <Box defFlex sx={{ height: 32 }} gap>
             <MyButton
               name="main"
-              open={open}
+              open={isOpen}
               sxIcon={{ color: "primary.light" }}
             />
           </Box>
           <Divider sx={{ my: 1.5 }} />
           <Box defFlex gap={1} grow>
-            <MyButton name="good" open={open} />
-            <MyButton name="order" open={open} />
+            <MyButton name="good" open={isOpen} />
+            <MyButton name="order" open={isOpen} />
           </Box>
           <Box defFlex>
             <MyButton
               name="logout"
-              open={open}
+              open={isOpen}
               onClick={() => {
                 context.userAuth = false;
               }}
             />
             <Divider sx={{ my: 1.5 }} />
             <MyButton
-              name={open ? "close" : "open"}
-              open={open}
+              name={isOpen ? "close" : "open"}
+              open={isOpen}
               sxIcon={{ color: "primary.light" }}
               onClick={leftPanelOpen}
             />
@@ -149,9 +151,11 @@ const RootDefault = (props) => {
   useEffect(() => addEvent("auth", () => setReload((prev) => !prev)), []);
 
   return (
-    <DashboardContext>
-      {context?.userAuth ? <Default {...props} /> : <Login />}
-    </DashboardContext>
+    <Snackbar>
+      <DashboardContext>
+        {context?.userAuth ? <Default {...props} /> : <Login />}
+      </DashboardContext>
+    </Snackbar>
   );
 };
 

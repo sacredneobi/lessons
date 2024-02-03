@@ -14,6 +14,10 @@ const dispatchDelete = (langBase, data, obj = document) => {
   dispatch(`${langBase}.dialog.delete`, data, obj);
 };
 
+const dispatchAlert = (data) => {
+  dispatch("notification", data);
+};
+
 const addEvent = (name, event, obj = document, ...args) => {
   const localEvent = ({ detail }) => {
     if (typeof event === "function") {
@@ -27,4 +31,4 @@ const addEvent = (name, event, obj = document, ...args) => {
   };
 };
 
-export { dispatch, dispatchEdit, dispatchDelete, addEvent };
+export { dispatch, dispatchEdit, dispatchDelete, addEvent, dispatchAlert };
