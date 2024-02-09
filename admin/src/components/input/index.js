@@ -7,6 +7,13 @@ import { useRef } from "react";
 import { Icon } from "../icon";
 import { Text } from "../text";
 
+const setFocus = (name) => {
+  const element = document.getElementById(name);
+  if (element) {
+    element.focus();
+  }
+};
+
 const Default = memo((props) => {
   const {
     caption,
@@ -19,6 +26,9 @@ const Default = memo((props) => {
     sx,
     sxIcon,
     type,
+    nextField,
+    onNextField,
+    onCheckNext,
     ...other
   } = props;
 
@@ -34,6 +44,7 @@ const Default = memo((props) => {
           color: ({ palette }) => palette.action.disabled,
         }),
       }}
+      tabIndex={-1}
       disabled={other?.disabled}
       onClick={(e) => {
         if (typeof onChange === "function") {
@@ -52,6 +63,21 @@ const Default = memo((props) => {
       value={type === "file" ? "" : value ?? ""}
       {...other}
       type={type}
+      onKeyUp={(e) => {
+        if (e.key === "Enter" && nextField && value) {
+          if (
+            typeof onNextField === "function" &&
+            (!onCheckNext || onCheckNext?.())
+          ) {
+            onNextField();
+          } else {
+            setFocus(nextField);
+          }
+        }
+        if (typeof other?.onKeyUp === "function") {
+          other?.onKeyUp(e);
+        }
+      }}
       onChange={(e) => {
         if (typeof onChange === "function") {
           if (type === "file") {
@@ -80,6 +106,7 @@ const Default = memo((props) => {
         "& fieldset": { p: 1, pr: 0 },
         ...sx,
       }}
+      inputProps={{ id: name }}
       InputProps={{
         startAdornment: startComponent,
         endAdornment: endComponent ? endComponent : clearComponent,

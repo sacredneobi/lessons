@@ -1,5 +1,5 @@
 import { Box, Button, Input, Text } from "@components";
-import { useAction } from "@utils";
+import { getHashText, useAction } from "@utils";
 import { useState } from "react";
 import { useAuth } from "@api";
 import { useRootSetting } from "@context";
@@ -14,8 +14,13 @@ const Default = (props) => {
 
   const context = useRootSetting();
 
-  const handelOnAuth = () => {
-    callbackAuth(data, (data) => {
+  const handelOnAuth = async () => {
+    const { password, ...other } = data;
+
+    other.password = await getHashText(password);
+    console.log(other.password);
+
+    callbackAuth(other, (data) => {
       if (data?.accessToken) {
         context.userAuth = true;
         localStorage.setItem("token", data?.accessToken);
@@ -87,8 +92,19 @@ const Default = (props) => {
         <Box defFlex center>
           <img src="/res/img/logo.png" width={150} height={150} alt="login" />
         </Box>
-        <Input {...def("login")} disabled={loading} />
-        <Input {...def("password")} type="password" disabled={loading} />
+        <Input {...def("login")} disabled={loading} nextField="password" />
+        <Input
+          {...def("password")}
+          type="password"
+          disabled={loading}
+          nextField="login"
+          onCheckNext={() => {
+            return !!data?.login;
+          }}
+          onNextField={() => {
+            handelOnAuth();
+          }}
+        />
         <Box defFlex row gap jc="space-between" ai>
           <Text caption="v0.1" sx={{ color: "text.secondary", fontSize: 12 }} />
           <Button

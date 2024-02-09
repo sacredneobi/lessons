@@ -5,8 +5,8 @@ const { HasOne } = require("sequelize");
 const name = "user";
 const model = models[name];
 
-const get = (req, res) => {
-  const { login, password } = req.query;
+const post = (req, res) => {
+  const { login, password } = req.body;
 
   model
     .findOne({
@@ -30,7 +30,7 @@ const get = (req, res) => {
 };
 
 module.exports = (router, moduleName) => {
-  router.get("/", get);
+  router.post("/", post);
 
   return true;
 };

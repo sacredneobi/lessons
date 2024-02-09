@@ -5,3 +5,4 @@ export * from "./areRender";
 export * from "./api";
 export * from "./multiPart";
 export * from "./copy";
+export * from "./crypto";

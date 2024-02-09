@@ -46,16 +46,16 @@ const useGetById = () => {
 };
 
 const useAuth = () => {
-  const { response, get, loading, abort } = useFetch("/api/auth");
+  const { response, post, loading, abort } = useFetch("/api/auth");
 
   return [
     useCallback(
       (data, setData) => {
-        get(buildGet(data)).then((data) => {
+        post(data).then((data) => {
           setData(response.ok ? data : null);
         });
       },
-      [get, response]
+      [post, response]
     ),
     loading,
     abort,
