@@ -11,3 +11,4 @@ export * from "./tabs";
 export * from "./stack";
 export * from "./image";
 export * from "./snackbar";
+export * from "./theme";

@@ -27,6 +27,8 @@ const Default = () => {
       sx={{
         border: ({ palette }) => `1px solid ${palette.divider}`,
         borderRadius: 4,
+        backgroundColor: "background.paper",
+        backgroundImage: ({ palette }) => palette.background.sectionBackground,
         boxShadow: "0px 0px 15px 0px rgba(66, 68, 90, 0.47)",
         p: 1,
       }}

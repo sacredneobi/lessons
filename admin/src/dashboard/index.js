@@ -104,6 +104,9 @@ const Default = () => {
             p: 1,
             pt: 1.5,
             borderRadius: 4,
+            backgroundColor: "background.paper",
+            backgroundImage: ({ palette }) =>
+              palette.background.sectionBackground,
             boxShadow: "0px 0px 15px 0px rgba(66, 68, 90, 0.47)",
           }}
           grow

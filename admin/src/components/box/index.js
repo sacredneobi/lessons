@@ -11,52 +11,61 @@ const Default = (props) => {
     row,
     gap,
     grow,
-    sx,
+    sx: sxProps,
+    strong,
     ...other
   } = props;
 
-  const newSx = {};
+  const sx = { ...sxProps };
 
   if (defFlex) {
-    newSx.display = "flex";
-    newSx.flexDirection = "column";
+    sx.display = "flex";
+    sx.flexDirection = "column";
   }
 
   if (defGrid) {
-    newSx.display = "grid";
+    sx.display = "grid";
   }
 
   if (ai) {
-    newSx.alignItems = ai === true ? "center" : ai;
+    sx.alignItems = ai === true ? "center" : ai;
   }
 
   if (jc) {
-    newSx.justifyContent = jc === true ? "center" : jc;
+    sx.justifyContent = jc === true ? "center" : jc;
   }
 
   if (jc_sp) {
-    newSx.justifyContent = "space-between";
+    sx.justifyContent = "space-between";
   }
 
   if (center) {
-    newSx.alignItems = "center";
-    newSx.justifyContent = "center";
+    sx.alignItems = "center";
+    sx.justifyContent = "center";
   }
 
   if (row) {
-    newSx.flexDirection = "row";
+    sx.flexDirection = "row";
   }
 
   if (gap) {
-    newSx.gap = gap === true ? 1 : parseFloat(gap) ? parseFloat(gap) : gap;
+    sx.gap = gap === true ? 1 : parseFloat(gap) ? parseFloat(gap) : gap;
   }
 
   if (grow) {
-    newSx.flexGrow =
+    sx.flexGrow =
       grow === true ? 1 : parseFloat(grow) ? parseFloat(grow) : grow;
   }
 
-  return <Box sx={{ ...newSx, ...sx }} {...other} />;
+  if (strong) {
+    sx.px = 1;
+    sx.py = 0.25;
+    sx.backgroundColor = "background.strong";
+    sx.borderRadius = 1;
+    sx.cursor = "pointer";
+  }
+
+  return <Box sx={sx} {...other} />;
 };
 
 export { Default as Box };
