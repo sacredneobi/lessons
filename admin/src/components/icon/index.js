@@ -24,6 +24,10 @@ const iconData = {
   done: "done",
   error: "notification_important",
   closeAlert: "close",
+  settings: "settings_account_box",
+  themeLight: "wb_sunny",
+  themeSystem: "settings_night_sight",
+  themeDark: "dark_mode",
 };
 
 const Default = (props) => {

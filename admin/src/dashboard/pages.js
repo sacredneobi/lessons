@@ -1,7 +1,7 @@
 import { Box } from "@components";
 import { addEvent, dispatch, getHash, setHash } from "@utils";
 import { useEffect, useState } from "react";
-import { PageMain, PageGood, PageOrder } from "../pages";
+import { PageMain, PageGood, PageOrder, PageSettings } from "../pages";
 
 const Default = () => {
   const [route, setRoute] = useState(getHash());
@@ -22,7 +22,7 @@ const Default = () => {
 
   return (
     <Box
-      defFlex
+      name="TEST"
       grow
       sx={{
         border: ({ palette }) => `1px solid ${palette.divider}`,
@@ -31,11 +31,15 @@ const Default = () => {
         backgroundImage: ({ palette }) => palette.background.sectionBackground,
         boxShadow: "0px 0px 15px 0px rgba(66, 68, 90, 0.47)",
         p: 1,
+        display: "grid",
+        gridTemplateColumns: "1fr",
+        gridTemplateRows: "1fr",
       }}
     >
       {(route === "main" || !route) && <PageMain />}
       {route === "good" && <PageGood />}
       {route === "order" && <PageOrder />}
+      {route === "settings" && <PageSettings />}
     </Box>
   );
 };

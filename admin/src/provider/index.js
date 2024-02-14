@@ -35,4 +35,6 @@ const Default = (props) => {
   );
 };
 
+export * from "./theme";
+
 export { Default as FetchProvider };

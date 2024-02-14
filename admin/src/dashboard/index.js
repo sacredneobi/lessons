@@ -40,11 +40,10 @@ const MyButton = (props) => {
       disableFocusRipple
       caption={
         <>
-          <Icon name={name} sx={{ color: "text.secondary", ...sxIcon }} />
+          <Icon name={name} sx={sxIcon} />
           <Text
             caption={name}
             sx={{
-              fontSize: 14,
               textTransform: "capitalize",
               opacity: open ? 1 : 0,
               transition: "opacity 100ms linear",
@@ -74,7 +73,7 @@ const Default = () => {
 
   const isOpen = open === "false" ? false : open;
 
-  const context = useRootSetting();
+  // const context = useRootSetting();
 
   const leftPanelOpen = useCallback(() => {
     setOpen((prev) => !prev);
@@ -124,13 +123,7 @@ const Default = () => {
             <MyButton name="order" open={isOpen} />
           </Box>
           <Box defFlex>
-            <MyButton
-              name="logout"
-              open={isOpen}
-              onClick={() => {
-                context.userAuth = false;
-              }}
-            />
+            <MyButton name="settings" open={isOpen} />
             <Divider sx={{ my: 1.5 }} />
             <MyButton
               name={isOpen ? "close" : "open"}
