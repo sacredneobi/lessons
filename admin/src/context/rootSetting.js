@@ -18,6 +18,19 @@ class RootSettingStore {
   get userAuth() {
     return this._userAuth;
   }
+
+  get token() {
+    const readData = atob(localStorage.getItem("token")?.split(".")?.[1] ?? "");
+
+    if (readData) {
+      try {
+        return JSON.parse(readData);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    return {};
+  }
 }
 
 const contextStore = new RootSettingStore();

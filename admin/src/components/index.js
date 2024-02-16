@@ -12,3 +12,4 @@ export * from "./stack";
 export * from "./image";
 export * from "./snackbar";
 export * from "./buttonGroup";
+export * from "./loading";

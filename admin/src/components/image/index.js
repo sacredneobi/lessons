@@ -1,6 +1,7 @@
 import { Box, Button, Icon } from "@components";
-import { CircularProgress, alpha } from "@mui/material";
+import { alpha } from "@mui/material";
 import { useEffect, useState } from "react";
+import { Loading } from "../loading";
 
 const Image = (props) => {
   const { src: srcProps, url, onChange, name, value, id, file, local } = props;
@@ -99,16 +100,7 @@ const Image = (props) => {
               margin: "auto",
             }}
           >
-            <CircularProgress
-              size={40}
-              sx={{
-                color: "primary.contrastText",
-                animationDuration: "3s",
-                "& circle": {
-                  animationDuration: "8s",
-                },
-              }}
-            />
+            <Loading />
           </Box>
         ) : (
           <Button

@@ -29,7 +29,7 @@ const useGet = (limit) => {
 };
 
 const useGetById = () => {
-  const { response, get, loading, abort } = useFetch(baseUrl);
+  const { response, get, loading, abort } = useFetch("/api/private/user");
 
   return [
     useCallback(

@@ -6,4 +6,5 @@ module.exports = {
   ...require("./file"),
   ...require("./db"),
   ...require("./object"),
+  ...require("./dateTime"),
 };

@@ -1,11 +1,33 @@
-import { Box, ButtonGroup, Icon, Text } from "@components";
+import { useUserGetById } from "@api";
+import {
+  Box,
+  ButtonGroup,
+  Divider,
+  Icon,
+  IconButton,
+  Loading,
+  Text,
+} from "@components";
+import { useRootSetting } from "@context";
 import { dispatch, useAction, useDef } from "@utils";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const Default = () => {
   const [data, setData] = useState({
     theme: localStorage.getItem("theme") ?? "system",
   });
+
+  const [user, setUser] = useState(null);
+
+  const [callbackGet, loading] = useUserGetById();
+
+  const context = useRootSetting();
+
+  const userId = context.token?.id;
+
+  useEffect(() => {
+    callbackGet({ id: userId }, setUser);
+  }, [userId, callbackGet]);
 
   const handleOnSave = useCallback((name, value) => {
     if (name === "theme") {
@@ -19,7 +41,17 @@ const Default = () => {
   const def = useDef(data, handleOnChange);
 
   return (
-    <Box sx={{ borderRadius: 2 }}>
+    <Box defFlex sx={{ borderRadius: 2 }} gap>
+      <Box defFlex row>
+        {loading || !user ? (
+          <Loading size={27} />
+        ) : (
+          <Text
+            caption={"Здравствуйте: " + user?.caption}
+            sx={{ fontSize: 18 }}
+          />
+        )}
+      </Box>
       <ButtonGroup
         {...def("theme")}
         items={[
@@ -52,6 +84,17 @@ const Default = () => {
           },
         ]}
       />
+      <Box grow />
+      <Box defFlex>
+        <Divider flexItem sx={{ my: 1.5, mb: 1.375 }} />
+        <IconButton
+          name="logout"
+          sx={{ alignSelf: "flex-end" }}
+          onClick={() => {
+            context.userAuth = false;
+          }}
+        />
+      </Box>
     </Box>
   );
 };

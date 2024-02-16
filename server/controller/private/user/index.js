@@ -4,10 +4,16 @@ const {
   checkVal,
   defExclude,
   buildLimit,
-  defAnswerError,
   mediaPath,
   defDelete,
 } = require("@utils");
+
+const getById = (req, res) => {
+  const { id } = req.params;
+  model
+    .findOne({ attributes: ["caption", "id"], where: { id } })
+    .defAnswer(res);
+};
 
 const get = (req, res) => {
   const { id, search, limit, offset } = req.query;
@@ -113,6 +119,7 @@ const update = async (req, res) => {
 
 module.exports = (router) => {
   router.get("/", get);
+  router.get("/:id", getById);
   router.post("/", post);
   router.put("/", checkVal(["id"], "body"), update);
   router.delete("/", ...defDelete(model));
