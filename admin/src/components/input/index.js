@@ -18,6 +18,7 @@ const Default = memo((props) => {
   const {
     caption,
     onChange,
+    onClear,
     name,
     value,
     startComponent,
@@ -49,6 +50,9 @@ const Default = memo((props) => {
       onClick={(e) => {
         if (typeof onChange === "function") {
           onChange(name)(null);
+        }
+        if (typeof onClear === "function") {
+          onClear();
         }
         e.stopPropagation();
       }}

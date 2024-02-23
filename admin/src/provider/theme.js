@@ -24,11 +24,11 @@ const Default = (props) => {
     const calcMode =
       mode === "system" ? (prefersDarkMode ? "dark" : "light") : mode;
 
-    // const defTheme = createTheme({
-    //   palette: {
-    //     mode: calcMode,
-    //   },
-    // });
+    const defTheme = createTheme({
+      palette: {
+        mode: calcMode,
+      },
+    });
 
     return createTheme({
       palette: {
@@ -42,6 +42,12 @@ const Default = (props) => {
             calcMode === "dark"
               ? "rgba(255, 255, 255, 0.3)"
               : "rgba(0, 0, 0, 0.26)",
+          grad: (type) =>
+            `linear-gradient(110deg, ${
+              Array.isArray(type) ? type[0] : defTheme.palette[type]?.dark
+            } 0%, ${
+              Array.isArray(type) ? type[1] : defTheme.palette[type]?.light
+            } 100%)`,
         },
       },
       typography: {

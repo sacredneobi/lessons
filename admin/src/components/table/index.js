@@ -12,7 +12,6 @@ const Default = (props) => {
   const {
     items,
     topButtons,
-    onSearch,
     sx,
     sxHeader,
     // sxTable,
@@ -24,6 +23,7 @@ const Default = (props) => {
     onBottomRender,
     langBase,
     loading,
+    onFilter,
   } = props;
 
   const [search, setSearch] = useState(null);
@@ -43,11 +43,14 @@ const Default = (props) => {
         <Input
           value={search ?? ""}
           onChange={() => setSearch}
+          onClear={() => {
+            if (typeof onFilter === "function") {
+              onFilter(null);
+            }
+          }}
           onKeyUp={(e) => {
-            if (e.keyChar === 13) {
-              if (typeof onSearch === "function") {
-                onSearch(search);
-              }
+            if (e.keyCode === 13 && typeof onFilter === "function") {
+              onFilter(search);
             }
           }}
           sx={{

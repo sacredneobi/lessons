@@ -16,7 +16,7 @@ const langBase = "goods";
 const Default = () => {
   const [page, setPage] = useState(0);
 
-  const [callbackGet, loading, rows] = useGoodGet(50, langBase);
+  const [callbackGet, loading, rows, , handleFilter] = useGoodGet(50, langBase);
 
   useEffect(() => {
     callbackGet({ page });
@@ -54,6 +54,7 @@ const Default = () => {
         onChangePage={handleOnChangePage}
         langBase={langBase}
         loading={loading}
+        onFilter={handleFilter}
       />
       <Dialog langBase={langBase} />
     </Box>

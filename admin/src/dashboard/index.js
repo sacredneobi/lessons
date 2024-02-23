@@ -73,8 +73,6 @@ const Default = () => {
 
   const isOpen = open === "false" ? false : open;
 
-  // const context = useRootSetting();
-
   const leftPanelOpen = useCallback(() => {
     setOpen((prev) => !prev);
   }, [setOpen]);

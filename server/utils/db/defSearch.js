@@ -1,4 +1,4 @@
-const { DataTypes } = require("sequelize");
+const { DataTypes, Op } = require("sequelize");
 
 const defSearch = (model, data) => {
   const { search } = data ?? {};
@@ -18,14 +18,16 @@ const defSearch = (model, data) => {
 
   const where =
     model?.fullColumns?.reduce((prev, item) => {
-      prev[item.name] =
-        item.type === DataTypes.TEXT
-          ? { [Op.getLike()]: `%${search}%` }
-          : search;
+      prev.push({
+        [item.name]:
+          item.type === DataTypes.TEXT
+            ? { [Op.getLike()]: `%${search}%` }
+            : search,
+      });
       return prev;
-    }, {}) ?? null;
+    }, []) ?? null;
 
-  return { where, columns };
+  return { where: where?.length > 0 ? { [Op.or]: where } : null, columns };
 };
 
 module.exports = { defSearch };

@@ -6,6 +6,7 @@ const baseUrl = "/api/private/good";
 const useGet = (limit, eventName) => {
   const [rows, setRows] = useState(null);
   const [reload, setReload] = useState(null);
+  const [search, setFilter] = useState(null);
   const { loading, response, get, abort } = useFetch(baseUrl);
 
   useEffect(() => {
@@ -25,7 +26,7 @@ const useGet = (limit, eventName) => {
 
         if (reload === 20) console.log(reload);
 
-        get(buildGet({ limit, skip: page * limit })).then((res) => {
+        get(buildGet({ limit, skip: page * limit, search })).then((res) => {
           if (response.ok) {
             if (res) {
               res.totalPage = Math.ceil(res.count / limit);
@@ -34,11 +35,12 @@ const useGet = (limit, eventName) => {
           }
         });
       },
-      [get, limit, response, reload]
+      [get, limit, response, reload, search]
     ),
     loading,
     rows,
     abort,
+    setFilter,
   ];
 };
 
