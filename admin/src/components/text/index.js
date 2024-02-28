@@ -1,13 +1,23 @@
 import { Typography } from "@mui/material";
+import { Trans } from "react-i18next";
 
 const Default = (props) => {
-  const { name, caption, sx, ...other } = props;
+  const { name, caption, values, value, sx, langBase, ...other } = props;
 
   return (
     <Typography sx={{ ...sx }} {...other}>
       {caption}
+      {!!name && (
+        <Trans
+          i18nKey={`${langBase ? `${langBase}.` : ""}${name}`}
+          values={values ?? { value }}
+        />
+      )}
     </Typography>
   );
 };
 
-export { Default as Text };
+const useLocal = (langBase) => (props) =>
+  <Default {...props} langBase={langBase} />;
+
+export { Default as Text, useLocal };

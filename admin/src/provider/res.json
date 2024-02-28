@@ -1,0 +1,27 @@
+{
+  "en": {
+    "translation": {
+      "global": {
+        "ok": "Save",
+        "cancel": "Cancel",
+        "dialog": {
+          "edit": {
+            "caption": "Edit"
+          },
+          "delete": {
+            "caption": "Delete item"
+          }
+        }
+      },
+      "goods": {
+        "test": "Привет мир {{value}}",
+        "row": {
+          "header": {
+            "caption": "Название: {{value}}",
+            "caption2": "{{value}}"
+          }
+        }
+      }
+    }
+  }
+}

@@ -3,6 +3,7 @@ import {
   DividerVertical,
   IconButtonDelete,
   IconButtonEdit,
+  Text,
 } from "@components";
 import { copyText } from "@utils";
 import { useCallback } from "react";
@@ -16,10 +17,13 @@ const useRenderRow = () =>
             {data.id}
           </Box>
           <Box defFlex>
-            <Box>{data.caption}</Box>
-            <Box sx={{ fontSize: 12, color: "text.secondary" }}>
-              {data.caption2}
-            </Box>
+            <Text name="caption" langBase={langBase} value={data.caption} />
+            <Text
+              name="caption2"
+              langBase={langBase}
+              value={data.caption2}
+              sx={{ fontSize: 12, color: "text.secondary" }}
+            />
           </Box>
         </Box>
         <Box defFlex row>

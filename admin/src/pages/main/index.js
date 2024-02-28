@@ -5,6 +5,7 @@ import {
   Table,
   Stack,
   IconButtonReload,
+  useLocal,
 } from "@components";
 import { useCallback, useEffect, useState } from "react";
 import useRenderRow from "./row";
@@ -41,9 +42,11 @@ const Default = () => {
   );
 
   const handelOnRender = useRenderRow();
+  const Text = useLocal(langBase);
 
   return (
     <Box name="main" defFlex center sx={{ width: "100%", height: "100%" }}>
+      <Text name="test" value="10" />
       <Table
         name="goods"
         sx={{ flexGrow: 1 }}

@@ -70,7 +70,7 @@ const Default = memo((props) => {
       <Checker id={id} name={name} />
       {typeof onItemRender === "function" ? (
         <Box defFlex jc sx={{ width: "100%" }}>
-          {onItemRender(item, langBase)}
+          {onItemRender(item, `${langBase}.row.header`)}
         </Box>
       ) : (
         caption
