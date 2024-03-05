@@ -9,8 +9,8 @@ import { copyText } from "@utils";
 import { useCallback } from "react";
 
 const useRenderRow = () =>
-  useCallback(
-    (data, langBase) => (
+  useCallback((data, langBase, dialog) => {
+    return (
       <Box defFlex row jc_sp ai>
         <Box defFlex row ai gap>
           <Box strong onClick={() => copyText(`goodId : ${data?.id}`)}>
@@ -28,12 +28,11 @@ const useRenderRow = () =>
         </Box>
         <Box defFlex row>
           <DividerVertical />
-          <IconButtonEdit langBase={langBase} data={data} />
-          <IconButtonDelete langBase={langBase} data={data} />
+          <IconButtonEdit langBase={dialog} data={data} />
+          <IconButtonDelete langBase={dialog} data={data} />
         </Box>
       </Box>
-    ),
-    []
-  );
+    );
+  }, []);
 
 export default useRenderRow;

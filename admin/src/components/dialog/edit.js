@@ -22,6 +22,7 @@ const Edit = (props) => {
     useData,
     needLoading,
     loading: loadingProps,
+    actionLangBase,
   } = props;
 
   const [open, setOpen] = useState(false);
@@ -83,7 +84,12 @@ const Edit = (props) => {
     typeof container === "function" ? (
       container(data, setData)
     ) : (
-      <container.type {...container.props} data={data} setData={setData} />
+      <container.type
+        {...container.props}
+        data={data}
+        setData={setData}
+        langBase={`${langBase}.dialog.edit`}
+      />
     );
 
   const calcLoading = loadingProps;
@@ -123,17 +129,19 @@ const Edit = (props) => {
       <DialogActions>
         <Button
           onClick={handleOk}
-          caption={data?.id ? "Сохранить" : "Создать"}
           variant="default"
           disabled={calcLoading}
+          langBase={`${actionLangBase ?? "global"}.dialog.action`}
+          name={data?.id ? "save" : "create"}
         />
         <Button
           onClick={handleClose}
           autoFocus
-          caption="Отмена"
           variant="outlined"
           sx={{ color: "warning.main" }}
           disabled={calcLoading}
+          langBase={`${actionLangBase ?? "global"}.dialog.action`}
+          name="cancel"
         />
       </DialogActions>
     </Dialog>

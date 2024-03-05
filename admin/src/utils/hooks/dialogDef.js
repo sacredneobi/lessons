@@ -15,7 +15,7 @@ const useDialogDef = (langBase, storeProps) => {
     newStoreProps
   );
 
-  return { dialogData, OnDialogChange: handleOnDialogChange };
+  return { dialogData, onDialogChange: handleOnDialogChange };
 };
 
 export { useDialogDef };

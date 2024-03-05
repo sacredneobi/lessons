@@ -14,14 +14,19 @@ const tabs = [
 const Default = (props) => {
   const { langBase, data, setData } = props;
 
-  const { dialogData, OnDialogChange } = useDialogDef(langBase);
+  const { dialogData, onDialogChange } = useDialogDef(langBase);
 
   const handleOnChange = useAction(setData);
   const def = useDef(data, handleOnChange);
 
   return (
     <>
-      <Tabs items={tabs} tabs={dialogData?.tabs} onChange={OnDialogChange} />
+      <Tabs
+        items={tabs}
+        tabs={dialogData?.tabs}
+        onChange={onDialogChange}
+        langBase={langBase}
+      />
       <DialogContent>
         {dialogData?.tabs === 0 && <Setting def={def} />}
         {dialogData?.tabs === 1 && <Price def={def} />}

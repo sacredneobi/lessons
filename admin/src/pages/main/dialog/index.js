@@ -66,7 +66,7 @@ const Default = memo((props) => {
     <>
       <DialogEdit
         langBase={langBase}
-        container={<Container langBase={`${langBase}.dialog.edit`} />}
+        container={<Container />}
         sxDialogContent={{ minHeight: 250, height: 420 }}
         {...useData()}
         needLoading

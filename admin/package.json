@@ -8,6 +8,8 @@
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.14.7",
     "i18next": "^23.10.0",
+    "i18next-browser-languagedetector": "^7.2.0",
+    "i18next-http-backend": "^2.5.0",
     "notistack": "^3.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

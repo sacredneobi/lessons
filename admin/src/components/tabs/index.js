@@ -1,14 +1,17 @@
 import Tabs, { tabsClasses } from "@mui/material/Tabs";
 import Tab from "./tab";
+import { useLocal } from "../text";
 
 const Default = (props) => {
-  const { name = "tabs", items, tabs, onChange } = props;
+  const { name = "tabs", items, tabs, onChange, langBase } = props;
 
   const handleChange = (event, newValue) => {
     if (typeof onChange === "function") {
       onChange(name)(newValue);
     }
   };
+
+  const Text = useLocal(`${langBase}.tabs`);
 
   return (
     <Tabs
@@ -25,7 +28,7 @@ const Default = (props) => {
       }}
     >
       {items?.map((item, index) => (
-        <Tab key={index} label={item.name} />
+        <Tab key={index} label={<Text name={item.name} />} />
       ))}
     </Tabs>
   );
