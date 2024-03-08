@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Box, Divider } from "..";
+import { Box, Divider, IconButtonCreate, IconButtonReload, Stack } from "..";
 import { TableContext } from "@context/table";
 import { memo } from "@utils";
 import Rows from "./rows";
 import Bottom from "./bottom";
 import { Input } from "../input";
+import { useLang } from "@context";
 
 const defStyle = { sxIcon: { fontSize: 18 } };
 
@@ -14,7 +15,6 @@ const Default = (props) => {
     topButtons,
     sx,
     sxHeader,
-    // sxTable,
     pageCount,
     sxFooter,
     name,
@@ -41,6 +41,8 @@ const Default = (props) => {
     >
       <Box defFlex row gap name="header" ai sx={{ width: 1, ...sxHeader }}>
         <Input
+          name="search"
+          langBase="global.table.top"
           value={search ?? ""}
           onChange={() => setSearch}
           onClear={() => {
@@ -62,6 +64,10 @@ const Default = (props) => {
           }}
           clear
         />
+        <Stack>
+          <IconButtonReload />
+          <IconButtonCreate />
+        </Stack>
         {topButtons ? (
           typeof topButtons === "function" ? (
             topButtons(defStyle)
@@ -78,9 +84,6 @@ const Default = (props) => {
                   key={item.props?.id ?? index}
                   {...item.props}
                   sxIcon={{ ...item.props.sxIcon, ...defStyle.sxIcon }}
-                  onClick={(e) => {
-                    console.log(item.props);
-                  }}
                 />
               );
             })
@@ -107,15 +110,26 @@ const Default = (props) => {
         onChangePage={onChangePage}
         defStyle={defStyle}
         onBottomRender={onBottomRender}
+        langBase={langBase}
       />
     </Box>
   );
 };
 
 const ContextTable = memo((props) => {
+  const { langBase: langBaseProps, ...other } = props;
+
+  const lang = useLang();
+
+  const langBase = langBaseProps ?? lang?.lang;
+
   return (
     <TableContext>
-      <Default {...props} />
+      <Default
+        {...other}
+        langBase={langBase}
+        sx={{ flexGrow: 1, ...other?.sx }}
+      />
     </TableContext>
   );
 });

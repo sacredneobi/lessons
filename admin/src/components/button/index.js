@@ -1,36 +1,29 @@
 import { Button } from "@mui/material";
 import { Box } from "../box";
-import { Text, useLocal } from "../text";
+import { Text } from "../text";
+import { Icon } from "../icon";
 
 const Default = (props) => {
   const {
     name,
-    caption,
     sxBox,
     sxText,
     propsBox,
     propsText,
+    propsIcon,
+    sxIcon,
     langBase,
+    icon,
     ...other
   } = props;
 
-  const captionIsString = typeof caption === "string";
-
-  const TextLocal = useLocal(`${langBase}`);
-
   return (
     <Button variant="contained" {...other}>
-      <Box defFlex center row gap {...propsBox} sx={{ ...sxBox }}>
-        {captionIsString ? (
-          <Text
-            caption={caption}
-            {...propsText}
-            sx={{ fontSize: 12, ...sxText }}
-          />
-        ) : (
-          caption
+      <Box defFlex center row gap {...propsBox} sx={sxBox}>
+        {icon && <Icon name={icon} {...propsIcon} sx={sxIcon} />}
+        {name && (
+          <Text name={name} langBase={langBase} {...propsText} sx={sxText} />
         )}
-        {langBase && name && <TextLocal name={name} />}
         {other.children}
       </Box>
     </Button>
@@ -40,10 +33,16 @@ const Default = (props) => {
 Default.mui = Button;
 
 const Delete = (props) => {
-  const { name, caption = "delete", ...other } = props;
+  const { name, langBase, ...other } = props;
 
   return (
-    <Default variant="contained" color="warning" caption={caption} {...other} />
+    <Default
+      variant="contained"
+      color="warning"
+      name="delete"
+      langBase={langBase ?? "global"}
+      {...other}
+    />
   );
 };
 

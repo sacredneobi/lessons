@@ -30,6 +30,7 @@ const Default = memo((props) => {
     nextField,
     onNextField,
     onCheckNext,
+    langBase,
     ...other
   } = props;
 
@@ -61,7 +62,9 @@ const Default = memo((props) => {
 
   return (
     <TextField
-      label={caption}
+      label={
+        <Text name={name} sx={{ fontSize: "unset" }} langBase={langBase} />
+      }
       variant="outlined"
       size="small"
       value={type === "file" ? "" : value ?? ""}
@@ -136,6 +139,7 @@ const InputFile = (props) => {
     caption,
     value,
     multiple,
+    langBase,
     ...other
   } = props;
 
@@ -231,7 +235,9 @@ const InputFile = (props) => {
         sx={{ color: ({ palette }) => palette.text.secondary }}
       />
       <Text
-        caption={
+        name={name}
+        langBase={langBase}
+        value={
           Array.isArray(value) && value?.length > 0
             ? value?.map((item) => item.caption)?.join(", ") ?? caption
             : value?.caption ?? caption

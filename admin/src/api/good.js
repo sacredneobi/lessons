@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { addEvent, buildGet, useFetch } from "@utils";
+import { useLang } from "@context/lang";
 
 const baseUrl = "/api/private/good";
 
@@ -7,23 +8,32 @@ const useGet = (limit, eventName) => {
   const [rows, setRows] = useState(null);
   const [reload, setReload] = useState(null);
   const [search, setFilter] = useState(null);
+  const [page, setPage] = useState(0);
   const { loading, response, get, abort } = useFetch(baseUrl);
 
+  const lang = useLang();
+  const langBase = lang?.lang;
+
   useEffect(() => {
-    if (eventName) {
+    if (eventName || langBase) {
       return addEvent("reload", (detail) => {
-        if (detail?.name === eventName) {
-          setReload((prev) => !prev);
+        if (eventName) {
+          if (detail?.name === eventName) {
+            setReload((prev) => !prev);
+          }
+        }
+        if (langBase) {
+          if (detail?.name === langBase) {
+            setReload((prev) => !prev);
+          }
         }
       });
     }
-  }, [eventName]);
+  }, [eventName, langBase]);
 
-  return [
-    useCallback(
+  return {
+    callbackGet: useCallback(
       (data) => {
-        const { page } = data ?? {};
-
         if (reload === 20) console.log(reload);
 
         get(buildGet({ limit, skip: page * limit, search })).then((res) => {
@@ -35,13 +45,21 @@ const useGet = (limit, eventName) => {
           }
         });
       },
-      [get, limit, response, reload, search]
+      [get, limit, response, reload, search, page]
     ),
     loading,
-    rows,
+    items: rows,
+    name: "goods",
+    pageCount: rows?.totalPage,
+    onChangePage: useCallback(
+      (name) => (page) => {
+        setPage(page);
+      },
+      []
+    ),
     abort,
-    setFilter,
-  ];
+    onFilter: setFilter,
+  };
 };
 
 const useGetById = () => {

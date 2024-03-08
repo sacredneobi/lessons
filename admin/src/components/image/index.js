@@ -106,6 +106,8 @@ const Image = (props) => {
           <Button
             sx={{ borderRadius: "50%", minWidth: 2, p: 1 }}
             color="warning"
+            icon="delete"
+            sxIcon={{ fontSize: 18 }}
             onClick={(e) => {
               if (typeof onChange === "function") {
                 e.stopPropagation();
@@ -127,9 +129,7 @@ const Image = (props) => {
                 }
               }
             }}
-          >
-            <Icon name="delete" sx={{ fontSize: 18 }} />
-          </Button>
+          />
         )}
       </Box>
     </Box>

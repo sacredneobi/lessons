@@ -36,8 +36,6 @@ const useDefault = (url, cachePolicy, headersProps, dependency, persist) => {
     dependency
   );
 
-  // console.log(other.loading);
-
   return { response, ok: response.ok, ...other };
 };
 

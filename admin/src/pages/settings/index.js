@@ -47,7 +47,8 @@ const Default = () => {
           <Loading size={27} />
         ) : (
           <Text
-            caption={"Здравствуйте: " + user?.caption}
+            name="hello"
+            value={user?.caption ?? ""}
             sx={{ fontSize: 18 }}
           />
         )}
@@ -60,7 +61,7 @@ const Default = () => {
             caption: (
               <Box defFlex gap ai>
                 <Icon name="themeLight" />
-                <Text caption="Light" />
+                <Text name="light" />
               </Box>
             ),
           },
@@ -69,7 +70,7 @@ const Default = () => {
             caption: (
               <Box defFlex gap ai>
                 <Icon name="themeSystem" />
-                <Text caption="System" />
+                <Text name="system" />
               </Box>
             ),
           },
@@ -78,7 +79,7 @@ const Default = () => {
             caption: (
               <Box defFlex gap ai>
                 <Icon name="themeDark" />
-                <Text caption="Dark" />
+                <Text name="dark" />
               </Box>
             ),
           },

@@ -67,13 +67,14 @@ const Default = (props) => {
       >
         <Box defFlex gap sx={{ p: 1 }}>
           <Button
-            caption={
+            name={
               show
                 ? selectedItems
-                  ? "Скрыть выбор элемента"
-                  : "Снять выделения"
-                : "Показать выбор элемента"
+                  ? "hideSelect"
+                  : "clearSelect"
+                : "showSelect"
             }
+            langBase="global.table.action"
             onClick={() => {
               if (show) {
                 if (!selectedItems) {

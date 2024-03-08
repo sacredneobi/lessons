@@ -1,10 +1,12 @@
-import { Box, Divider, MenuButton, Text, Icon, Snackbar } from "@components";
+import { Box, Divider, MenuButton, Snackbar } from "@components";
 import { useCallback, useEffect, useState } from "react";
 import { addEvent, areEqualAlways, dispatch, getHash, useStore } from "@utils";
-import { DashboardContext, useRootSetting } from "@context";
+import { DashboardContext, LangContext, useRootSetting } from "@context";
 import { memo } from "react";
 import Pages from "./pages";
 import Login from "./login";
+
+const langBase = "dashboard";
 
 const NewPages = memo(() => {
   return (
@@ -38,20 +40,15 @@ const MyButton = (props) => {
       variant={active ? "contained" : "text"}
       disableElevation
       disableFocusRipple
-      caption={
-        <>
-          <Icon name={name} sx={sxIcon} />
-          <Text
-            caption={name}
-            sx={{
-              textTransform: "capitalize",
-              opacity: open ? 1 : 0,
-              transition: "opacity 100ms linear",
-              ...sxCaption,
-            }}
-          />
-        </>
-      }
+      name={name}
+      icon={name}
+      sxIcon={sxIcon}
+      sxText={{
+        textTransform: "capitalize",
+        opacity: open ? 1 : 0,
+        transition: "opacity 100ms linear",
+        ...sxCaption,
+      }}
       sx={{
         justifyContent: "flex-start",
         borderRadius: 2,
@@ -95,42 +92,44 @@ const Default = () => {
           transition: "width 200ms linear",
         }}
       >
-        <Box
-          defFlex
-          sx={{
-            p: 1,
-            pt: 1.5,
-            borderRadius: 4,
-            backgroundColor: "background.paper",
-            backgroundImage: ({ palette }) =>
-              palette.background.sectionBackground,
-            boxShadow: "0px 0px 15px 0px rgba(66, 68, 90, 0.47)",
-          }}
-          grow
-        >
-          <Box defFlex sx={{ height: 32 }} gap>
-            <MyButton
-              name="main"
-              open={isOpen}
-              sxIcon={{ color: "primary.light" }}
-            />
-          </Box>
-          <Divider sx={{ my: 1.5 }} />
-          <Box defFlex gap={1} grow>
-            <MyButton name="good" open={isOpen} />
-            <MyButton name="order" open={isOpen} />
-          </Box>
-          <Box defFlex>
-            <MyButton name="settings" open={isOpen} />
+        <LangContext lang={langBase}>
+          <Box
+            defFlex
+            sx={{
+              p: 1,
+              pt: 1.5,
+              borderRadius: 4,
+              backgroundColor: "background.paper",
+              backgroundImage: ({ palette }) =>
+                palette.background.sectionBackground,
+              boxShadow: "0px 0px 15px 0px rgba(66, 68, 90, 0.47)",
+            }}
+            grow
+          >
+            <Box defFlex sx={{ height: 32 }} gap>
+              <MyButton
+                name="main"
+                open={isOpen}
+                sxIcon={{ color: "primary.light" }}
+              />
+            </Box>
             <Divider sx={{ my: 1.5 }} />
-            <MyButton
-              name={isOpen ? "close" : "open"}
-              open={isOpen}
-              sxIcon={{ color: "primary.light" }}
-              onClick={leftPanelOpen}
-            />
+            <Box defFlex gap={1} grow>
+              <MyButton name="good" open={isOpen} />
+              <MyButton name="order" open={isOpen} />
+            </Box>
+            <Box defFlex>
+              <MyButton name="settings" open={isOpen} />
+              <Divider sx={{ my: 1.5 }} />
+              <MyButton
+                name={isOpen ? "close" : "open"}
+                open={isOpen}
+                sxIcon={{ color: "primary.light" }}
+                onClick={leftPanelOpen}
+              />
+            </Box>
           </Box>
-        </Box>
+        </LangContext>
       </Box>
       <NewPages />
     </Box>

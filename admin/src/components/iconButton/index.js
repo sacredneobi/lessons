@@ -1,6 +1,7 @@
 import { dispatch, dispatchDelete, dispatchEdit } from "@utils";
 import { IconButton } from "@mui/material";
 import { Icon } from "../icon";
+import { useLang } from "@context/lang";
 
 const Default = (props) => {
   const { sxIcon, name, ...other } = props;
@@ -12,7 +13,11 @@ const Default = (props) => {
 };
 
 const Edit = (props) => {
-  const { langBase, data } = props;
+  const { langBase: langBaseProps, data } = props;
+
+  const lang = useLang();
+
+  const langBase = langBaseProps ?? lang?.lang;
 
   return (
     <Default
@@ -26,7 +31,11 @@ const Edit = (props) => {
 };
 
 const Delete = (props) => {
-  const { langBase, data } = props;
+  const { langBase: langBaseProps, data } = props;
+
+  const lang = useLang();
+
+  const langBase = langBaseProps ?? lang?.lang;
 
   return (
     <Default
@@ -40,7 +49,11 @@ const Delete = (props) => {
 };
 
 const Create = (props) => {
-  const { langBase, data } = props;
+  const { langBase: langBaseProps, data } = props;
+
+  const lang = useLang();
+
+  const langBase = langBaseProps ?? lang?.lang;
 
   return (
     <Default
@@ -54,7 +67,11 @@ const Create = (props) => {
 };
 
 const Reload = (props) => {
-  const { langBase } = props;
+  const { langBase: langBaseProps } = props;
+
+  const lang = useLang();
+
+  const langBase = langBaseProps ?? lang?.lang;
 
   return (
     <Default

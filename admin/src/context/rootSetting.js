@@ -1,4 +1,4 @@
-import { dispatch } from "@utils";
+import { dispatch, parse } from "@utils";
 import { createContext, useContext } from "react";
 
 class RootSettingStore {
@@ -20,16 +20,10 @@ class RootSettingStore {
   }
 
   get token() {
-    const readData = atob(localStorage.getItem("token")?.split(".")?.[1] ?? "");
-
-    if (readData) {
-      try {
-        return JSON.parse(readData);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    return {};
+    return parse(
+      atob(localStorage.getItem("token")?.split(".")?.[1] ?? ""),
+      {}
+    );
   }
 }
 

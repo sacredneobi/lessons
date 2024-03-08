@@ -10,9 +10,6 @@ const Default = (props) => {
     <Provider
       options={{
         cachePolicy: "no-cache",
-        onAbort: (e) => {
-          console.log("abort", e);
-        },
         interceptors: {
           request: ({ options }) => {
             options.headers["x-server-sacredApp"] = "0.0.1";

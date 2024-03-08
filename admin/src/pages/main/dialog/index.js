@@ -60,18 +60,16 @@ const useData = () => {
 };
 
 const Default = memo((props) => {
-  const { langBase } = props;
-
   return (
     <>
       <DialogEdit
-        langBase={langBase}
         container={<Container />}
         sxDialogContent={{ minHeight: 250, height: 420 }}
         {...useData()}
         needLoading
+        {...props}
       />
-      <DialogDelete langBase={langBase} {...useData()} />
+      <DialogDelete {...useData()} {...props} />
     </>
   );
 }, areEqualObject);

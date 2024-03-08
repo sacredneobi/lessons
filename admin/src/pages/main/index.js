@@ -1,62 +1,22 @@
-import {
-  Box,
-  IconButton,
-  IconButtonCreate,
-  Table,
-  Stack,
-  IconButtonReload,
-} from "@components";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect } from "react";
+import { Box, Table } from "@components";
 import useRenderRow from "./row";
 import Dialog from "./dialog";
 import { useGoodGet } from "@api";
 
-const langBase = "goods";
-
 const Default = () => {
-  const [page, setPage] = useState(0);
-
-  const [callbackGet, loading, rows, , handleFilter] = useGoodGet(50, langBase);
+  const { callbackGet, ...other } = useGoodGet(50);
 
   useEffect(() => {
-    callbackGet({ page });
-  }, [callbackGet, page]);
-
-  const handleOnChangePage = useCallback(
-    (name) => (page) => {
-      setPage(page);
-    },
-    []
-  );
-
-  const handleOnFilter = useCallback(
-    (props) => (
-      <Stack>
-        <IconButtonReload langBase={langBase} />
-        <IconButtonCreate {...props} langBase={langBase} />
-        <IconButton name="filter" {...props} />
-      </Stack>
-    ),
-    []
-  );
+    callbackGet();
+  }, [callbackGet]);
 
   const handelOnRender = useRenderRow();
 
   return (
-    <Box name="main" defFlex center sx={{ width: "100%", height: "100%" }}>
-      <Table
-        name="goods"
-        sx={{ flexGrow: 1 }}
-        items={rows}
-        topButtons={handleOnFilter}
-        pageCount={rows?.totalPage}
-        onItemRender={handelOnRender}
-        onChangePage={handleOnChangePage}
-        langBase={langBase}
-        loading={loading}
-        onFilter={handleFilter}
-      />
-      <Dialog langBase={langBase} />
+    <Box name="main" defFlex center sx={{ width: 1, height: 1 }}>
+      <Table {...other} onItemRender={handelOnRender} />
+      <Dialog />
     </Box>
   );
 };

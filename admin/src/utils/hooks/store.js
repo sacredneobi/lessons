@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
+import { parse } from "../object";
 
 const useStore = (storeName, def) => {
   const [name, setName] = useState(storeName);
@@ -18,18 +19,7 @@ const useStore = (storeName, def) => {
 
   useEffect(() => {
     setName(storeName);
-
-    let data;
-    try {
-      data = localStorage.getItem(storeName);
-      if (data && data !== "") {
-        data = JSON.parse(data);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-
-    setData(data);
+    setData(parse(localStorage.getItem(storeName)));
   }, [storeName]);
 
   return [data, setNewData];

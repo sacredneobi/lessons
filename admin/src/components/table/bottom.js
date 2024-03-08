@@ -1,5 +1,6 @@
-import { Pagination, Typography } from "@mui/material";
-import { Box } from "..";
+import { Pagination } from "@mui/material";
+import { Text } from "../text";
+import { Box } from "../box";
 import { useTable } from "@context";
 import { useEffect, useState } from "react";
 import { addEvent } from "@utils";
@@ -31,7 +32,7 @@ const CountSelect = (props) => {
   const count = Object.keys(tableData?.selected ?? {}).length;
 
   return count > 0 ? (
-    <Typography>Выделенные элементы : {count}</Typography>
+    <Text name="countSelect" value={count} langBase="global.table.bottom" />
   ) : null;
 };
 

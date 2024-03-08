@@ -12,10 +12,12 @@ import { useCallback, useEffect, useState } from "react";
 import { Button } from "../button";
 import { Divider } from "../divider";
 import { Box } from "../box";
+import { useLang } from "@context/lang";
+import { Text } from "../text";
 
 const Edit = (props) => {
   const {
-    langBase,
+    langBase: langBaseProps,
     container,
     sxDialogContent,
     sxHeader,
@@ -24,6 +26,10 @@ const Edit = (props) => {
     loading: loadingProps,
     actionLangBase,
   } = props;
+
+  const lang = useLang();
+
+  const langBase = lang?.lang ?? langBaseProps;
 
   const [open, setOpen] = useState(false);
   const [data, setData] = useState(null);
@@ -97,11 +103,17 @@ const Edit = (props) => {
   return (
     <Dialog fullScreen={fullScreen} open={open} maxWidth="md" fullWidth>
       <DialogTitle sx={{ py: 1, ...sxHeader }}>
-        {calcLoading
-          ? "loading"
-          : data?.id
-          ? `Редактирование: ${data?.caption ?? data?.title}`
-          : `Создать элемент`}
+        {calcLoading ? (
+          <Text name="loading" langBase="global.dialog.caption" />
+        ) : data?.id ? (
+          <Text
+            name="edit"
+            value={data?.caption ?? data?.title}
+            langBase="global.dialog.caption"
+          />
+        ) : (
+          <Text name="create" langBase="global.dialog.caption" />
+        )}
       </DialogTitle>
       <Divider />
       <DialogContent
@@ -116,7 +128,7 @@ const Edit = (props) => {
       >
         {calcLoading ? (
           <Box defFlex center grow>
-            LOADING
+            <Text name="loading" langBase="global.dialog.caption" />
           </Box>
         ) : calcContainer ? (
           calcContainer

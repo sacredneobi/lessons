@@ -2,6 +2,7 @@ import { Box } from "@components";
 import { addEvent, dispatch, getHash, setHash } from "@utils";
 import { useEffect, useState } from "react";
 import { PageMain, PageGood, PageOrder, PageSettings } from "../pages";
+import { LangContext } from "@context/lang";
 
 const Default = () => {
   const [route, setRoute] = useState(getHash());
@@ -36,10 +37,26 @@ const Default = () => {
         gridTemplateRows: "1fr",
       }}
     >
-      {(route === "main" || !route) && <PageMain />}
-      {route === "good" && <PageGood />}
-      {route === "order" && <PageOrder />}
-      {route === "settings" && <PageSettings />}
+      {(route === "main" || !route) && (
+        <LangContext lang="main">
+          <PageMain />
+        </LangContext>
+      )}
+      {route === "good" && (
+        <LangContext lang="good">
+          <PageGood />
+        </LangContext>
+      )}
+      {route === "order" && (
+        <LangContext lang="order">
+          <PageOrder />
+        </LangContext>
+      )}
+      {route === "settings" && (
+        <LangContext lang="setting">
+          <PageSettings />
+        </LangContext>
+      )}
     </Box>
   );
 };
