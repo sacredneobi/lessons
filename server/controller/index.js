@@ -1,6 +1,6 @@
 const { Router } = require("express");
-const private = require("./private");
-const public = require("./public");
+const private_2 = require("./private");
+const public_2 = require("./public");
 
 const initRouter = (webServer, routers) => {
   if (!webServer || !Array.isArray(routers?.controllers) || !routers?.path) {
@@ -22,8 +22,8 @@ const initRouter = (webServer, routers) => {
 };
 
 const initLoad = (webServer) => {
-  initRouter(webServer, private);
-  initRouter(webServer, public);
+  initRouter(webServer, private_2);
+  initRouter(webServer, public_2);
 };
 
 module.exports = initLoad;

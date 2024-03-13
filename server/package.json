@@ -10,7 +10,8 @@
     "mip": "npx sequelize-mig migration:make --preview",
     "mis": "npx sequelize-cli db:seed:all",
     "miu": "npx sequelize-cli db:migrate:undo",
-    "mi": "npx sequelize-cli db:migrate"
+    "mi": "npx sequelize-cli db:migrate",
+    "build": "node build.js"
   },
   "keywords": [],
   "author": "",
@@ -30,6 +31,7 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "esbuild": "^0.20.1",
     "module-alias": "^2.2.2",
     "nodemon": "^2.0.22"
   },

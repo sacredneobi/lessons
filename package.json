@@ -11,7 +11,8 @@
     "mip": "cd server && npm run mip",
     "mis": "cd server && npm run mis",
     "miu": "cd server && npm run miu",
-    "mi": "cd server && npm run mi"
+    "mi": "cd server && npm run mi",
+    "build": "cd server && npm run build && cd ../admin && npm run build"
   },
   "repository": {
     "type": "git",
