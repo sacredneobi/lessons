@@ -16,6 +16,4 @@ const root = {
   },
 };
 
-module.exports = (data, moduleName) => {
-  data[moduleName] = root;
-};
+module.exports = root;

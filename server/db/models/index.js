@@ -1,12 +1,11 @@
 const path = require("path");
 const Sequelize = require("sequelize");
 const { ErrorLoaderModule } = require("../../utils/class");
-const { fileWalk } = require("../../utils/file");
+const { loaderModule } = require("../../utils/file");
 require("../../config/setting");
+const pg = require("pg");
 
 const db = {};
-
-const basename = path.basename(__filename);
 
 let sequelize = process.setting?.db
   ? new Sequelize(
@@ -15,6 +14,7 @@ let sequelize = process.setting?.db
       process.setting.db.password,
       {
         ...process.setting.db,
+        dialectModule: pg,
         logging: null,
       }
     )
@@ -25,71 +25,31 @@ if (!sequelize) {
   return;
 }
 
-const defOptions = { paranoid: true };
-const defField = {
-  caption: Sequelize.DataTypes.TEXT,
-  description: Sequelize.DataTypes.TEXT,
-};
-
-let findFile = [];
-
-function capitalizeFirstLetterWithoutIndex(string) {
-  if (string === "index") {
-    return "";
-  }
-  return string[0].toUpperCase() + string.slice(1);
-}
-
-fileWalk(__dirname, (dir, files) => {
-  files
-    .filter((item) => {
-      return (
-        //Отфильтровываем файлы которые не удовлетворяют требования
-        (item !== basename || dir.replace(__dirname, "") !== "") &&
-        item.slice(-3) === ".js"
-      );
-    })
-    .forEach((item) => {
-      findFile.push(path.join(dir, item));
-    });
-});
-
 const loaderFile = [];
 
-findFile.forEach((item) => {
-  const extension = path.extname(item);
-  const file = path.basename(item, extension);
+loaderModule(
+  __dirname,
+  path.basename(__filename),
+  "import_model",
+  (fileName) => require(`./${fileName}`),
+  false,
+  (model, modelName) => {
+    if (typeof model === "function") {
+      const loadModel = model(sequelize, { paranoid: true }, modelName, {
+        caption: Sequelize.DataTypes.TEXT,
+        description: Sequelize.DataTypes.TEXT,
+      });
 
-  const modelName =
-    path.dirname(item.replace(__dirname + path.sep, "")) !== "."
-      ? path
-          .dirname(item.replace(__dirname + path.sep, ""))
-          .split(path.sep)
-          .map((item, index) =>
-            index === 0 ? item : capitalizeFirstLetterWithoutIndex(item)
-          )
-          .join("") + capitalizeFirstLetterWithoutIndex(file)
-      : file;
-
-  const model = require(item);
-
-  if (typeof model === "function") {
-    const loadModel = model(sequelize, defOptions, modelName, defField);
-
-    if (loadModel) {
-      const name =
-        modelName === loadModel.name
-          ? modelName
-          : `${modelName} (${loadModel.name})`;
-
-      if (loaderFile.includes(name)) {
-        throw new ErrorLoaderModule(`Error, module exist! ${name}`);
+      if (loadModel) {
+        if (loaderFile.includes(modelName)) {
+          throw new ErrorLoaderModule(`Error, module exist! ${modelName}`);
+        }
+        loaderFile.push(modelName);
+        db[loadModel.name] = loadModel;
       }
-      loaderFile.push(name);
-      db[loadModel.name] = loadModel;
     }
   }
-});
+);
 
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
@@ -99,10 +59,9 @@ Object.keys(db).forEach((modelName) => {
 
 db.sequelize = sequelize;
 
-if (typeof console.done === "function") {
-  console.done("SYSTEM", `DB-models:\n ${loaderFile.join(", ")}`);
-} else {
-  console.log("SYSTEM", `DB-models:\n ${loaderFile.join(", ")}`);
-}
+console[typeof console.done === "function" ? "done" : "log"](
+  "SYSTEM",
+  `DB-models: ${loaderFile.join(", ")}`
+);
 
 module.exports = { ...db };

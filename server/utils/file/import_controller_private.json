@@ -1,0 +1,9 @@
+[
+  "auth/index.js",
+  "auth/role.js",
+  "document/index.js",
+  "good/index.js",
+  "locales/index.js",
+  "user/index.js",
+  "user/role.js"
+]

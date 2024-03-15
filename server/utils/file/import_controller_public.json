@@ -1,0 +1,7 @@
+[
+  "about/index.js",
+  "auth/index.js",
+  "good/index.js",
+  "locales/index.js",
+  "media/index.js"
+]

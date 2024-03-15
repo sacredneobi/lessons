@@ -1,71 +1,18 @@
 const path = require("path");
-const { Router } = require("express");
-const { jwtMiddleware, fileWalk } = require("@utils");
+const { loaderModule } = require("@utils");
 
-const basename = path.basename(__filename);
+const { controllers, loaderFile } = loaderModule(
+  __dirname,
+  path.basename(__filename),
+  "import_controller_private",
+  (fileName) => require(`./${fileName}`)
+);
 
-let findFile = [];
-let controllers = [];
+console[typeof console.done === "function" ? "done" : "log"](
+  "SYSTEM",
+  `Controllers PRIVATE: ${loaderFile.join(", ")}`
+);
 
-function capitalizeFirstLetterWithoutIndex(string) {
-  if (string === "index") {
-    return "";
-  }
-  return string[0].toUpperCase() + string.slice(1);
-}
-
-fileWalk(__dirname, (dir, files) => {
-  files
-    .filter((item) => {
-      return (
-        //Отфильтровываем файлы которые не удовлетворяют требования
-        (item !== basename || dir.replace(__dirname, "") !== "") &&
-        item.slice(-3) === ".js"
-      );
-    })
-    .forEach((item) => {
-      findFile.push(path.join(dir, item));
-    });
-});
-
-const loadController = [];
-
-findFile.forEach((item) => {
-  const extension = path.extname(item);
-  const file = path.basename(item, extension);
-
-  const controllerName =
-    path.dirname(item.replace(__dirname + path.sep, "")) !== "."
-      ? path
-          .dirname(item.replace(__dirname + path.sep, ""))
-          .split(path.sep)
-          .map((item, index) =>
-            index === 0 ? item : capitalizeFirstLetterWithoutIndex(item)
-          )
-          .join("") + capitalizeFirstLetterWithoutIndex(file)
-      : file;
-
-  const controller = require(item);
-
-  if (typeof controller === "function") {
-    const router = Router();
-    router.use(jwtMiddleware);
-
-    const isLoad = controller(router, controllerName);
-
-    if (isLoad) {
-      loadController.push(controllerName);
-      controllers.push({ name: `/${controllerName}`, router });
-    }
-  }
-});
-
-if (typeof console.done === "function") {
-  console.done("SYSTEM", `Controllers PRIVATE:\n ${loadController.join(", ")}`);
-} else {
-  console.log("SYSTEM", `Controllers PRIVATE:\n ${loadController.join(", ")}`);
-}
-
-process.controllers = { private: loadController };
+process.controllers = { private: loaderFile };
 
 module.exports = { path: "/api/private", controllers };

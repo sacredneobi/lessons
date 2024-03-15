@@ -1,7 +1,7 @@
 require("module-alias/register");
 require("./events");
 const { app } = require("./config");
-require("./res").init();
+require("./res");
 const initLoad = require("./controller");
 const wsServer = require("./wsServer");
 

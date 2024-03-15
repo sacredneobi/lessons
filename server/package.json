@@ -5,13 +5,18 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js",
+    "start": "nodemon  index.js",
     "mic": "npx sequelize-mig migration:make -n",
     "mip": "npx sequelize-mig migration:make --preview",
     "mis": "npx sequelize-cli db:seed:all",
     "miu": "npx sequelize-cli db:migrate:undo",
     "mi": "npx sequelize-cli db:migrate",
-    "build": "node build.js"
+    "build": "node build.mjs"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "import*.json"
+    ]
   },
   "keywords": [],
   "author": "",
