@@ -1,6 +1,7 @@
 import { useLang } from "@context";
 import { Typography } from "@mui/material";
 import { Trans } from "react-i18next";
+import Tooltip from "../tooltip";
 
 const Default = (props) => {
   const {
@@ -10,6 +11,7 @@ const Default = (props) => {
     value,
     sx,
     langBase: langBaseProps,
+    help,
     ...other
   } = props;
 
@@ -17,7 +19,7 @@ const Default = (props) => {
 
   const langBase = langBaseProps ?? lang?.lang;
 
-  return (
+  const component = (
     <Typography sx={{ ...sx }} {...other}>
       {caption}
       {!!name && (
@@ -28,6 +30,10 @@ const Default = (props) => {
       )}
     </Typography>
   );
+  if (help) {
+    return <Tooltip help={help}>{component}</Tooltip>;
+  }
+  return component;
 };
 
 const useLocal = (langBase) => (props) =>

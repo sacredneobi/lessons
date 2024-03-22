@@ -31,6 +31,7 @@ const Default = memo((props) => {
     onNextField,
     onCheckNext,
     langBase,
+    clearLangBase,
     ...other
   } = props;
 
@@ -57,6 +58,7 @@ const Default = memo((props) => {
         }
         e.stopPropagation();
       }}
+      help={{ name: "clear", langBase: clearLangBase ?? "global" }}
     />
   ) : null;
 

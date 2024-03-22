@@ -1,4 +1,5 @@
 import { Box } from "@mui/material";
+import Tooltip from "../tooltip";
 
 const Default = (props) => {
   const {
@@ -13,6 +14,7 @@ const Default = (props) => {
     grow,
     sx: sxProps,
     strong,
+    help,
     ...other
   } = props;
 
@@ -65,7 +67,12 @@ const Default = (props) => {
     sx.cursor = "pointer";
   }
 
-  return <Box sx={sx} {...other} />;
+  const component = <Box sx={sx} {...other} />;
+
+  if (help) {
+    return <Tooltip help={help}>{component}</Tooltip>;
+  }
+  return component;
 };
 
 export { Default as Box };

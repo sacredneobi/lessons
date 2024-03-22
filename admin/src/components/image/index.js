@@ -129,6 +129,7 @@ const Image = (props) => {
                 }
               }
             }}
+            help={{ name: "delete" }}
           />
         )}
       </Box>

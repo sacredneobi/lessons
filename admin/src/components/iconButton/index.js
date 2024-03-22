@@ -2,18 +2,24 @@ import { dispatch, dispatchDelete, dispatchEdit } from "@utils";
 import { IconButton } from "@mui/material";
 import { Icon } from "../icon";
 import { useLang } from "@context/lang";
+import Tooltip from "../tooltip";
 
 const Default = (props) => {
-  const { sxIcon, name, ...other } = props;
-  return (
+  const { sxIcon, name, help, ...other } = props;
+  const component = (
     <IconButton {...other}>
       <Icon name={name} sx={sxIcon} />
     </IconButton>
   );
+
+  if (help) {
+    return <Tooltip help={help}>{component}</Tooltip>;
+  }
+  return component;
 };
 
 const Edit = (props) => {
-  const { langBase: langBaseProps, data } = props;
+  const { langBase: langBaseProps, data, ...other } = props;
 
   const lang = useLang();
 
@@ -26,12 +32,14 @@ const Edit = (props) => {
         dispatchEdit(langBase, data);
       }}
       sxIcon={{ fontSize: 18 }}
+      help={{ name: "edit" }}
+      {...other}
     />
   );
 };
 
 const Delete = (props) => {
-  const { langBase: langBaseProps, data } = props;
+  const { langBase: langBaseProps, data, ...other } = props;
 
   const lang = useLang();
 
@@ -44,12 +52,14 @@ const Delete = (props) => {
         dispatchDelete(langBase, data);
       }}
       sxIcon={{ fontSize: 18, color: "warning.main" }}
+      help={{ name: "delete" }}
+      {...other}
     />
   );
 };
 
 const Create = (props) => {
-  const { langBase: langBaseProps, data } = props;
+  const { langBase: langBaseProps, data, ...other } = props;
 
   const lang = useLang();
 
@@ -62,12 +72,14 @@ const Create = (props) => {
         dispatchEdit(langBase, data);
       }}
       sxIcon={{ fontSize: 18, color: "warning.main" }}
+      help={{ name: "create" }}
+      {...other}
     />
   );
 };
 
 const Reload = (props) => {
-  const { langBase: langBaseProps } = props;
+  const { langBase: langBaseProps, ...other } = props;
 
   const lang = useLang();
 
@@ -80,6 +92,8 @@ const Reload = (props) => {
         dispatch("reload", { name: langBase });
       }}
       sxIcon={{ fontSize: 18, color: "warning.main" }}
+      help={{ name: "reload" }}
+      {...other}
     />
   );
 };

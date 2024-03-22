@@ -48,17 +48,19 @@ const Default = (props) => {
         name={name}
       />
       <CountSelect name={name} />
-      <Pagination
-        count={pageCount}
-        variant="outlined"
-        shape="rounded"
-        size="small"
-        onChange={(e, page) => {
-          if (typeof onChangePage === "function") {
-            onChangePage(name)(page - 1);
-          }
-        }}
-      />
+      {pageCount > 1 && (
+        <Pagination
+          count={pageCount}
+          variant="outlined"
+          shape="rounded"
+          size="small"
+          onChange={(e, page) => {
+            if (typeof onChangePage === "function") {
+              onChangePage(name)(page - 1);
+            }
+          }}
+        />
+      )}
     </Box>
   );
 };

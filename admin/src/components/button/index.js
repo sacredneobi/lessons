@@ -2,6 +2,7 @@ import { Button } from "@mui/material";
 import { Box } from "../box";
 import { Text } from "../text";
 import { Icon } from "../icon";
+import Tooltip from "../tooltip";
 
 const Default = (props) => {
   const {
@@ -14,10 +15,11 @@ const Default = (props) => {
     sxIcon,
     langBase,
     icon,
+    help,
     ...other
   } = props;
 
-  return (
+  const component = (
     <Button variant="contained" {...other}>
       <Box defFlex center row gap {...propsBox} sx={sxBox}>
         {icon && <Icon name={icon} {...propsIcon} sx={sxIcon} />}
@@ -28,6 +30,10 @@ const Default = (props) => {
       </Box>
     </Button>
   );
+  if (help) {
+    return <Tooltip help={help}>{component}</Tooltip>;
+  }
+  return component;
 };
 
 Default.mui = Button;
@@ -41,6 +47,7 @@ const Delete = (props) => {
       color="warning"
       name="delete"
       langBase={langBase ?? "global"}
+      help={{ name: "delete" }}
       {...other}
     />
   );

@@ -13,7 +13,11 @@ const useRenderRow = () =>
     return (
       <Box defFlex row jc_sp ai>
         <Box defFlex row ai gap>
-          <Box strong onClick={() => copyText(`goodId : ${data?.id}`)}>
+          <Box
+            strong
+            onClick={() => copyText(`goodId : ${data?.id}`)}
+            help={{ name: "number" }}
+          >
             {data.id}
           </Box>
           <Box defFlex>
