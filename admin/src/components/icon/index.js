@@ -28,6 +28,7 @@ const iconData = {
   themeLight: "wb_sunny",
   themeSystem: "settings_night_sight",
   themeDark: "dark_mode",
+  warning: "priority_high",
 };
 
 const Default = (props) => {

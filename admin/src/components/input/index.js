@@ -31,6 +31,7 @@ const Default = memo((props) => {
     onNextField,
     onCheckNext,
     langBase,
+    error,
     clearLangBase,
     ...other
   } = props;
@@ -71,6 +72,17 @@ const Default = memo((props) => {
       size="small"
       value={type === "file" ? "" : value ?? ""}
       {...other}
+      error={!!error}
+      helperText={
+        !!error && (
+          <Text
+            name={error}
+            sx={{ fontSize: "unset" }}
+            langBase={langBase ?? "global"}
+            onlyText
+          />
+        )
+      }
       type={type}
       onKeyUp={(e) => {
         if (e.key === "Enter" && nextField && value) {

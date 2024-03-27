@@ -34,6 +34,7 @@ const Edit = (props) => {
   const [open, setOpen] = useState(false);
   const [data, setData] = useState(null);
   const [id, setId] = useState(null);
+  const [error, setError] = useState({ isError: false });
 
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -88,13 +89,15 @@ const Edit = (props) => {
 
   const calcContainer =
     typeof container === "function" ? (
-      container(data, setData)
+      container(data, setData, error, setError)
     ) : (
       <container.type
         {...container.props}
         data={data}
         setData={setData}
         langBase={`${langBase}.dialog.edit`}
+        error={error}
+        setError={setError}
       />
     );
 
@@ -142,7 +145,7 @@ const Edit = (props) => {
         <Button
           onClick={handleOk}
           variant="default"
-          disabled={calcLoading}
+          disabled={calcLoading || error.isError}
           langBase={`${actionLangBase ?? "global"}.dialog.action`}
           name={data?.id ? "save" : "create"}
         />

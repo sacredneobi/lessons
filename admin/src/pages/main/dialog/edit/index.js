@@ -1,9 +1,9 @@
 import { Tabs, DialogContent } from "@components";
-import { useAction, useDef, useDialogDef } from "@utils";
-// import { useState } from "react";
+import { useAction, useDef, useDialogDef, useValidate } from "@utils";
 import Setting from "./setting";
 import Price from "./price";
 import Photo from "./photo";
+import { useEffect } from "react";
 
 const tabs = [
   { name: "setting", validate: ["caption"] },
@@ -11,13 +11,21 @@ const tabs = [
   { name: "photo" },
 ];
 
+const validateFields = [{ name: "caption", notNull: true, minLength: 10 }];
+
 const Default = (props) => {
-  const { langBase, data, setData } = props;
+  const { langBase, data, setData, setError, error } = props;
 
   const { dialogData, onDialogChange } = useDialogDef(langBase);
 
+  const validate = useValidate(validateFields);
+
+  useEffect(() => {
+    setError(validate(data));
+  }, [setError, data, validate]);
+
   const handleOnChange = useAction(setData);
-  const def = useDef(data, handleOnChange);
+  const def = useDef(data, handleOnChange, error);
 
   return (
     <>
@@ -26,6 +34,7 @@ const Default = (props) => {
         tabs={dialogData?.tabs}
         onChange={onDialogChange}
         langBase={langBase}
+        error={error}
       />
       <DialogContent>
         {dialogData?.tabs === 0 && <Setting def={def} />}

@@ -12,6 +12,7 @@ const Default = (props) => {
     sx,
     langBase: langBaseProps,
     help,
+    onlyText,
     ...other
   } = props;
 
@@ -19,15 +20,21 @@ const Default = (props) => {
 
   const langBase = langBaseProps ?? lang?.lang;
 
+  const translate = !!name && (
+    <Trans
+      i18nKey={`${langBase ? `${langBase}.` : ""}${name}`}
+      values={values ?? { value }}
+    />
+  );
+
+  if (onlyText) {
+    return translate;
+  }
+
   const component = (
     <Typography sx={{ ...sx }} {...other}>
       {caption}
-      {!!name && (
-        <Trans
-          i18nKey={`${langBase ? `${langBase}.` : ""}${name}`}
-          values={values ?? { value }}
-        />
-      )}
+      {translate}
     </Typography>
   );
   if (help) {

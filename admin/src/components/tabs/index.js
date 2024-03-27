@@ -1,9 +1,8 @@
 import Tabs, { tabsClasses } from "@mui/material/Tabs";
 import Tab from "./tab";
-import { Text } from "../text";
 
 const Default = (props) => {
-  const { name = "tabs", items, tabs, onChange, langBase } = props;
+  const { name = "tabs", items, tabs, onChange, langBase, error } = props;
 
   const handleChange = (event, newValue) => {
     if (typeof onChange === "function") {
@@ -24,12 +23,19 @@ const Default = (props) => {
         minHeight: 32,
       }}
     >
-      {items?.map((item, index) => (
-        <Tab
-          key={index}
-          label={<Text name={item.name} langBase={`${langBase}.tabs`} />}
-        />
-      ))}
+      {items?.map((item, index) => {
+        let isError = false;
+
+        if (Array.isArray(item?.validate)) {
+          isError =
+            item.validate.map((item) => !!error?.fields?.[item]).filter(Boolean)
+              ?.length > 0;
+        }
+
+        return (
+          <Tab key={index} {...item} isError={isError} langBase={langBase} />
+        );
+      })}
     </Tabs>
   );
 };
