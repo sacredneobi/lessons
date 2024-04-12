@@ -5,14 +5,10 @@ const Default = (props) => {
 
   return (
     <Box defFlex gap sx={{ pt: 0.75 }}>
-      <Box
-        defGrid
-        gap
-        sx={{ gridTemplateColumns: "1fr 1fr", gridTemplateRows: "1fr 1fr" }}
-      >
-        <Input {...def("caption")} />
-        <Input {...def("category")} />
-        <Input {...def("brand")} />
+      <Input {...def("caption")} />
+      <Box defGrid gap sx={{ gridTemplateColumns: "1fr 1fr" }}>
+        <Input {...def("article")} />
+        <Input {...def("color")} />
       </Box>
       <Input {...def("description")} rows={4} />
     </Box>

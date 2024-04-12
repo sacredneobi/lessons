@@ -187,6 +187,17 @@
                     "onUpdate": "NO ACTION",
                     "field": "userId",
                     "seqType": "Sequelize.INTEGER"
+                },
+                "goodId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "goods",
+                        "key": "id"
+                    },
+                    "onDelete": "CASCADE",
+                    "onUpdate": "NO ACTION",
+                    "field": "goodId",
+                    "seqType": "Sequelize.INTEGER"
                 }
             },
             "indexes": []
@@ -296,5 +307,5 @@
     "path": "D:\\work\\react\\test_module_Name\\test2\\server\\db\\migrations\\_current.json",
     "backupPath": "D:\\work\\react\\test_module_Name\\test2\\server\\db\\migrations\\_current_bak.json",
     "exists": true,
-    "revision": 2
+    "revision": 3
 }

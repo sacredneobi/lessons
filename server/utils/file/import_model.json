@@ -1,6 +1,7 @@
 [
   "custom/index.js",
   "good/index.js",
+  "good/prop.js",
   "locales/index.js",
   "media/index.js",
   "user/index.js",

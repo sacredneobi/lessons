@@ -1,5 +1,5 @@
-const { Op, DataTypes, HasMany } = require("sequelize");
-const { good, media } = require("@models");
+const { Op, DataTypes, HasMany, HasOne } = require("sequelize");
+const { good, media, goodProp } = require("@models");
 const {
   checkVal,
   parseLimit,
@@ -7,7 +7,6 @@ const {
   defLimit,
   defSearch,
   mediaMiddleware,
-  defAnswerError,
 } = require("@utils");
 
 const getById = (req, res) => {
@@ -23,8 +22,23 @@ const getById = (req, res) => {
           }),
           ...defExclude(["userId", "goodId", "caption", "description", "size"]),
         },
+        {
+          association: new HasOne(good, goodProp, {
+            sourceKey: "id",
+            foreignKey: "goodId",
+          }),
+          attributes: ["article", "color"],
+        },
       ],
       where: { id },
+    })
+    .then((data) => {
+      const { goodProp, ...other } = data?.toJSON?.() ?? {};
+
+      other.article = goodProp?.article;
+      other.color = goodProp?.color;
+
+      return other;
     })
     .defAnswer(res);
 };
@@ -36,40 +50,66 @@ const get = (req, res) => {
     .findAndCountAll({
       ...defExclude(),
       ...defLimit(req.query),
+      include: [
+        {
+          association: new HasOne(good, goodProp, {
+            sourceKey: "id",
+            foreignKey: "goodId",
+          }),
+          attributes: ["article", "color"],
+        },
+      ],
       where: search.where,
       order: ["id"],
     })
     .then((data) => {
       data.searchColumns = search.columns;
+      data.rows = data.rows.map((item) => {
+        const { goodProp, ...other } = item.toJSON();
+
+        other.article = goodProp?.article;
+        other.color = goodProp?.color;
+
+        return other;
+      });
       return data;
     })
     .defAnswer(res);
 };
 
 const update = async (req, res) => {
-  const { id, ...other } = req.body;
+  const { id, article, color, ...other } = req.body;
 
-  for (const mediaData of req.body.media?.filter((item) => item.isDelete) ??
-    []) {
-    await media.destroy({ where: { id: mediaData.id } });
-  }
+  const items =
+    req.body.media
+      ?.filter?.((item) => item.isDelete)
+      ?.map?.(() => media.destroy({ where: { id: mediaData.id } })) ?? [];
+  items.push(
+    ...(req?.newFiles?.map?.((file) => media.create({ ...file, goodId: id })) ??
+      [])
+  );
 
-  for (const file of req.newFiles) {
-    file.goodId = id;
-    await media.create(file);
-  }
+  items.push(goodProp.update({ article, color }, { where: { goodId: id } }));
 
+  await Promise.all(items);
   good.update(other, { where: { id } }).defAnswer(res);
 };
 
 const post = (req, res) => {
+  const { article, color, ...other } = req.body;
+
   good
-    .create(req.body)
+    .create(other)
     .then(async (data) => {
-      for (const file of req.newFiles) {
-        file.goodId = data.id;
-        await media.create(file);
-      }
+      const items =
+        req?.newFiles?.map?.((file) =>
+          media.create({ ...file, goodId: data.id })
+        ) ?? [];
+
+      items.push(goodProp.create({ article, color, goodId: data?.id }));
+
+      await Promise.all(items);
+
       return data;
     })
     .defAnswer(res);
@@ -77,7 +117,13 @@ const post = (req, res) => {
 
 const del = (req, res) => {
   const { id } = req.body;
-  good.destroy({ where: { id } }).defAnswer(res);
+  good
+    .destroy({ where: { id } })
+    .then(async () => {
+      await goodProp.destroy({ where: { goodId: id } });
+      return { ok: true };
+    })
+    .defAnswer(res);
 };
 
 module.exports = (router) => {
