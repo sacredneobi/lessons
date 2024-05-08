@@ -19,12 +19,13 @@ const context = createContext(null);
 const useDef = () => useContext(context);
 
 const Context = (props) => {
-  const { lang, ...other } = props;
+  const { lang, children, ...other } = props;
 
   return (
     <context.Provider
       value={new LangStore(lang)}
       name="LANG CONTEXT"
+      children={children}
       {...other}
     />
   );

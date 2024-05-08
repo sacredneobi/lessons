@@ -1,4 +1,5 @@
 [
-  "global_.js",
-  "main_.js"
+  "dashboard.js",
+  "global.js",
+  "main.js"
 ]

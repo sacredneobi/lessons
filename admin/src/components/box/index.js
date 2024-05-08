@@ -4,7 +4,9 @@ import Tooltip from "../tooltip";
 const Default = (props) => {
   const {
     defFlex,
+    flex,
     defGrid,
+    grid,
     ai,
     jc,
     jc_sp,
@@ -20,12 +22,12 @@ const Default = (props) => {
 
   const sx = { ...sxProps };
 
-  if (defFlex) {
+  if (defFlex || flex) {
     sx.display = "flex";
     sx.flexDirection = "column";
   }
 
-  if (defGrid) {
+  if (defGrid || grid) {
     sx.display = "grid";
   }
 

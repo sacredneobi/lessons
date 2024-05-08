@@ -28,7 +28,6 @@ const Default = (props) => {
         items={tabs}
         tabs={dialogData?.tabs}
         onChange={onDialogChange}
-        langBase={langBase}
         error={error}
       />
       <DialogContent>

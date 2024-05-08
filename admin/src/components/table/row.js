@@ -1,7 +1,7 @@
 import { Checkbox } from "@mui/material";
 import { Box } from "..";
 import { memo, useEffect, useState } from "react";
-import { useTable } from "@context";
+import { LangContext, useTable } from "@context";
 import { addEvent, dispatch } from "@utils";
 
 function areEqual(prev, next) {
@@ -68,13 +68,15 @@ const Default = memo((props) => {
   return (
     <Box defFlex grow row sx={{ minHeight: 32, p: 0.5 }} ai>
       <Checker id={id} name={name} />
-      {typeof onItemRender === "function" ? (
-        <Box defFlex jc sx={{ width: "100%" }}>
-          {onItemRender(item, `${langBase}.row.header`, langBase)}
-        </Box>
-      ) : (
-        caption
-      )}
+      <LangContext lang={`${langBase}.row.header`}>
+        {typeof onItemRender === "function" ? (
+          <Box defFlex jc sx={{ width: "100%" }}>
+            {onItemRender(item, langBase)}
+          </Box>
+        ) : (
+          caption
+        )}
+      </LangContext>
     </Box>
   );
 }, areEqual);

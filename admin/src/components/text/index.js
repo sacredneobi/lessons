@@ -32,7 +32,18 @@ const Default = (props) => {
   }
 
   const component = (
-    <Typography sx={{ ...sx }} {...other}>
+    <Typography
+      sx={{
+        "& strong": {
+          px: 0.75,
+          py: 0.25,
+          backgroundColor: "action.disabled",
+          borderRadius: 2,
+        },
+        ...sx,
+      }}
+      {...other}
+    >
       {caption}
       {translate}
     </Typography>

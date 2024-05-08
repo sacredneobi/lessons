@@ -12,7 +12,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Button } from "../button";
 import { Divider } from "../divider";
 import { Box } from "../box";
-import { useLang } from "@context/lang";
+import { LangContext, useLang } from "@context";
 import { Text } from "../text";
 
 const Edit = (props) => {
@@ -129,15 +129,17 @@ const Edit = (props) => {
           ...sxDialogContent,
         }}
       >
-        {calcLoading ? (
-          <Box defFlex center grow>
-            <Text name="loading" langBase="global.dialog.caption" />
-          </Box>
-        ) : calcContainer ? (
-          calcContainer
-        ) : (
-          <DialogContentText>{data?.caption2}</DialogContentText>
-        )}
+        <LangContext lang={`${langBase}.dialog`}>
+          {calcLoading ? (
+            <Box defFlex center grow>
+              <Text name="loading" langBase="global.dialog.caption" />
+            </Box>
+          ) : calcContainer ? (
+            calcContainer
+          ) : (
+            <DialogContentText>{data?.caption2}</DialogContentText>
+          )}
+        </LangContext>
       </DialogContent>
       <Box grow />
       <Divider />

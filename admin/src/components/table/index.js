@@ -5,7 +5,7 @@ import { memo } from "@utils";
 import Rows from "./rows";
 import Bottom from "./bottom";
 import { Input } from "../input";
-import { useLang } from "@context";
+import { LangContext, useLang } from "@context";
 
 const defStyle = { sxIcon: { fontSize: 18 } };
 
@@ -22,6 +22,7 @@ const Default = (props) => {
     onItemRender,
     onBottomRender,
     langBase,
+    langBaseTop,
     loading,
     onFilter,
   } = props;
@@ -65,8 +66,10 @@ const Default = (props) => {
           clear
         />
         <Stack>
-          <IconButtonReload />
-          <IconButtonCreate />
+          <LangContext lang={`${langBaseTop ?? "global.table"}.top`}>
+            <IconButtonReload />
+            <IconButtonCreate />
+          </LangContext>
         </Stack>
         {topButtons ? (
           typeof topButtons === "function" ? (

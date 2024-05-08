@@ -16,10 +16,10 @@ const Default = memo((props) => {
         isError ? (
           <Box defFlex row gap={0.25} ai sx={{ color: "warning.main" }}>
             <Icon name="warning" />
-            <Text name={name} langBase={`${langBase}.tabs`} />
+            <Text name={name} />
           </Box>
         ) : (
-          <Text name={name} langBase={`${langBase}.tabs`} />
+          <Text name={name} />
         )
       }
     />
