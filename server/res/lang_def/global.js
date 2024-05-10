@@ -7,6 +7,8 @@ const root = {
     },
     caption: {
       edit: "Редактирование <strong>{{value}}</strong>",
+      create: "Создать",
+      loading: "Загрузка",
     },
   },
   table: {
@@ -22,6 +24,8 @@ const root = {
       hideSelect: "Скрыть мульти выбор",
     },
   },
+  help: { clear: "Очистить" },
+  notNull: "Должен иметь значение",
 };
 
 module.exports = root;

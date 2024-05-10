@@ -67,8 +67,8 @@ const Default = (props) => {
         />
         <Stack>
           <LangContext lang={`${langBaseTop ?? "global.table"}.top`}>
-            <IconButtonReload />
-            <IconButtonCreate />
+            <IconButtonReload langBase={langBase} />
+            <IconButtonCreate langBase={langBase} />
           </LangContext>
         </Stack>
         {topButtons ? (

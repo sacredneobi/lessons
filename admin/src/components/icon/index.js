@@ -28,17 +28,21 @@ const iconData = {
   themeLight: "wb_sunny",
   themeSystem: "settings_night_sight",
   themeDark: "dark_mode",
-  warning: "priority_high",
+  warning: { name: "error", sx: { color: "warning.main", fontSize: 18 } },
 };
 
 const Default = (props) => {
-  const { name, ...other } = props;
+  const { name, sx, ...other } = props;
 
-  const icon = iconData[name] ? iconData[name] : iconData.defIcon;
+  const icon = iconData[name] ?? iconData.defIcon;
 
   return (
-    <Icon className="material-symbols-rounded" {...other}>
-      {icon}
+    <Icon
+      className="material-symbols-rounded"
+      {...other}
+      sx={{ ...icon.sx, ...sx }}
+    >
+      {icon?.name ?? icon}
     </Icon>
   );
 };

@@ -33,6 +33,7 @@ const Edit = (props) => {
 
   const [open, setOpen] = useState(false);
   const [data, setData] = useState(null);
+  const [caption, setCaption] = useState(null);
   const [id, setId] = useState(null);
   const [error, setError] = useState({ isError: false });
 
@@ -50,6 +51,7 @@ const Edit = (props) => {
       addEvent(`${langBase}.dialog.edit`, (detail) => {
         setId(detail?.id);
         setData(detail);
+        setCaption(detail?.caption);
         setOpen(true);
       }),
     [langBase]
@@ -111,7 +113,7 @@ const Edit = (props) => {
         ) : data?.id ? (
           <Text
             name="edit"
-            value={data?.caption ?? data?.title}
+            value={caption ?? ""}
             langBase="global.dialog.caption"
           />
         ) : (

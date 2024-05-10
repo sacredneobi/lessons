@@ -6,6 +6,7 @@ module.exports = {
       help: {
         edit: "Редактировать",
         delete: "Удалить",
+        number: "ID Записи",
       },
     },
   },

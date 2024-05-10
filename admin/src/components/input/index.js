@@ -63,6 +63,8 @@ const Default = memo((props) => {
     />
   ) : null;
 
+  const isValue = !!(type === "file" ? "" : value ?? "");
+
   return (
     <TextField
       label={
@@ -130,7 +132,12 @@ const Default = memo((props) => {
       inputProps={{ id: name }}
       InputProps={{
         startAdornment: startComponent,
-        endAdornment: endComponent ? endComponent : clearComponent,
+        endAdornment: (
+          <>
+            {endComponent}
+            {isValue && clearComponent}
+          </>
+        ),
       }}
     />
   );

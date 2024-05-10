@@ -31,6 +31,42 @@ const Default = (props) => {
     });
 
     return createTheme({
+      components: {
+        MuiPaper: {
+          styleOverrides: {
+            root: {
+              borderRadius: defTheme.shape.borderRadius * 4,
+              padding: 2,
+            },
+          },
+        },
+        MuiButton: {
+          styleOverrides: {
+            root: {
+              borderRadius: defTheme.shape.borderRadius * 2,
+            },
+          },
+        },
+        MuiInputBase: {
+          styleOverrides: {
+            root: {
+              borderRadius: `${defTheme.shape.borderRadius * 2}px !important`,
+            },
+          },
+        },
+        MuiDialogTitle: {
+          styleOverrides: {
+            root: {
+              minHeight: 52,
+              display: "flex",
+              alignItems: "center",
+              padding: 8,
+              paddingLeft: 16,
+              paddingRight: 16,
+            },
+          },
+        },
+      },
       palette: {
         mode: calcMode,
         background: {

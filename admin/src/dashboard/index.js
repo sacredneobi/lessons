@@ -97,7 +97,6 @@ const Default = () => {
             defFlex
             sx={{
               p: 1,
-              pt: 1.5,
               borderRadius: 4,
               backgroundColor: "background.paper",
               backgroundImage: ({ palette }) =>

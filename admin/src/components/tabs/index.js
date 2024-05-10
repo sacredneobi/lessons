@@ -13,6 +13,17 @@ const Default = (props) => {
     }
   };
 
+  let isError = false;
+
+  const currentItem = items[tabs ?? 0];
+
+  if (Array.isArray(currentItem?.validate)) {
+    isError =
+      currentItem.validate
+        .map((item) => !!error?.fields?.[item])
+        .filter(Boolean)?.length > 0;
+  }
+
   return (
     <LangContext lang={`${lang}.tabs`}>
       <Tabs
@@ -25,6 +36,11 @@ const Default = (props) => {
             "&.Mui-disabled": { opacity: 0.3 },
           },
           minHeight: 32,
+          ...(isError && {
+            "& .MuiTabs-indicator": {
+              backgroundColor: "warning.main",
+            },
+          }),
         }}
       >
         {items?.map((item, index) => {
